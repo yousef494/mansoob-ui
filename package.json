@@ -1,25 +1,16 @@
 {
-  "name": "@coreui/coreui-free-angular-admin-template",
+  "name": "Mansoob v2",
   "version": "2.9.2",
-  "description": "CoreUI Free Angular 2+ Admin Template",
+  "description": "Mansoob web application",
   "author": {
-    "name": "Łukasz Holeczek",
-    "url": "http://holeczek.pl",
-    "github": "https://github.com/mrholek",
-    "twitter": "https://twitter.com/lukaszholeczek"
+    "name": "Yousef AlSuwaidan"
   },
-  "contributors": [
-    {
-      "name": "Andrzej Kopański",
-      "url": "https://github.com/xidedix"
-    }
-  ],
-  "homepage": "https://coreui.io/angular",
-  "copyright": "Copyright 2020 creativeLabs Łukasz Holeczek",
-  "license": "MIT",
+  "homepage": "http://www.yousefcave.com",
+  "copyright": "Copyright 2020",
   "scripts": {
     "ng": "ng",
-    "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
+    "heroku-postbuild": "ng build --prod",
+    "postinstall": "ng build --aot -prod",
     "start": "node server.js",
     "build": "ng build --prod --aot --buildOptimizer --commonChunk --vendorChunk --optimization --progress",
     "test": "ng test",
