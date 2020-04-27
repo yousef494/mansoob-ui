@@ -1,0 +1,23 @@
+.card-header-custom{
+    font-size: 4rem;
+}
+
+.status-normal{
+    background-color: #4dbd74;
+}
+
+.status-low{
+    background-color: #f0ad4e;
+}
+
+.status-medium{
+    background-color: #ff8d00;   
+}
+
+.status-high{
+    background-color: #d9534f;
+}
+
+.status-critical{
+    background-color: rgb(139, 2, 2);
+}

@@ -1,0 +1,271 @@
+<div id="dashboard" class="animated fadeIn">
+    <!-- Outdated alert message -->
+    <div *ngIf="isOutDated()" class="row">
+        <div class="col-sm-6 col-lg-12">
+            <alert type="danger">
+                <div role="alert" class="alert alert-danger ng-star-inserted">
+                    <strong>Last Updated:</strong> {{ formatDate(time,'dddd Do MMMM, YYYY HH:mm') }}
+                </div>
+            </alert>
+        </div>
+    </div>
+    <div class="row">
+        <!-- level card -->
+        <div class="col-sm-6 col-lg-5">
+            <div class="brand-card">
+                <div class="brand-card-header {{severity_class}}">
+                    <i class="card-header-custom fa {{severity_simple}}"></i>
+                    <div class="chart-wrapper">
+                        <div class="btn-group m-3 float-right" dropdown>
+                            <button type="button" class="btn btn-transparent dropdown-toggle p-0" dropdownToggle>
+                                <i class="dropdown-trigger-icon-custom icon-settings p-0"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+                                <div class="dropdown-header text-center"><strong>Tools</strong></div>
+                                <a class="dropdown-item" (click)="genPDF('dashboard')" href="#"><i
+                                        class="dropdown-item-icon-custom icon-cloud-download text-primary"></i>Downlaod
+                                    Dashboard as PDF</a>
+                                <a class="dropdown-item" (click)="infoModal.show()" data-toggle="modal" href="#"><i
+                                        class="dropdown-item-icon-custom icon-info text-info"></i>Quick Information</a>
+                                <div class="dropdown-header text-center"><strong>Refresh Interval</strong></div>
+                                <a class="dropdown-item {{isRefreshInterval(5)?'active':''}}"
+                                    (click)="setRefreshInterval(5)" href="#">5 minutes</a>
+                                <a class="dropdown-item {{isRefreshInterval(10)?'active':''}}"
+                                    (click)="setRefreshInterval(10)" hhref="#">10 Minutes</a>
+                                <a class="dropdown-item {{isRefreshInterval(20)?'active':''}}"
+                                    (click)="setRefreshInterval(20)" hhref="#">20 Minutes</a>
+                                <a class="dropdown-item {{isRefreshInterval(30)?'active':''}}"
+                                    (click)="setRefreshInterval(30)" hhref="#">30 Minutes</a>
+                                <a class="dropdown-item {{isRefreshInterval(60)?'active':''}}"
+                                    (click)="setRefreshInterval(60)" hhref="#">1 Hour</a>
+                                <a class="dropdown-item {{isRefreshInterval('M')?'active':''}}"
+                                    (click)="setRefreshInterval('M')" hhref="#">Manually</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="brand-card-body">
+                    <div>
+                        <div class="text-value">{{currentLevel}}</div>
+                        <div class="text-uppercase text-muted small">Current Status</div>
+                    </div>
+                    <div>
+                        <div class="text-value">{{currentLevel_percentage}}</div>
+                        <div class="text-uppercase text-muted small">Current Status %</div>
+                    </div>
+                    <div>
+                        <div class="text-value">{{currentCapacity}}</div>
+                        <div class="text-uppercase text-muted small">m3</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gauge Chart -->
+        <div class="col-sm-6 col-lg-3">
+            <div class="brand-card">
+                <div class=" brand-card-header-custom">
+                    <div class="chart-wrapper">
+                        <rg-gauge-chart [canvasWidth]="canvasWidth" [needleValue]="gaugeNeedleValue"
+                            [centralLabel]="centralLabel" [name]="name" [options]="options"
+                            [bottomLabel]="currentLevel"></rg-gauge-chart>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-4">
+            <div class="brand-card">
+                <div class="brand-card-header bg-primary">
+                    <i class="card-header-custom fa fa-bullhorn float-left"></i>
+                    <div class="ml-3">
+                        <div class="brand-card-header-item-custom">Time to Refill <strong>{{ timeToRefill }}</strong> day(s)</div>
+                        <div class="brand-card-header-item-custom">On <strong>{{ dayToRefill }}</strong></div>
+                    </div>
+                </div>
+                <!-- Consumption card -->
+                <div class="brand-card-body">
+                    <div>
+                        <div class="text-value">{{ fixIfNaN(getRoundedNumber(dConsLst[4],tankHeight)) }}%</div>
+                        <div class="text-uppercase text-muted small">Today Consumption</div>
+                    </div>
+                    <!-- LEAKE DETECTION CARD -->
+                    <div>
+                        <div class="text-value"><i class="card-header-custom fa fa-alert"></i></div>
+                        <div class="text-uppercase text-muted small">Leake detection</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/.row-->
+
+    <!-- Wate level chart-->
+    <div id="waterLevelChart" class="card">
+        <div class="card-header">
+            <div class="row text-center">
+                <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                    <div class="text-muted">Today First Quarter</div><strong>{{dConsLst[0]}}
+                        ({{dConsPercLst[0]}})%</strong>
+                    <div class="progress progress-xs mt-2">
+                        <div id="q1ProgressBar" aria-valuemax="100" aria-valuemin="0" aria-valuenow="40"
+                            class="progress-bar bg-success" role="progressbar" style="width: 40%"></div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                    <div class="text-muted">Today Second Quarter</div><strong>{{dConsLst[1]}}
+                        ({{dConsPercLst[1]}})%</strong>
+                    <div class="progress progress-xs mt-2">
+                        <div id="q2ProgressBar" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20"
+                            class="progress-bar bg-info" role="progressbar" style="width: 20%"></div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                    <div class="text-muted">Today Third Quarter</div><strong>{{dConsLst[2]}}
+                        ({{dConsPercLst[2]}})%</strong>
+                    <div class="progress progress-xs mt-2">
+                        <div id="q3ProgressBar" aria-valuemax="100" aria-valuemin="0" aria-valuenow="60"
+                            class="progress-bar bg-warning" role="progressbar" style="width: 60%"></div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                    <div class="text-muted">Today Fourth Quarter</div><strong>{{dConsLst[3]}}
+                        ({{dConsPercLst[3]}})%</strong>
+                    <div class="progress progress-xs mt-2">
+                        <div id="q4ProgressBar" aria-valuemax="100" aria-valuemin="0" aria-valuenow="80"
+                            class="progress-bar bg-danger" role="progressbar" style="width: 80%"></div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                    <div class="text-muted">Today Consumption</div><strong>{{dConsLst[4]}}
+                        ({{ fixIfNaN(getRoundedNumber(dConsPercLst[4]/100,tankCapacity)) }})m3</strong>
+                    <div class="progress progress-xs mt-2">
+                        <div id="q5ProgressBar" aria-valuemax="100" aria-valuemin="0" aria-valuenow="40"
+                            class="progress-bar" role="progressbar" style="width: 40%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--  WATER LEVEL LINE CHARTS-->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-5">
+                    <h4 class="card-title mb-0">Water Level</h4>
+                    <div class="small text-muted">{{formatDate(time,'dddd Do MMMM, YYYY')}}</div>
+                </div>
+                <!--/.col-->
+                <div class="col-sm-7 d-none d-md-block">
+                    <button type="button" class="btn btn-primary float-right" (click)="genPDF('waterLevelChart')"><i
+                            class="icon-cloud-download"></i></button>
+                    <div class="btn-group btn-group-toggle float-right mr-3" data-toggle="buttons">
+                        <label class="btn btn-outline-secondary" [(ngModel)]="radioModel" (click)="getData(10)"
+                            btnRadio="6" id="option1">6 hrs</label>
+                        <label class="btn btn-outline-secondary" [(ngModel)]="radioModel" (click)="getData(280)"
+                            btnRadio="24" id="option2">24 hrs</label>
+                    </div>
+                </div>
+                <!--/.col-->
+            </div>
+            <!--/.row-->
+            <div class="chart-wrapper" style="height:300px;margin-top:40px;">
+                <canvas baseChart class="chart" [datasets]="readingChartDataset" [labels]="readingChartLabels"
+                    [options]="readingChartOptions" [colors]="readingChartDatasetColors" [chartType]="readingChartType"
+                    [legend]="readingChartLegend"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Consumption  chart-->
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-5">
+                    <h4 class="card-title mb-0">Consumption</h4>
+                    <div class="small text-muted">
+                        {{formatDate(consChartLabels[0],'Do MMMM, YYYY')}} -
+                        {{formatDate(consChartLabels[consChartLabels.length-1],'Do MMMM, YYYY')}}
+                    </div>
+                </div>
+                <!--/.col-->
+                <div class="col-sm-7 d-none d-md-block">
+                    <button type="button" class="btn btn-primary float-right"><i
+                            class="icon-cloud-download"></i></button>
+                    <div class="btn-group btn-group-toggle float-right mr-3" data-toggle="buttons">
+
+                    </div>
+                </div>
+                <!--/.col-->
+            </div>
+            <!--/.row-->
+            <div class="chart-wrapper" style="margin-top:40px;">
+                <canvas baseChart class="chart" [datasets]="consChartDataset" [labels]="consChartLabels"
+                    [options]="consChartOptions" [chartType]="consChartType" [legend]="consChartLegend"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<!-- info modal -->
+<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-info" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <i class="fa  fa-info-circle fa-1x"></i>
+                    Water Level Quick Information</h4>
+                <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="panel-heading text-left">
+                    <ul>
+                        <li>Tank Full Level: 135, <strong>(Normal status)</strong></li>
+                        <li>Refill Level: 74.5, <strong>(Low status)</strong></li>
+                        <li>Tank Empty Level: 17, <strong>(Critical status)</strong></li>
+                    </ul>
+                </div>
+
+                <br>
+                <div class="panel-heading text-left">
+                    Severity Levels:
+                    <div class="progress mt-2">
+                        <div class="progress-bar status-normal progress-bar-striped active" id="bar-normal"
+                            role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"
+                            style="width: 100%">Normal</div>
+                    </div>
+                    <div class="progress mt-2">
+                        <div class="progress-bar status-low progress-bar-striped" id="bar-low" role="progressbar"
+                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 50%">Low</div>
+                    </div>
+                    <div class="progress mt-2">
+                        <div class="progress-bar status-medium progress-bar-striped" id="bar-medium" role="progressbar"
+                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 33%">Medium</div>
+                    </div>
+                    <div class="progress mt-2">
+                        <div class="progress-bar status-high progress-bar-striped" id="bar-high" role="progressbar"
+                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 25%">High</div>
+                    </div>
+                    <div class="progress mt-2">
+                        <div class="progress-bar status-critical progress-bar-striped" id="bar-critical"
+                            role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"
+                            style="width: 16%">Critical</div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="infoModal.hide()">Dismiss</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
