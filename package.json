@@ -2,18 +2,19 @@
   "name": "mansoob",
   "version": "2.0.0",
   "description": "Mansoob web application",
-  "main": "server.js",
+  "author": {
+    "name": "Yousef AlSuwaidan"
+  },
+  "homepage": "http://www.yousefcave.com",
+  "copyright": "Copyright 2020",
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
-    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "postinstall": "ng build --output-path dist"
+    "e2e": "ng e2e"
   },
-  "author": "Yousef AlSuwaidan",
-  "license": "",
+  "private": true,
   "dependencies": {
     "@angular-devkit/build-angular": "~0.901.1",
     "@angular/cli": "^9.1.1",
@@ -68,8 +69,27 @@
     "tslint": "^6.1.1",
     "typescript": "~3.7.5"
   },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~0.901.1",
+    "@angular/language-service": "^9.1.1",
+    "@types/jasmine": "^3.5.10",
+    "@types/jasminewd2": "^2.0.8",
+    "@types/node": "^13.11.1",
+    "codelyzer": "^5.2.2",
+    "jasmine-core": "^3.5.0",
+    "jasmine-spec-reporter": "^5.0.1",
+    "karma": "^5.0.1",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-coverage-istanbul-reporter": "^2.1.1",
+    "karma-jasmine": "^3.1.1",
+    "karma-jasmine-html-reporter": "^1.5.3",
+    "protractor": "^5.4.3",
+    "ts-node": "^8.8.2",
+    "tslint": "^6.1.1",
+    "typescript": "~3.7.5"
+  },
   "engines": {
-    "node": "10.15.3"
+    "node": "10.15.3",
+    "npm": "6.4.1"
   }
 }
-
