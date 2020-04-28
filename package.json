@@ -9,7 +9,7 @@
   "copyright": "Copyright 2020",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
+    "start": "ng build --output-path dist & node server.js",
     "build": "ng build --prod --aot --buildOptimizer --commonChunk --vendorChunk --optimization --progress",
     "test": "ng test",
     "lint": "ng lint",
