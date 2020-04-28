@@ -10,10 +10,11 @@
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
-    "heroku-postbuild": "ng build --prod",
+    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "ng build --aot -prod"
   },
   "dependencies": {
     "@angular-devkit/build-angular": "~0.901.1",
@@ -72,8 +73,5 @@
   "engines": {
     "node": "10.15.3",
     "npm": "6.4.1"
-  },
-  "devDependencies": {
-    "enhanced-resolve": "^3.3.0"
   }
 }
