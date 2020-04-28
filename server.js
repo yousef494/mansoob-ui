@@ -62,7 +62,9 @@ endpoints.device(app, Mysql, config[env].urlPrefix, role);
 endpoints.noti(app, Mysql, config[env].urlPrefix, role);
 endpoints.auth(app, Mysql, config[env].urlPrefix, role);
 
-app.listen(config[env].server.port, config[env].server.host, function () {
+//app.listen(config[env].server.port, config[env].server.host, function () {
+
+app.listen(config[env].server.port, function () {
     console.log(config[env].server.name, 'server is listening on port', config[env].server.port);
 });
 
