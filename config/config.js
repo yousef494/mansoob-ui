@@ -2,7 +2,7 @@ module.exports = {
     development: {
         server: {
             name: 'Mansoob dev.',
-            host: '0.0.0.0',//'192.168.100.4',
+            host: '0.0.0.0',
             port: 2903
         },
         urlPrefix: '/api/v1',
@@ -18,13 +18,13 @@ module.exports = {
     },
     production: {
         server: {
-            name: 'Testing MySql',
-            host: 'yousefcave.com',//'192.168.100.4',
-            port: 8080
+            name: 'Mansoob prod.',
+            host: '127.0.0.1',
+            port: 5000
         },
         urlPrefix: '/api/v1',
         mysqlOptions: {
-            host: 'yousefcave.com',
+            host: 'yousefcave.com:3306',
             user: 'manssobdb',
             password: '1stChicken*db',
             database: 'mansoob',
