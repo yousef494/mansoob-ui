@@ -1,6 +1,6 @@
 let util = require('../util');
 let models = require('./');
-let config = require('../config/config');
+
 
 const modelName = 'device';
 

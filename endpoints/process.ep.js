@@ -5,7 +5,8 @@ var express = require('express');
 let models = require('../model');
 const restify = require('./mysql-restify');
 let util = require('../util');
-
+let config = require('../config/config');
+                                                       
 module.exports = function (app, Mysql, urlPrefix, role) {
 
     const router = express.Router()
@@ -60,7 +61,8 @@ module.exports = function (app, Mysql, urlPrefix, role) {
         let data = { 'timestamp': timestamp, 'level': level };
         Mysql.insert(models.reading.name, data)
             .then(function (info) {
-                log('info', 'reading', info);
+                log('info', 'reading1', info);
+                log('info', 'reading2', d_info['device_id']);
                 processAlert(d_info['device_id'], d_info['email_to'], level, d_info['tank_height'], d_info['severity']
                     , d_info['normal_alert'], d_info['low_alert'], d_info['medium_alert'], d_info['high_alert']);
 
