@@ -109,7 +109,7 @@ module.exports = function (app, Mysql, urlPrefix, role) {
         }
         if (((level - normal_min) / normal_min).toFixed(2) > 0.04) {
             body = {
-                leve: level,
+                level: level,
                 normal_alert: true,
                 low_alert: true,
                 medium_alert: true,
