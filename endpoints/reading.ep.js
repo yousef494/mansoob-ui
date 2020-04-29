@@ -50,7 +50,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
             });
     });
 
-    restify.serve(router, Mysql, models.reading, { prefix: urlPrefix }, role);
+    restify.serve(router, Mysql, models.reading, { prefix: urlPrefix }, security);
     app.use(router);
 
 };
