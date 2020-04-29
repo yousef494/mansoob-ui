@@ -25,17 +25,16 @@ const deviceSchema = {
 };
 
 
-var processAlert = function (Mysql, level, timestamp, device_id, user_email) {
+var processAlert = function (Mysql, level, timestamp, device_id, user_id) {
 
     //get previous status & make sure device_id, user_email are matching
-    var query = "SELECT d.tank_height, d.severity, d.normal_alert, d.low_alert, d.medium_alert, d.high_alert,\
-         d.email_to, d.user_id \
-        FROM " + Mysql.escapeId('device') + " d , " + Mysql.escapeId('user') + " u \
-        WHERE d.user_id = u.id \
-        and d.id = ? \
-        and u.email = \"?\"";
+    var query = "SELECT tank_height, severity, normal_alert, low_alert, medium_alert, high_alert,\
+         email_to, user_id \
+        FROM " + Mysql.escapeId('device') + "  \
+        WHERE user_id = ? \
+        and id = ? ";
 
-    Mysql.query(query, [device_id, user_email])
+    Mysql.query(query, [device_id, user_id])
         .then(function (results) {
             console.log(results);
             if (results.length == 1) {
@@ -48,9 +47,6 @@ var processAlert = function (Mysql, level, timestamp, device_id, user_email) {
                     });
 
                 let r = results[0];
-                if (r['email_to'] == null || r['email_to'].length == 0) {
-                    r['email_to'] = user_email;
-                }
                 updateAlert(Mysql, device_id, r['email_to'], level, r['tank_height'], r['severity']
                     , r['normal_alert'], r['low_alert'], r['medium_alert'], r['high_alert']);
             } else {
