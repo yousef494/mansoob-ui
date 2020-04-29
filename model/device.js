@@ -33,6 +33,8 @@ var processAlert = function (Mysql, level, device_id, user_email) {
 
     Mysql.query(query, [device_id, user_email])
         .then(function (results) {
+            console.log("processAlert: query");
+
             console.log(results);
 
             if (results.length == 1) {
@@ -45,7 +47,7 @@ var processAlert = function (Mysql, level, device_id, user_email) {
                 updateAlert(Mysql, device_id, r['d.email_to'], level, r['d.tank_height'], r['d.severity']
                     , r['d.normal_alert'], r['d.low_alert'], r['d.medium_alert'], r['d.high_alert']);
             } else {
-                console.log(error);
+                console.log('error');
 
                 return 'error';
             }

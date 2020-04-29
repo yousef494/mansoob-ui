@@ -35,8 +35,6 @@ module.exports = function (app, Mysql, urlPrefix, role) {
             Mysql.insert(models.reading.name, {'level': req.body['level']})
             .then(function (info) {
                 //res.send(req.body);
-                            console.log(info);
-
             })
             .catch(function (err) {
                 console.log(err);
