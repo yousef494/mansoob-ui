@@ -32,12 +32,9 @@ module.exports = function (app, Mysql, urlPrefix, role) {
     let process = function (req, res) {
         // Make sure device_id, user_email are matching 
         // get previous status
-        var query = "SELECT device.tank_height, device.severity, device.email_to, device.user_id, \
-                            device.normal_alert, device.low_alert, device.medium_alert, device.high_alert,\
-                    FROM " + Mysql.escapeId('device') + " , " + Mysql.escapeId('user') + "  \
-                    WHERE device.user_id = user.id \
-                    and device.id = ? \
-                    and user.email = ? ";
+        var query = "SELECT d.tank_height, d.severity, d.email_to, d.user_id, d.normal_alert, d.low_alert, d.medium_alert, d.high_alert \
+                    FROM " + Mysql.escapeId('device') + " d , " + Mysql.escapeId('user') + " u \
+                    WHERE d.user_id = u.id and d.id = ? and u.email = ? ";
         Mysql.query(query, [req.body['device_id'], req.body['user_email']])
             .then(function (results) {
                 log('info', 'process', results);
