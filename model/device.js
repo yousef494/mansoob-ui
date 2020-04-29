@@ -35,8 +35,7 @@ var processAlert = function (Mysql, level, timestamp, device_id, user_email) {
         and d.id = ? \
         and u.email = ?";
 
-   query = "SELECT d.tank_height, d.severity, d.normal_alert, d.low_alert, d.medium_alert, d.high_alert, d.email_to, d.user_id  FROM `device` d , `user` u   WHERE d.user_id = u.id   and d.id = 1  and u.email = 'yousef.494@gmail.com'";
-    Mysql.query(query, [])
+    Mysql.query(query, [device_id, user_email])
         .then(function (results) {
             console.log(results);
             if (results.length == 1) {
