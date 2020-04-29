@@ -41,7 +41,7 @@ module.exports = function (app, Mysql, urlPrefix, role) {
                 if (results.length == 1) {
                     updateReading(req.body['timestamp'], req.body['level'], results[0]);
                 } else {
-                   res.send('Invalid input');
+                    res.send('Invalid input');
                 }
             }).catch(function (err) {
                 log('err', 'process', err);
@@ -61,13 +61,13 @@ module.exports = function (app, Mysql, urlPrefix, role) {
         Mysql.insert(models.reading.name, data)
             .then(function (info) {
                 log('info', 'reading', info);
+                processAlert(d_info['device_id'], d_info['email_to'], level, d_info['tank_height'], d_info['severity']
+                    , d_info['normal_alert'], d_info['low_alert'], d_info['medium_alert'], d_info['high_alert']);
+
             })
             .catch(function (err) {
                 log('err', 'reading', err);
             });
-
-        processAlert(d_info['device_id'], d_info['email_to'], level, d_info['tank_height'], d_info['severity']
-            , d_info['normal_alert'], d_info['low_alert'], d_info['medium_alert'], d_info['high_alert']);
     }
 
     /**
@@ -120,32 +120,31 @@ module.exports = function (app, Mysql, urlPrefix, role) {
             }
         }
 
-        log('info','update',body);
+        log('info', 'update', body);
 
         //update device table
         Mysql.update(models.device.name, { id: device_id }, body)
             .then(function (results) {
                 log('info', 'processAlert1', results);
+                //send alert if not normal statues
+                if (message != null) {
+                    //send email
+                    util.notifier.alert(message, email_to);
+                    //upate notification database
+                    Mysql.insert(models.noti.name, {
+                        "subject": "Alert",
+                        "message": "latest level was recorded is (" + level + ")",
+                        "urgency": (severity == 'Critical' || severity == 'High' ? "danger" : "warning"),
+                        "device_id": device_id
+                    }).then(function (results) {
+                        log('info', 'processAlert2', results);
+                    }).catch(function (err) {
+                        log('err', 'processAlert2', err);
+                    });
+                }
             }).catch(function (err) {
                 log('err', 'processAlert1', err);
             });
-
-        //send alert if not normal statues
-        if (message != null) {
-            //send email
-            util.notifier.alert(message, email_to);
-            //upate notification database
-            Mysql.insert(models.noti.name, {
-                "subject": "Alert",
-                "message": "latest level was recorded is (" + level + ")",
-                "urgency": (severity == 'Critical' || severity == 'High' ? "danger" : "warning"),
-                "device_id": device_id
-            }).then(function (results) {
-                log('info', 'processAlert2', results);
-            }).catch(function (err) {
-                log('err', 'processAlert2', err);
-            });
-        }
     }
 
     let calculateSeverity = function (level, tank_height) {
@@ -165,8 +164,8 @@ module.exports = function (app, Mysql, urlPrefix, role) {
     };
 
 
-    let log = function(type, func, message){
-        if(isLog){
+    let log = function (type, func, message) {
+        if (isLog) {
             let data = `${type}:${func}:${message}`
             console.log(data)
         }
