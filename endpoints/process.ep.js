@@ -11,7 +11,7 @@ module.exports = function (app, Mysql, urlPrefix, role) {
     const router = express.Router()
     let endpointName = 'process';
     let uriItem = `${urlPrefix}/${endpointName}`
-    const isLog = false;
+    const isLog = true;
 
     let validateUserInput = function (params, data) {
         for (let i = 0; i < params.length; i++) {
