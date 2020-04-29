@@ -25,36 +25,34 @@ const deviceSchema = {
 };
 
 
-var processAlert = function (Mysql, level, device_id, user_email) {
-    //get previous status
+var processAlert = function (Mysql, level, timestamp, device_id, user_email) {
+
+    //get previous status & make sure device_id, user_email are matching
     var query = "SELECT d.tank_height, d.severity, d.normal_alert, d.low_alert, d.medium_alert, d.high_alert, d.email_to, d.user_id\
         FROM " + Mysql.escapeId('device') + " d , " + Mysql.escapeId('user') + " u \
         WHERE d.user_id = u.id \
         and d.id = ? \
-        and u.email = " + Mysql.escapeId(user_email) ;
+        and u.email = ?";
 
-        console.log(query);
-
-        console.log([device_id, user_email]);
-
-    Mysql.query(query, [device_id])
+    Mysql.query(query, [device_id, user_email])
         .then(function (results) {
-            console.log("processAlert: query");
-
             console.log(results);
-
             if (results.length == 1) {
+                //1- insert the data
+                Mysql.insert(models.reading.name,
+                    { 'level': req.body['level'], 'timestamp': timestamp })
+                    .then(function (info) {
+                    })
+                    .catch(function (err) {
+                    });
+
                 let r = results[0];
-                if(r['d.email_to'] == null || r['d.email_to'].length ==0){
+                if (r['d.email_to'] == null || r['d.email_to'].length == 0) {
                     r['d.email_to'] = user_email;
                 }
-                console.log(r);
-
                 updateAlert(Mysql, device_id, r['d.email_to'], level, r['d.tank_height'], r['d.severity']
                     , r['d.normal_alert'], r['d.low_alert'], r['d.medium_alert'], r['d.high_alert']);
             } else {
-                console.log('error');
-
                 return 'error';
             }
         }).catch(function (err) {
@@ -108,8 +106,6 @@ var updateAlert = function (Mysql, device_id, email_to, level, tank_height, prev
     //update database
     Mysql.update(modelName, { id: device_id }, body)
         .then(function (results) {
-            console.log(results);
-
         }).catch(function (err) {
             console.log(err);
         });
@@ -121,15 +117,13 @@ var updateAlert = function (Mysql, device_id, email_to, level, tank_height, prev
         //upate notification database
         Mysql.insert('notification', {
             "subject": "Alert",
-            "message": "latest level was recorded is ("+level+")",
-            "urgency": (severity=='Critical'|| severity=='High'?"danger":"warning"),
+            "message": "latest level was recorded is (" + level + ")",
+            "urgency": (severity == 'Critical' || severity == 'High' ? "danger" : "warning"),
             "device_id": device_id
         }).then(function (results) {
-            console.log(results);
-
-            }).catch(function (err) {
-                console.log(err);
-            });
+        }).catch(function (err) {
+            console.log(err);
+        });
     }
 }
 
