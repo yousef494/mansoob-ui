@@ -14,7 +14,9 @@ module.exports = function (app, Mysql, urlPrefix, role) {
 
     // testing get /notify
     router.get(uriItem + '/notify', function (req, res) {
-        util.notifier.alert('html', 74, 'Low');
+        let message = { level: 0, severity: 'current_severity', color: 'black' };
+
+        util.notifier.alert(message, 'yousef-494@hotmail.com');
         res.end();
     });
 
@@ -28,7 +30,7 @@ module.exports = function (app, Mysql, urlPrefix, role) {
     }
 
     router.post(uriItem + '/process', function (req, res) {
-        if (validateUserInput(['device_id', 'user_id'],req.body)) {
+        if (validateUserInput(['device_id', 'user_email'],req.body)) {
             //1- insert the data
             Mysql.insert(models.reading.name, {'level': req.body['level']})
             .then(function (info) {
@@ -40,7 +42,7 @@ module.exports = function (app, Mysql, urlPrefix, role) {
             });
             // 2- process alert and and update notification table accordinglly
             models.device.processAlert(Mysql, req.body['level'],
-                req.body['device_id'], req.body['user_id']);
+                req.body['device_id'], req.body['user_email']);
         }else{
             res.send({ 'resutl': 'Error', 'messsage': 'An insufficient number of arguments were supplied' });
         }

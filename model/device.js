@@ -25,17 +25,17 @@ const deviceSchema = {
 };
 
 
-var processAlert = function (Mysql, level, device_id, user_id) {
+var processAlert = function (Mysql, level, device_id, user_email) {
     //get previous status
-    var query = "SELECT tank_height, severity, normal_alert, low_alert, medium_alert, high_alert \
-        FROM " + Mysql.escapeId('device') + " \
-        WHERE id = ? and user_id = ?";
+    var query = "SELECT d.tank_height, d.severity, d.normal_alert, d.low_alert, d.medium_alert, d.high_alert \
+        FROM " + Mysql.escapeId('device') + " d , " + Mysql.escapeId('user') + " u \
+        WHERE d.id = ? and d.user_id = u.id and u.email = ?";
 
-    Mysql.query(query, [device_id, user_id])
+    Mysql.query(query, [device_id, user_email])
         .then(function (results) {
             if (results.length == 1) {
                 let r = results[0];
-                updateAlert(Mysql, device_id, level, r['tank_height'], r['severity']
+                updateAlert(Mysql, device_id, user_email, level, r['tank_height'], r['severity']
                     , r['normal_alert'], r['low_alert'], r['medium_alert'], r['high_alert']);
             } else {
                 return 'error';
@@ -45,7 +45,7 @@ var processAlert = function (Mysql, level, device_id, user_id) {
         });
 }
 
-var updateAlert = function (Mysql, device_id, level, tank_height, previous_severity,
+var updateAlert = function (Mysql, device_id, user_email, level, tank_height, previous_severity,
     normal_alert, low_alert, medium_alert, high_alert) {
     let current_severity = calculateSeverity(level, tank_height);
 
@@ -97,7 +97,7 @@ var updateAlert = function (Mysql, device_id, level, tank_height, previous_sever
     //send alert if not normal statues
     if (message != null) {
         //send email
-        util.notifier.alert(message);
+        util.notifier.alert(message, user_email);
         //upate notification database
         Mysql.insert('notification', {
             "subject": "Alert",

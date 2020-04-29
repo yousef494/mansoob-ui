@@ -1,25 +1,27 @@
 var nodemailer = require("nodemailer");
 var ejs = require('ejs');
 var fs = require('fs');
+const config = require('./config/config');
 
-var alert = function (data) {
+var alert = function (data, to) {
 
     var template = fs.readFileSync('./resources/emailTemps/alert.html',{encoding:'utf-8'});
     var html = ejs.render(template, data);
 
-    const config = {
+
+    const mailConfig = {
         mailserver: {
-            host: 'smtp.live.com',
-            port: 25,
-            secure: false,
+            host: config.mailserver.host,
+            port: config.mailserver.port,
+            secure: config.mailserver.secure,
             auth: {
-                user: 'yousef-494@hotmail.com',
-                pass: "a6482@Hotmail1"
+                user: config.mailserver.auth.user,
+                pass: config.mailserver.auth.pass
             }
         },
         mail: {
-            from: 'yousef-494@hotmail.com',
-            to: 'yousef-494@hotmail.com',
+            from: config.mailserver.from,
+            to: to.toString(),
             subject: 'Mansoob Status Alarm',
             text: 'Please notice that the severity level of the tank reaches the \
             '+ data['severity'] +' state ('+data['severity']+')',
@@ -37,7 +39,7 @@ var alert = function (data) {
         console.log(`Preview: ${nodemailer.getTestMessageUrl(info)}`);
     };
 
-    sendMail(config).catch(console.error);
+    sendMail(mailConfig).catch(console.error);
     console.log('email sent...');
 
 };

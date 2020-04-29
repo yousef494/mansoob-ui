@@ -1,21 +1,26 @@
-<div class="app flex-row align-items-center">
+<div class="app flex-row align-items-center"   style="background-color: white;" >
   <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="clearfix">
-          <h1 class="float-left display-3 mr-4">404</h1>
-          <h4 class="pt-3">Oops! You're lost.</h4>
-          <p class="text-muted">The page you are looking for was not found.</p>
+    <div class="row justify-content-center" >
+      <div class="col-md-4">
+        <img class="thumb-image loaded"
+        data-image-dimensions="1500x2025" data-image-focal-point="0.5,0.5" alt="" data-load="false"
+        style="height: 130%; position: absolute;" 
+        src="https://images.squarespace-cdn.com/content/v1/51cdafc4e4b09eb676a64e68/1470175715831-NUJOMI6VW13ZNT1MI0VB/ke17ZwdGBToddI8pDm48kEj8h6tFfEHTeCG-xJISxCF7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UQNtHfWuxJOqPNnonx2vPn19YmYaYuKXkbKFz0xx0uTakvjJh3JJWsjdMZ66YIxKAg/image-asset.jpeg?format=750w">
+      </div>
+
+
+      <code class="col-md-7">
+        <h2>Awww... It's just a </h2>
+        <div><strong style="font-size: 5rem;" class="display-2">404 Error!</strong>
+          <br>What you’re looking for may have been misplaced in Long Term Memory.
         </div>
-        <div class="input-prepend input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-search"></i></span>
-          </div>
-          <input id="prependedInput" class="form-control" size="16" type="text" placeholder="What are you looking for?">
-          <span class="input-group-append">
-            <button class="btn btn-info" type="button">Search</button>
-          </span>
-        </div>
+      </code>
+    </div>
+      <div class="row justify-content-center">
+      <div class="col-sm-4 col-md-2 pt-4 mt-4">
+        <button class="btn btn-block btn-outline-dark" type="button" [routerLink]="['/']">
+          Home
+        </button>
       </div>
     </div>
   </div>

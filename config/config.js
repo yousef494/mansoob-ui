@@ -32,6 +32,12 @@ module.exports = {
             connectionLimit: 5
         }
     },
+    mailserver: {
+        host: 'smtp.live.com',
+        port: 25,
+        secure: false,
+        from: 'noreply@mansoob.yousefcave.com'
+    },
     severity: {
         color: {
             Normal: "#5cb85c",
