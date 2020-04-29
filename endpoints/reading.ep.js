@@ -6,7 +6,7 @@ let models = require('../model');
 const restify = require('./mysql-restify');
 let util = require('../util');
 
-module.exports = function (app, Mysql, urlPrefix, role) {
+module.exports = function (app, Mysql, urlPrefix, security) {
 
     const router = express.Router()
     const modelName = models.reading.name;
@@ -20,7 +20,8 @@ module.exports = function (app, Mysql, urlPrefix, role) {
         res.end();
     });
 
-    router.get(uriItem + '/consumption', function (req, res) {
+    router.get(uriItem + '/consumption', security.allowIfLoggedIn, security.grantAccess('updateAny', 'consumption'), 
+    function (req, res) {
         var query = "SELECT DATE_FORMAT(" + Mysql.escapeId('timestamp') + " , '%Y-%m-%d') AS day ,\
         CASE WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '00:00:00' AND '06:00:00' THEN 1\
              WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '06:00:01' AND '12:00:00' THEN 2\

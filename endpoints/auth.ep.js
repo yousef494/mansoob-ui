@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 
-module.exports = function (app, Mysql, urlPrefix, r) {
+module.exports = function (app, Mysql, urlPrefix, security) {
 
     const router = express.Router()
     const modelName = models.user.name;
@@ -20,7 +20,7 @@ module.exports = function (app, Mysql, urlPrefix, r) {
         return await bcrypt.compare(plainPassword, hashedPassword);
     }
 
-    //signup
+    //signup (GUEST)
     var signup = async (req, res, next) => {
         try {
             const { email, name, password } = req.body;
@@ -64,7 +64,7 @@ module.exports = function (app, Mysql, urlPrefix, r) {
         }
     }
 
-    //login
+    //login (GUEST)
     var login = async (req, res, next) => {
         try {
 
@@ -102,7 +102,7 @@ module.exports = function (app, Mysql, urlPrefix, r) {
     }
 
 
-    // update user
+    // update user (ADMIN)
     var updateUser = async (req, res, next) => {
         try {
             const { role } = req.body
@@ -130,7 +130,7 @@ module.exports = function (app, Mysql, urlPrefix, r) {
         }
     }
 
-    //delete user
+    //delete user (ADMIN)
     var deleteUser = async (req, res, next) => {
         try {
             const userId = req.params.id;

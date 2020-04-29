@@ -14,7 +14,7 @@ const methodOverride = require('method-override');
 var Mysql = require('node-mysql-helper');
 
 const jwt = require('jsonwebtoken');
-const role = require('./controller/role.ctr');
+const security = require('./controller/role.ctr');
 
 const endpoints = require('./endpoints');
 const config = require('./config/config');
@@ -57,11 +57,11 @@ app.use(async (req, res, next) => {
 });
 
 
-endpoints.reading(app, Mysql, config[env].urlPrefix, role);
-endpoints.device(app, Mysql, config[env].urlPrefix, role);
-endpoints.noti(app, Mysql, config[env].urlPrefix, role);
-endpoints.auth(app, Mysql, config[env].urlPrefix, role);
-endpoints.process(app, Mysql, config[env].urlPrefix, role);
+endpoints.reading(app, Mysql, config[env].urlPrefix, security);
+endpoints.device(app, Mysql, config[env].urlPrefix, security);
+endpoints.noti(app, Mysql, config[env].urlPrefix, security);
+endpoints.auth(app, Mysql, config[env].urlPrefix, security);
+endpoints.process(app, Mysql, config[env].urlPrefix, security);
 
 //app.listen(config[env].server.port, config[env].server.host, function () {
 
@@ -73,6 +73,7 @@ var distDir = __dirname + "/dist/";
 app.use(express.static(distDir));
 app.get('*',express.static(distDir));
 
+//redirect to home page (as an error)
 app.use(function (req, res) {
-    res.status(404).send('Invalid endpoint!');
+    res.sendFile(distDir+'index.html');
 });
