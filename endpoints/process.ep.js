@@ -40,7 +40,7 @@ module.exports = function (app, Mysql, urlPrefix, role) {
             .then(function (results) {
                 log('info', 'process', results);
                 if (results.length == 1) {
-                    updateReading(req.body['timestamp'], req.body['level'], results[0]);
+                    updateReading(req.body['device_id'], req.body['timestamp'], req.body['level'], results[0]);
                 } else {
                     res.send('Invalid input');
                 }
@@ -56,14 +56,14 @@ module.exports = function (app, Mysql, urlPrefix, role) {
      * @param {*} level 
      * @param {*} d_info 
      */
-    let updateReading = function (timestamp, level, d_info) {
+    let updateReading = function (device_id, timestamp, level, d_info) {
         // Insert the data into reading table
         let data = { 'timestamp': timestamp, 'level': level };
         Mysql.insert(models.reading.name, data)
             .then(function (info) {
                 log('info', 'reading1', info);
-                log('info', 'reading2', d_info['device_id']);
-                processAlert(d_info['device_id'], d_info['email_to'], level, d_info['tank_height'], d_info['severity']
+                log('info', 'reading2', device_id);
+                processAlert(device_id, d_info['email_to'], level, d_info['tank_height'], d_info['severity']
                     , d_info['normal_alert'], d_info['low_alert'], d_info['medium_alert'], d_info['high_alert']);
 
             })
