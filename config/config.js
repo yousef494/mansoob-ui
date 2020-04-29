@@ -33,7 +33,7 @@ module.exports = {
         }
     },
     mailserver: {
-        host: 'smtp.live.com',
+        host: 'smtpout.secureserver.net	',
         port: 25,
         secure: false,
         from: 'noreply@mansoob.yousefcave.com'
