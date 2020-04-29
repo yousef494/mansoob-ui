@@ -15,6 +15,9 @@ ac.grant("admin")
  .extend("supervisor")
  .updateAny("profile")
  .deleteAny("profile")
+
+ ac.grant("basic")
+ .updateAny("consumption")
  
 return ac;
 })();
