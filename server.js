@@ -72,20 +72,6 @@ var distDir = __dirname + "/dist/";
 app.use(express.static(distDir));
 app.get('*',express.static(distDir));
 
-
-app.use(function (req, res, next) {
-    res.status(404);
-    // respond with html page
-    if (req.accepts('html')) {
-        const error = new Error("Not found");
-        error.status = 404;
-        next('404');
-    }
-    // respond with json
-    if (req.accepts('json')) {
-      res.send({ error: '404 Not found' });
-      return;
-    }
-    // default to plain-text. send()
-    res.type('txt').send('404 Not found');
+app.use(function (req, res) {
+    res.status(404).send('Invalid endpoint!');
 });

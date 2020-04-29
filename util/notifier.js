@@ -1,7 +1,7 @@
 var nodemailer = require("nodemailer");
 var ejs = require('ejs');
 var fs = require('fs');
-const config = require('./config/config');
+const config = require('../config/config');
 
 var alert = function (data, to) {
 
