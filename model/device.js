@@ -39,7 +39,7 @@ var processAlert = function (Mysql, level, timestamp, device_id, user_id) {
             console.log(results);
             if (results.length == 1) {
                 //1- insert the data
-                Mysql.insert(models.reading.name,
+                Mysql.insert('reading',
                     { 'level': req.body['level'], 'timestamp': timestamp })
                     .then(function (info) {
                     })
