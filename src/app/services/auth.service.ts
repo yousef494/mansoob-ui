@@ -47,7 +47,7 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    if (localStorage.getItem('role') === "admin") {
+    if (localStorage.getItem('role') === "ADMIN") {
       return true;
     }
     return false;

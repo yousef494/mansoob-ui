@@ -36,7 +36,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                         res.end();
                     } else {
                         const hashedPassword = await hashPassword(password);
-                        const newUser = { email, password: hashedPassword, name: name, role: "basic" };
+                        const newUser = { email, password: hashedPassword, name: name, role: "BASIC" };
                         const accessToken = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, {
                             expiresIn: "1d"
                         });

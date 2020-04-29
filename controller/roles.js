@@ -2,7 +2,20 @@ const AccessControl = require("accesscontrol");
 const ac = new AccessControl();
  
 exports.roles = (function() {
-ac.grant("basic")
+
+ ac.grant("ADMIN")
+ .readAny("consumption")
+ .updateAny("profile")
+ .deleteAny("profile")
+
+ ac.grant("BASIC")
+ .readAny("consumption")
+ 
+ //examples
+ ac.grant("role").readAny("resource")
+ //ac.grant("role").action("resource")
+
+ ac.grant("basic")
  .readOwn("profile")
  .updateOwn("profile")
  
@@ -16,8 +29,7 @@ ac.grant("admin")
  .updateAny("profile")
  .deleteAny("profile")
 
- ac.grant("basic")
- .updateAny("consumption")
- 
-return ac;
+
+
+ return ac;
 })();
