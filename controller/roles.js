@@ -5,8 +5,8 @@ exports.roles = (function() {
 
  ac.grant("ADMIN")
  .readAny("consumption")
- .updateAny("profile")
- .deleteAny("profile")
+ .updateAny("consumption")
+ .deleteAny("consumption")
 
  ac.grant("BASIC")
  .readAny("consumption")
