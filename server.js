@@ -44,9 +44,15 @@ app.use(async (req, res, next) => {
                     if (!user) { return next('User does not exist'); }
                     // Check device token == given accessToken
                     if(req.headers["x-access-token-api"]){
-                        Mysql.record('device', { user_id: userId, access_token: accessToken })
+                        let device_id = req.headers["device_id"];
+                        console.log("device_id");
+                        console.log(device_id);
+                        console.log(accessToken);
+                        console.log("device_id");
+                        Mysql.record('device', { user_id: userId, id: device_id })
                         .then(function (device) {
-                            if (!device) { return next('Invalid token'); }
+                            if (!device) { return next('Device does not exist'); }
+                            if(device['access_token'] != accessToken){ return next('Invalid token'); }
                             res.locals.loggedInUser = user;
                             next();
                         })
