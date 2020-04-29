@@ -14,7 +14,7 @@ module.exports = function (app, Mysql, urlPrefix, role) {
 
     // testing get /notify
     router.get(uriItem + '/notify', function (req, res) {
-        let message = { level: 0, severity: 'current_severity', color: 'black' };
+        let message = { level: 110, severity: 'Normal', color: "#5cb85c" };
 
         util.notifier.alert(message, 'yousef-494@hotmail.com');
         res.end();
