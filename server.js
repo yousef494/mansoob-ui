@@ -28,19 +28,35 @@ var env = process.env.NODE_ENV || 'development';
 Mysql.connect(config[env].mysqlOptions);
 
 app.use(async (req, res, next) => {
-    if (req.headers["x-access-token"]) {
+    if (req.headers["x-access-token"] || req.headers["x-access-token-api"] ) {
         const accessToken = req.headers["x-access-token"];
+        if(req.headers["x-access-token-api"]){
+            accessToken = req.headers["x-access-token-api"];
+        }
         try {
             const { userId, exp } = await jwt.verify(accessToken, process.env.JWT_SECRET);
-            // Check if token has expired
-            if (exp < Date.now().valueOf() / 1000) {
+            // Check expiration in case of x-access-token (from web not IOT)
+            if (exp < Date.now().valueOf() / 1000 && req.headers["x-access-token"]) {
                 return res.status(401).json({ error: "JWT token has expired, please login to obtain a new one" });
             }
             Mysql.record('user', { id: userId })
                 .then(function (user) {
                     if (!user) { return next('User does not exist'); }
-                    res.locals.loggedInUser = user;
-                    next();
+                    // Check device token == given accessToken
+                    if(req.headers["x-access-token-api"]){
+                        Mysql.record('device', { user_id: userId, access_token: accessToken })
+                        .then(function (device) {
+                            if (!device) { return next('Invalid token'); }
+                            res.locals.loggedInUser = user;
+                            next();
+                        })
+                        .catch(function (err) {
+                            return res.status(401).json({ error: "Invalid token" });
+                        });
+                    }else{
+                        res.locals.loggedInUser = user;
+                        next();
+                    }
                 })
                 .catch(function (err) {
                     return res.status(401).json({ error: "User does not exist" });

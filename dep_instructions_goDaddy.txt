@@ -13,6 +13,8 @@ RewriteRule ^(.*)$ http://127.0.0.1:3000/$1 [P,L]
 1- workstation run: ng build --prod
 2- scp/ftp dist/* to dep_lob/dist/*
    scp -r ../Mansoob\ V2/mansoob-ui/dist/* fz12klftt4ot@yousefcave.com:~/public_html/mansoob.yousefcave.com/dist/
+   or
+   sync -ru ../Mansoob\ V2/mansoob-ui/dist/* fz12klftt4ot@yousefcave.com:~/public_html/mansoob.yousefcave.com/dist/
 3- mv/clone(git) nodejs backend
 4- dep_loc run: npm i pm2 -g
 5- pm2 start server.js --watch or indirectory pm2 start run.sh
