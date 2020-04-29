@@ -20,9 +20,9 @@ module.exports = function (app, Mysql, urlPrefix, role) {
         res.end();
     });
 
-    let validateUserInput =  function(params, data){
-        for(let i=0; i<params.length;i++){
-            if(data[params[i]] == undefined){
+    let validateUserInput = function (params, data) {
+        for (let i = 0; i < params.length; i++) {
+            if (data[params[i]] == undefined) {
                 return false;
             }
         }
@@ -30,16 +30,23 @@ module.exports = function (app, Mysql, urlPrefix, role) {
     }
 
     router.post(uriItem + '/process', function (req, res) {
-        if (validateUserInput(['level','timestamp','device_id', 'user_email'],req.body)) {
+        if (validateUserInput(['level', 'timestamp', 'device_id', 'user_email'], req.body)) {
+            //1- insert the data
+            Mysql.insert(models.reading.name,
+                { 'level': req.body['level'], 'timestamp': req.body['timestamp'] })
+                .then(function (info) {
+                })
+                .catch(function (err) {
+                });
             // 1- process alert and and update notification table accordinglly
             models.device.processAlert(Mysql, req.body['level'], req.body['timestamp'],
                 req.body['device_id'], req.body['user_email']);
-        }else{
+        } else {
             res.send({ 'resutl': 'Error', 'messsage': 'An insufficient number of arguments were supplied' });
         }
         res.send({ 'resutl': 'Success', 'messsage': req.body });
     });
-    
+
 
     router.get(uriItem + '/consumption', function (req, res) {
         var query = "SELECT DATE_FORMAT(" + Mysql.escapeId('timestamp') + " , '%Y-%m-%d') AS day ,\

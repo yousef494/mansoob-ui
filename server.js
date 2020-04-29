@@ -61,6 +61,7 @@ endpoints.reading(app, Mysql, config[env].urlPrefix, role);
 endpoints.device(app, Mysql, config[env].urlPrefix, role);
 endpoints.noti(app, Mysql, config[env].urlPrefix, role);
 endpoints.auth(app, Mysql, config[env].urlPrefix, role);
+endpoints.process(app, Mysql, config[env].urlPrefix, role);
 
 //app.listen(config[env].server.port, config[env].server.host, function () {
 
