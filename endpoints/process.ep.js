@@ -9,7 +9,8 @@ let util = require('../util');
 module.exports = function (app, Mysql, urlPrefix, role) {
 
     const router = express.Router()
-    let uriItem = '/process';
+    let endpointName = '/process';
+    let uriItem = `${urlPrefix}/${endpointName}`
     const isLog = true;
 
     let validateUserInput = function (params, data) {
@@ -20,7 +21,6 @@ module.exports = function (app, Mysql, urlPrefix, role) {
         }
         return true;
     }
-
 
     /**
      * Queries joint table (device and user)
@@ -34,7 +34,7 @@ module.exports = function (app, Mysql, urlPrefix, role) {
         // get previous status
         var query = "SELECT d.tank_height, d.severity, d.email_to, d.user_id, \
                             d.normal_alert, d.low_alert, d.medium_alert, d.high_alert,\
-                    FROM " + Mysql.escapeId('device') + " d , " + Mysql.escapeId('user') + " u \
+                    FROM device d , user u \
                     WHERE d.user_id = u.id \
                     and d.id = ? \
                     and u.email = ? ";
@@ -44,7 +44,7 @@ module.exports = function (app, Mysql, urlPrefix, role) {
                 if (results.length == 1) {
                     updateReading(req.body['timestamp'], req.body['level'], results[0]);
                 } else {
-                    return 'error';
+                   res.send('Invalid input');
                 }
             }).catch(function (err) {
                 log('err', 'process', err);
