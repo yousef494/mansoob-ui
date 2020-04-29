@@ -29,7 +29,13 @@ var processAlert = function (Mysql, level, device_id, user_email) {
     //get previous status
     var query = "SELECT d.tank_height, d.severity, d.normal_alert, d.low_alert, d.medium_alert, d.high_alert, d.email_to, d.user_id\
         FROM " + Mysql.escapeId('device') + " d , " + Mysql.escapeId('user') + " u \
-        WHERE d.id = ? and d.user_id = u.id and u.email = ?";
+        WHERE d.user_id = u.id \
+        and d.id = ? \
+        and u.email = ?";
+
+        console.log(query);
+
+        console.log([device_id, user_email]);
 
     Mysql.query(query, [device_id, user_email])
         .then(function (results) {
