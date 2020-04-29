@@ -125,6 +125,18 @@ const restify = function (app, Mysql, model, options, role) {
             });
     });
 
+
+    //delete items
+    app.delete(uriItem , function (req, res) {
+        Mysql.delete(options.name, [])
+            .then(function (info) {
+                res.status(200).send(info);
+            })
+            .catch(function (err) {
+                res.status(500).send(err.message);
+            });
+    });
+
     //create table
     var createTable = function (name, schema, next) {
         var arr = new Array();
@@ -177,7 +189,7 @@ var parseQuery = function (tokens, Mysql) {
             query = query + ' WHERE ?'
             vals.push(value);
         }
-      // break;
+        // break;
     }
 
     return [query, vals];
