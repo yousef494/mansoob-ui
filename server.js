@@ -29,7 +29,7 @@ Mysql.connect(config[env].mysqlOptions);
 
 app.use(async (req, res, next) => {
     if (req.headers["x-access-token"] || req.headers["x-access-token-api"] ) {
-        const accessToken = req.headers["x-access-token"];
+        let accessToken = req.headers["x-access-token"];
         if(req.headers["x-access-token-api"]){
             accessToken = req.headers["x-access-token-api"];
         }
