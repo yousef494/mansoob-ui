@@ -1,5 +1,5 @@
 let util = require('../util');
-
+let models = require('./');
 let config = require('../config/config');
 
 const modelName = 'device';
@@ -28,7 +28,8 @@ const deviceSchema = {
 var processAlert = function (Mysql, level, timestamp, device_id, user_email) {
 
     //get previous status & make sure device_id, user_email are matching
-    var query = "SELECT d.tank_height, d.severity, d.normal_alert, d.low_alert, d.medium_alert, d.high_alert, d.email_to, d.user_id\
+    var query = "SELECT d.tank_height, d.severity, d.normal_alert, d.low_alert, d.medium_alert, d.high_alert,\
+         d.email_to, d.user_id \
         FROM " + Mysql.escapeId('device') + " d , " + Mysql.escapeId('user') + " u \
         WHERE d.user_id = u.id \
         and d.id = ? \
@@ -48,11 +49,11 @@ var processAlert = function (Mysql, level, timestamp, device_id, user_email) {
                     });
 
                 let r = results[0];
-                if (r['d.email_to'] == null || r['d.email_to'].length == 0) {
-                    r['d.email_to'] = user_email;
+                if (r['email_to'] == null || r['email_to'].length == 0) {
+                    r['email_to'] = user_email;
                 }
-                updateAlert(Mysql, device_id, r['d.email_to'], level, r['d.tank_height'], r['d.severity']
-                    , r['d.normal_alert'], r['d.low_alert'], r['d.medium_alert'], r['d.high_alert']);
+                updateAlert(Mysql, device_id, r['email_to'], level, r['tank_height'], r['severity']
+                    , r['normal_alert'], r['low_alert'], r['medium_alert'], r['high_alert']);
             } else {
                 return 'error';
             }
