@@ -9,7 +9,7 @@ let util = require('../util');
 module.exports = function (app, Mysql, urlPrefix, role) {
 
     const router = express.Router()
-    let endpointName = '/process';
+    let endpointName = 'process';
     let uriItem = `${urlPrefix}/${endpointName}`
     const isLog = true;
 
