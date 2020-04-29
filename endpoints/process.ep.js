@@ -101,6 +101,7 @@ module.exports = function (app, Mysql, urlPrefix, role) {
 
 
         let body = {
+            level: level,
             normal_alert: normal_alert,
             low_alert: low_alert,
             medium_alert: medium_alert,
@@ -118,6 +119,8 @@ module.exports = function (app, Mysql, urlPrefix, role) {
                 severity: "Normal"
             }
         }
+
+        log('info','update',body);
 
         //update device table
         Mysql.update(models.device.name, { id: device_id }, body)
