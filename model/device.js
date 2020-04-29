@@ -33,7 +33,7 @@ var processAlert = function (Mysql, level, timestamp, device_id, user_email) {
         FROM " + Mysql.escapeId('device') + " d , " + Mysql.escapeId('user') + " u \
         WHERE d.user_id = u.id \
         and d.id = ? \
-        and u.email = ?";
+        and u.email = \"?\"";
 
     Mysql.query(query, [device_id, user_email])
         .then(function (results) {
