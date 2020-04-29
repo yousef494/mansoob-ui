@@ -7,7 +7,7 @@ const restify = require('./mysql-restify');
 let util = require('../util');
 let config = require('../config/config');
                                                        
-module.exports = function (app, Mysql, urlPrefix, role) {
+module.exports = function (app, Mysql, urlPrefix, security) {
 
     const router = express.Router()
     let endpointName = 'process';
@@ -184,7 +184,7 @@ module.exports = function (app, Mysql, urlPrefix, role) {
     });
 
 
-    restify.serve(router, Mysql, models.reading, { prefix: urlPrefix }, role);
+    restify.serve(router, Mysql, models.reading, { prefix: urlPrefix }, security);
     app.use(router);
 
 };

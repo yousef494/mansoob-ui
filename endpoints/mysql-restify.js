@@ -1,11 +1,11 @@
 
-const restify = function (app, Mysql, model, options, role) {
+const restify = function (app, Mysql, model, options, security) {
 
     options.name = model.name;
     let uriItem = `${options.prefix}/${options.name}`
 
     //count
-    app.get(uriItem + "/count", role.allowIfLoggedin, role.grantAccess('updateAny', 'profile'), function (req, res) {
+    app.get(uriItem + "/count", security.allowIfLoggedin, security.hasAccess('updateAny', 'profile'), function (req, res) {
         var query = 'SELECT count(*) as count FROM ' + Mysql.escapeId(options.name);
         Mysql.query(query, {})
             .then(function (count) {
@@ -36,7 +36,7 @@ const restify = function (app, Mysql, model, options, role) {
     });
 
     //get individual item
-    app.get(uriItem + '/:id', role.allowIfLoggedin, role.grantAccess('updateAny', 'profile'), function (req, res) {
+    app.get(uriItem + '/:id', security.allowIfLoggedin, security.hasAccess('updateAny', 'profile'), function (req, res) {
         Mysql.record(options.name, req.params)
             .then(function (record) {
                 console.log(record);

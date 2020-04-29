@@ -155,7 +155,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
     router.post(urlPrefix + '/login', login);
     router.patch(urlPrefix + '/user/:id', updateUser);
 
-    restify.serve(router, Mysql, models.user, { prefix: urlPrefix }, r);
+    restify.serve(router, Mysql, models.user, { prefix: urlPrefix }, security);
     app.use(router);
 
 };

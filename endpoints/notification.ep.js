@@ -5,7 +5,7 @@ var express = require('express');
 let models = require('../model');
 const restify = require('./mysql-restify');
 
-module.exports = function(app, Mysql, urlPrefix, role){
+module.exports = function(app, Mysql, urlPrefix, security){
 
     const router = express.Router()
     const modelName = models.noti.name;
@@ -28,7 +28,7 @@ module.exports = function(app, Mysql, urlPrefix, role){
             });
     });
 
-    restify.serve(router, Mysql, models.noti, {prefix: urlPrefix}, role);
+    restify.serve(router, Mysql, models.noti, {prefix: urlPrefix}, security);
     app.use(router);
 
 };
