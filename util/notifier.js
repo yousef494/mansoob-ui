@@ -5,9 +5,10 @@ const config = require('../config/config');
 
 var alert = function (data, to) {
 
-    var template = fs.readFileSync('./resources/emailTemps/alert.html',{encoding:'utf-8'});
+    var template = fs.readFileSync('./resources/emailTemps/alert.html', { encoding: 'utf-8' });
     var html = ejs.render(template, data);
 
+    let recipient = to;//.toString();
 
     const mailConfig = {
         mailserver: {
@@ -21,10 +22,10 @@ var alert = function (data, to) {
         },
         mail: {
             from: config.mailserver.from,
-            to: to.toString(),
+            to: recipient,
             subject: 'Mansoob Status Alarm',
             text: 'Please notice that the severity level of the tank reaches the \
-            '+ data['severity'] +' state ('+data['severity']+')',
+            '+ data['severity'] + ' state (' + data['severity'] + ')',
             html: html
         }
     };

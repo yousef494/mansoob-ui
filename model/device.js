@@ -27,16 +27,19 @@ const deviceSchema = {
 
 var processAlert = function (Mysql, level, device_id, user_email) {
     //get previous status
-    var query = "SELECT d.tank_height, d.severity, d.normal_alert, d.low_alert, d.medium_alert, d.high_alert \
-        FROM " + Mysql.escapeId('device') + " d , " + Mysql.escapeId('user') + " u \
-        WHERE d.id = ? and d.user_id = u.id and u.email = ?";
+    var query = "SELECT device.tank_height, device.severity, device.normal_alert, device.low_alert, device.medium_alert, device.high_alert, device.email_to, device.user_id\
+        FROM " + Mysql.escapeId('device') + " , " + Mysql.escapeId('user') + " \
+        WHERE device.id = ? and device.user_id = user.id and user.email = ?";
 
     Mysql.query(query, [device_id, user_email])
         .then(function (results) {
             if (results.length == 1) {
                 let r = results[0];
-                updateAlert(Mysql, device_id, user_email, level, r['tank_height'], r['severity']
-                    , r['normal_alert'], r['low_alert'], r['medium_alert'], r['high_alert']);
+                if(r['device.email_to'] == null || r['device.email_to'].length ==0){
+                    r['device.email_to'] = user_email;
+                }
+                updateAlert(Mysql, device_id, r['device.email_to'], level, r['device.tank_height'], r['device.severity']
+                    , r['device.normal_alert'], r['device.low_alert'], r['device.medium_alert'], r['device.high_alert']);
             } else {
                 return 'error';
             }
@@ -45,7 +48,7 @@ var processAlert = function (Mysql, level, device_id, user_email) {
         });
 }
 
-var updateAlert = function (Mysql, device_id, user_email, level, tank_height, previous_severity,
+var updateAlert = function (Mysql, device_id, email_to, level, tank_height, previous_severity,
     normal_alert, low_alert, medium_alert, high_alert) {
     let current_severity = calculateSeverity(level, tank_height);
 
@@ -97,7 +100,7 @@ var updateAlert = function (Mysql, device_id, user_email, level, tank_height, pr
     //send alert if not normal statues
     if (message != null) {
         //send email
-        util.notifier.alert(message, user_email);
+        util.notifier.alert(message, email_to);
         //upate notification database
         Mysql.insert('notification', {
             "subject": "Alert",

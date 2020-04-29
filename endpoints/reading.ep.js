@@ -30,7 +30,7 @@ module.exports = function (app, Mysql, urlPrefix, role) {
     }
 
     router.post(uriItem + '/process', function (req, res) {
-        if (validateUserInput(['device_id', 'user_email'],req.body)) {
+        if (validateUserInput(['level','device_id', 'user_email'],req.body)) {
             //1- insert the data
             Mysql.insert(models.reading.name, {'level': req.body['level']})
             .then(function (info) {

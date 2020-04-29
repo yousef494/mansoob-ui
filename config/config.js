@@ -33,9 +33,13 @@ module.exports = {
         }
     },
     mailserver: {
-        host: 'smtpout.secureserver.net',
-        port: 25,
-        secure: false,
+        host: 'n3plcpnl0274.prod.ams3.secureserver.net',
+        port: 465,
+        secure: true,
+        auth: {
+            user: 'noreply@mansoob.yousefcave.com',
+            pass: '1stEmail*user'
+        },
         from: 'noreply@mansoob.yousefcave.com'
     },
     severity: {
