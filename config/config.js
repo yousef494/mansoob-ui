@@ -19,12 +19,12 @@ module.exports = {
     production: {
         server: {
             name: 'Mansoob prod.',
-            host: '127.0.0.1',
-            port: 5000
+            host: '0.0.0.0',
+            port: 3000
         },
         urlPrefix: '/api/v1',
         mysqlOptions: {
-            host: 'yousefcave.com:3306',
+            host: 'localhost',
             user: 'manssobdb',
             password: '1stChicken*db',
             database: 'mansoob',
