@@ -216,7 +216,7 @@ export class DashboardComponent implements OnInit {
       result = 8;
     }
 
-    this.currentLevel = currentlevel;
+    this.currentLevel = isNaN(currentlevel) ? 0 : currentlevel;
     this.lable = labeles[result];
     this.time = timestamp.substring(0, 19);
     this.severity_class = severity_class[result];
@@ -397,7 +397,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
 
     this.today = moment().format("dddd Do MMMM, YYYY");
-    console.log(this.today);
 
     this.readingService.getItemsLimit(280).subscribe(
       res => {
