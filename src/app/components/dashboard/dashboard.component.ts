@@ -400,7 +400,6 @@ export class DashboardComponent implements OnInit {
 
     this.readingService.getItemsLimit(280).subscribe(
       res => {
-        console.log(res);
         let self = this;
         res[0].reverse().forEach(function (value) {
           self.readingChartLabels.push(value['timestamp']);

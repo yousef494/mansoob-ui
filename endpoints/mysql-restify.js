@@ -19,7 +19,6 @@ const restify = function (app, Mysql, model, options, security) {
 
     //get individual item
     app.get(uriItem + '/:id', function (req, res) {
-        console.log(req.params);
         Mysql.record(options.name, req.params)
             .then(function (record) {
                 if (record == null) {
