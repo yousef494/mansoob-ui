@@ -39,6 +39,7 @@ app.use(async (req, res, next) => {
             if (exp < Date.now().valueOf() / 1000 && req.headers["x-access-token"]) {
                 return res.status(401).json({ error: "JWT token has expired, please login to obtain a new one" });
             }
+            console.log(userId);
             Mysql.record('user', { id: userId })
                 .then(function (user) {
                     if (!user) { return next('User does not exist'); }
