@@ -27,6 +27,8 @@ module.exports = function (app, Mysql, urlPrefix, security) {
         var parsed_q = restify.parseQuery(req.query, Mysql);
         query = query + parsed_q[0];
         req.query = parsed_q[1];
+        console.log(query);
+        console.log(req.query);
         Mysql.query(query, req.query)
             .then(function (results) {
                 if (results.length == 0)
