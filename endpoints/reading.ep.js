@@ -23,7 +23,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
 
     //normalize timestamp
     app.get(uriItem + '/time', function (req, res) {
-        var query = 'SELECT *, DATE_FORMAT(' + Mysql.escapeId('timestamp') + ' , "%Y-%m-%d %H:%i:%s") AS timestamp FROM ' + Mysql.escapeId(options.name);
+        var query = 'SELECT *, DATE_FORMAT(' + Mysql.escapeId('timestamp') + ' , "%Y-%m-%d %H:%i:%s") AS timestamp FROM ' + Mysql.escapeId(modelName);
         var parsed_q = restify.parseQuery(req.query, Mysql);
         query = query + parsed_q[0];
         req.query = parsed_q[1];
