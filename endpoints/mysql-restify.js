@@ -17,9 +17,26 @@ const restify = function (app, Mysql, model, options, security) {
     });
 
 
-    //normalize timestamp
-    app.get(uriItem + '/time', function (req, res) {
-        var query = 'SELECT *, DATE_FORMAT(' + Mysql.escapeId('timestamp') + ' , "%Y-%m-%d %H:%i:%s") AS timestamp FROM ' + Mysql.escapeId(options.name);
+    //get individual item
+    app.get(uriItem + '/:id', function (req, res) {
+        console.log(req.params);
+        Mysql.record(options.name, req.params)
+            .then(function (record) {
+                if (record == null) {
+                    record = {};
+                }
+                res.send(record);
+            })
+            .catch(function (err) {
+                res.status(500).send(err.message);
+            });
+    });
+
+    //get full list
+    app.get(uriItem + '/user/:user_id', function (req, res) {
+        //res.send([{ id:1, name: 'Mansoob', tank_capacity: 8, tank_height: 150, severity: 'Normal',
+       // level: 10 ,email_to: 'yousef-494@hotmail.com' }]);
+        var query = 'SELECT * FROM ' + Mysql.escapeId(options.name);
         var parsed_q = parseQuery(req.query, Mysql);
         query = query + parsed_q[0];
         req.query = parsed_q[1];
@@ -31,21 +48,6 @@ const restify = function (app, Mysql, model, options, security) {
                     records = results;
                 res.send(records);
             }).catch(function (err) {
-                res.status(500).send(err.message);
-            });
-    });
-
-    //get individual item
-    app.get(uriItem + '/:id', security.allowIfLoggedin, security.hasAccess('updateAny', 'profile'), function (req, res) {
-        Mysql.record(options.name, req.params)
-            .then(function (record) {
-                console.log(record);
-                if (record == null) {
-                    record = {};
-                }
-                res.send(record);
-            })
-            .catch(function (err) {
                 res.status(500).send(err.message);
             });
     });
@@ -189,6 +191,7 @@ var parseQuery = function (tokens, Mysql) {
             query = query + ' ORDER BY ID DESC LIMIT 1'
         } else {
             query = query + ' WHERE ? = ?'
+            vals.push(param);
             vals.push(value);
         }
         // break;

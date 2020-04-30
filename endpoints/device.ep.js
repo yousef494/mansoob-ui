@@ -9,10 +9,7 @@ const jwt = require('jsonwebtoken');
 module.exports = function (app, Mysql, urlPrefix, security) {
 
     const router = express.Router()
-
     let uriItem = `${urlPrefix}/${models.device.name}`
-
-
 
     restify.serve(router, Mysql, models.device, { prefix: urlPrefix }, security);
     app.use(router);

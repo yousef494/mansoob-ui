@@ -20,9 +20,28 @@ module.exports = function (app, Mysql, urlPrefix, security) {
         res.end();
     });
 
-    router.get(uriItem + '/consumption', security.allowIfLoggedin, security.hasAccess('updateAny', 'consumption'), 
-    function (req, res) {
-        var query = "SELECT DATE_FORMAT(" + Mysql.escapeId('timestamp') + " , '%Y-%m-%d') AS day ,\
+
+    //normalize timestamp
+    app.get(uriItem + '/time', function (req, res) {
+        var query = 'SELECT *, DATE_FORMAT(' + Mysql.escapeId('timestamp') + ' , "%Y-%m-%d %H:%i:%s") AS timestamp FROM ' + Mysql.escapeId(options.name);
+        var parsed_q = restify.parseQuery(req.query, Mysql);
+        query = query + parsed_q[0];
+        req.query = parsed_q[1];
+        Mysql.query(query, req.query)
+            .then(function (results) {
+                if (results.length == 0)
+                    records = [];
+                else
+                    records = results;
+                res.send(records);
+            }).catch(function (err) {
+                res.status(500).send(err.message);
+            });
+    });
+
+    router.get(uriItem + '/consumption', security.allowIfLoggedin, security.hasAccess('updateAny', 'consumption'),
+        function (req, res) {
+            var query = "SELECT DATE_FORMAT(" + Mysql.escapeId('timestamp') + " , '%Y-%m-%d') AS day ,\
         CASE WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '00:00:00' AND '06:00:00' THEN 1\
              WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '06:00:01' AND '12:00:00' THEN 2\
              WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '12:00:01' AND '18:00:00' THEN 3\
@@ -36,20 +55,20 @@ module.exports = function (app, Mysql, urlPrefix, security) {
              WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '12:00:01' AND '18:00:00' THEN 3\
              WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '18:00:01' AND '24:59:59' THEN 4\
         END ORDER BY " + Mysql.escapeId('timestamp') + " DESC";
-        var parsed_q = restify.parseQuery(req.query, Mysql);
-        query = query + parsed_q[0];
-        req.query = parsed_q[1];
-        Mysql.query(query, [req.query['user_id']])
-            .then(function (results) {
-                if (results.length == 0)
-                    records = [];
-                else
-                    records = results;
-                res.send(records);
-            }).catch(function (err) {
-                res.status(500).send(err.message);
-            });
-    });
+            var parsed_q = restify.parseQuery(req.query, Mysql);
+            query = query + parsed_q[0];
+            req.query = parsed_q[1];
+            Mysql.query(query, [req.query['user_id']])
+                .then(function (results) {
+                    if (results.length == 0)
+                        records = [];
+                    else
+                        records = results;
+                    res.send(records);
+                }).catch(function (err) {
+                    res.status(500).send(err.message);
+                });
+        });
 
     restify.serve(router, Mysql, models.reading, { prefix: urlPrefix }, security);
     app.use(router);
