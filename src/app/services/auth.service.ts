@@ -125,4 +125,9 @@ export class AuthService {
     }
     return '';
   }
+
+  generateAPIAccessToken(device_id){
+    let data = { device_id: device_id, user_id: this.getUserId() };
+    return this.http.post<any>(environment.baseUrl + '/auth/deviceToken', data);
+  }
 }

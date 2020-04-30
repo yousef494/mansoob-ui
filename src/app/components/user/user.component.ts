@@ -33,7 +33,7 @@ export class UserComponent implements OnInit {
     {
       key: 'role',
       title: 'Role',
-      options: ['basic','admin']
+      options: ['BASIC','ADMIN']
     }
   ];
 

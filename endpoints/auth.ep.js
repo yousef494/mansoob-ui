@@ -151,9 +151,48 @@ module.exports = function (app, Mysql, urlPrefix, security) {
     }
 
 
+    let validateUserInput = function (params, data) {
+        for (let i = 0; i < params.length; i++) {
+            if (data[params[i]] == undefined) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    var genAPIAccessToken = async (req, res, next) => {
+        if (validateUserInput(['device_id', 'user_id'], req.body)) {
+            const { device_id, user_id } = req.body;
+            // gen_api_access_tocken
+            try {
+                const accessToken = jwt.sign({ user_id: user_id }, process.env.JWT_SECRET);
+                Mysql.update(models.device.name, { id: device_id, user_id: user_id }, { access_token: accessToken })
+                    .then(function (info) {
+                        res.status(200).json({
+                            data: { device_id: device_id },
+                            accessToken
+                        })
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                        return next('Error while updating the token....');
+                    });
+
+            } catch (error) {
+                next(error);
+            }
+
+        } else {
+            return next('Insufficient input');
+        }
+    }
+
+
+
     router.post(urlPrefix + '/signup', signup);
     router.post(urlPrefix + '/login', login);
     router.patch(urlPrefix + '/user/:id', updateUser);
+    router.post(urlPrefix + '/auth/deviceToken', genAPIAccessToken);
 
     restify.serve(router, Mysql, models.user, { prefix: urlPrefix }, security);
     app.use(router);

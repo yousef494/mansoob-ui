@@ -1,0 +1,12 @@
+
+.form-control-custom:hover {
+    background-color: #e8dcff;
+    border-color: #6f42c1;
+    color: #6f42c1;
+}
+
+.form-control-custom:active {
+    background-color: #cbfcdc;
+    border-color: #4dbd74;
+    color: #4dbd74;
+}

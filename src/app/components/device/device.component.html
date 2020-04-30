@@ -1,3 +1,56 @@
-
-  <app-rd-table #table [options]="options" [fields]="fields">
-  </app-rd-table>
+<div class="row">
+  <div class="col-xl-6 col-lg-7 col-md-12">
+    <div class="card">
+      <div class="card-header"><strong>Select device for details</strong></div>
+      <div class="card-body">
+        <app-rd-table #table [options]="options" [fields]="fields" (recordSelected)="showDetials($event)">
+        </app-rd-table>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6 col-lg-7 col-md-12">
+    <div class="card">
+      <div class="card-header"><strong>Details</strong></div>
+      <div class="card-body" *ngIf="recordSelected">
+        <div class="form-group">
+          <label for="company">Name</label>
+          <input class="form-control" id="name" placeholder="Enter name" type="text"
+          [value]="record['name']"></div>
+        <div class="form-group">
+          <label for="vat">Tank Capacity (m3)</label>
+          <input class="form-control" id="tank_capacity" placeholder="8" type="text"
+          [value]="record['tank_capacity']"></div>
+        <div class="form-group">
+          <label for="street">Tank Hieght (cm)</label>
+          <input class="form-control" id="tank_height" placeholder="150" type="text"
+          [value]="record['tank_height']"></div>
+        <div class="form-group">
+          <label for="street">Notify (Email To)</label>
+          <input class="form-control" id="email_to" placeholder="Emails with comma seprated" type="text"
+          [value]="record['email_to']"></div>
+        <div class="row">
+          <div class="form-group col-sm-10"><label for="city">Access Token</label>
+            <input class="form-control form-control-custom" id="access_token" placeholder="" type="text" readonly value="here is some text"
+              (click)="copyToClipboard('access_token')"
+              [value]="record['access_token']">
+          </div>
+          <div class="form-group col-sm-2">
+            <label for="postal-code">Generate</label>
+            <button class="form-control btn btn-sm btn-warning" id="access_token_generate" type="button"
+            (click)="generateAccessToken()">
+              <i class="cui-brush icons font-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-sm btn-primary" type="submit">
+          <i class="fa fa-dot-circle-o"></i> Submit
+        </button>
+        <button class="btn btn-sm btn-danger ml-3" type="reset">
+          <i class="fa fa-ban"></i> Reset
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -16,6 +16,7 @@ import { UserComponent } from './components/user/user.component';
 import { DeviceComponent } from './components/device/device.component'
 //import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 export const routes: Routes = [
   {
@@ -85,6 +86,14 @@ export const routes: Routes = [
         canActivate: [AdminGuard],
         data: {
           title: 'Users'
+        }
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+      //  canActivate: [AdminGuard],
+        data: {
+          title: 'Profile'
         }
       },
       {

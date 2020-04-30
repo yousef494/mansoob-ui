@@ -24,7 +24,7 @@
  * - forceServerUpdate: call load data after operation (create/update/delete) done successfully
  */
 
-import { Component, OnInit, ViewChild, ViewEncapsulation, Input, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation, Input, TemplateRef, Output, EventEmitter} from '@angular/core';
 
 import { Config, API, APIDefinition } from 'ngx-easy-table';
 import { ConfigService, Schema, DataHTTPService } from './config.service';
@@ -51,6 +51,8 @@ export class RDTableComponent implements OnInit {
   @Input() fields: [];
   @Input() data = [];
   @Input() config = {};
+
+  @Output() recordSelected = new EventEmitter<string>();
 
   opt_obj = {
     name: '', pKey: 'id', pKey_label: 'ID', apiURL: undefined, type: 'simple', create: false, update: false, delete: false,
@@ -202,8 +204,10 @@ export class RDTableComponent implements OnInit {
       case 'onCheckboxSelect':
         if (this.selectedRecords.has($event.value.rowId)) {
           this.selectedRecords.delete($event.value.rowId);
+          this.recordSelected.emit("unselected");
         } else {
           this.selectedRecords.add($event.value.rowId);
+          this.recordSelected.emit(this.data[$event.value.rowId]);
         }
         break;
       case 'onSelectAll':

@@ -64,7 +64,8 @@ import { UserComponent } from './components/user/user.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import { GaugeChartModule } from 'angular-gauge-chart';
-import { SettingsComponent } from './components/settings/settings.component'
+import { SettingsComponent } from './components/settings/settings.component';
+import { ProfileComponent } from './components/profile/profile.component'
 
 
 @NgModule({
@@ -103,7 +104,8 @@ import { SettingsComponent } from './components/settings/settings.component'
     RDTableComponent,
     UserComponent,
     DashboardComponent,
-    SettingsComponent
+    SettingsComponent,
+    ProfileComponent
   ],
   providers: [
     AuthService,

@@ -45,10 +45,6 @@ app.use(async (req, res, next) => {
                     // Check device token == given accessToken
                     if(req.headers["x-access-token-api"]){
                         let device_id = req.headers["device_id"];
-                        console.log("device_id");
-                        console.log(device_id);
-                        console.log(accessToken);
-                        console.log("device_id");
                         Mysql.record('device', { user_id: userId, id: device_id })
                         .then(function (device) {
                             if (!device) { return next('Device does not exist'); }

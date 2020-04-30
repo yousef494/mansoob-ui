@@ -52,6 +52,8 @@ const restify = function (app, Mysql, model, options, security) {
 
     //get full list
     app.get(uriItem, function (req, res) {
+        //res.send([{ id:1, name: 'Mansoob', tank_capacity: 8, tank_height: 150, severity: 'Normal',
+       // level: 10 ,email_to: 'yousef-494@hotmail.com' }]);
         var query = 'SELECT * FROM ' + Mysql.escapeId(options.name);
         var parsed_q = parseQuery(req.query, Mysql);
         query = query + parsed_q[0];
