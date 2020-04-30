@@ -34,23 +34,24 @@ app.use(async (req, res, next) => {
             accessToken = req.headers["x-access-token-api"];
         }
         try {
-            let { userId, exp } = await jwt.verify(accessToken, process.env.JWT_SECRET);
+            let { userId: user_id, exp } = await jwt.verify(accessToken, process.env.JWT_SECRET);
             // Check expiration in case of x-access-token (from web not IOT)
             if (exp < Date.now().valueOf() / 1000 && req.headers["x-access-token"]) {
                 return res.status(401).json({ error: "JWT token has expired, please login to obtain a new one" });
             }
-            userId = 1;
-            Mysql.record('user', { id: userId })
+            user_id = 1;
+            Mysql.record('user', { id: user_id })
                 .then(function (user) {
                     if (!user) { return next('User does not exist'); }
                     // Check device token == given accessToken
                     if(req.headers["x-access-token-api"]){
                         let device_id = req.headers["device_id"];
-                        Mysql.record('device', { user_id: userId, id: device_id })
+                        Mysql.record('device', { user_id: user_id, id: device_id })
                         .then(function (device) {
                             if (!device) { return next('Device does not exist'); }
                             if(device['access_token'] != accessToken){ return next('Invalid token'); }
                             res.locals.loggedInUser = user;
+                            req.query['user_id'] = user_id;
                             next();
                         })
                         .catch(function (err) {
@@ -58,6 +59,7 @@ app.use(async (req, res, next) => {
                         });
                     }else{
                         res.locals.loggedInUser = user;
+                        req.query['user_id'] = user_id;
                         next();
                     }
                 })
