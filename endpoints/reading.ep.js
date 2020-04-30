@@ -41,7 +41,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
             });
     });
 
-    router.get(uriItem + '/consumption', security.allowIfLoggedin, security.hasAccess('updateAny', 'consumption'),
+    router.get(uriItem + '/consumption',
         function (req, res) {
             var query = "SELECT DATE_FORMAT(" + Mysql.escapeId('timestamp') + " , '%Y-%m-%d') AS day ,\
         CASE WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '00:00:00' AND '06:00:00' THEN 1\
