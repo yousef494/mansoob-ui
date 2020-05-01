@@ -188,6 +188,7 @@ export class DashboardComponent implements OnInit {
 
 
   public reading_controller(timestamp, currentlevel) {
+    console.log(timestamp, currentlevel);
     var t = [112.5, 75, 49.5, 37.5, 25.5, 15, 7.5, 0];
     var labeles = ["Normal", "Normal", "Low", "Medium", "High", "Critical", "Critical", "Critical", "Unknown"];
     var color = ["#5cb85c", "#5cb85c", "#f0ad4e", "#ff8d00", "#d9534f", "#8b0202", "#8b0202", "#4D0000", "#382724"];

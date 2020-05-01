@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { forkJoin } from 'rxjs'; // change to new RxJS 6 import syntax
 import { environment } from '../../environments/environment';
-
+import { AuthService } from './auth.service'
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +12,10 @@ export class ReadingService {
   urlPrefix = '';
   endpoint = '/reading/';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private auth: AuthService) {
     this.urlPrefix = environment.baseUrl + this.endpoint;
   }
+
 
   getCount(){
     return forkJoin(this.http.get<any[]>(this.urlPrefix+'count'));
@@ -25,7 +26,7 @@ export class ReadingService {
   }
 
   getItemsLimit(limit){
-    return forkJoin(this.http.get<any[]>(this.urlPrefix+'time?sort=id&limit='+limit));
+    return forkJoin(this.http.get<any[]>(this.urlPrefix+'time?sort=id&limit='+limit, this.auth.httpOptions));
   }
 
   getItemsConsumptionLimit(limit){

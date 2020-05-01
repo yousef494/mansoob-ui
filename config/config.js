@@ -8,9 +8,9 @@ module.exports = {
         urlPrefix: '/api/v1',
         testingPrefix: '/testing',
         mysqlOptions: {
-            host: '192.168.100.10',
-            user: 'myuser',
-            password: 'chicken',
+            host: 'yousefcave.com',
+            user: 'manssobdb',
+            password: '1stChicken*db',
             database: 'mansoob',
             socketPath: false,
             connectionLimit: 5

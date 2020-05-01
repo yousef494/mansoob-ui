@@ -6,12 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { forkJoin } from 'rxjs'; // change to new RxJS 6 import syntax
 import { environment } from '../../environments/environment';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    Authorization: localStorage.getItem('token')
-  })
-};
+
 
 @Injectable()
 export class AuthService {
@@ -21,6 +16,12 @@ export class AuthService {
 
   private loggedInUser: User = null;
 
+  public httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'x-access-token': localStorage.getItem('token')
+    })
+  };
 
   constructor(private router: Router, private http: HttpClient) {
     this.urlPrefix = this.endpoint;
