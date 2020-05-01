@@ -15,8 +15,6 @@ export class DeviceComponent implements OnInit {
   public record = {id:'', name:'', tank_height:'', tank_capacity: '' ,
    email_to: '', access_token: ''};
   public recordSelected = false;
-  public updateStatus = '';
-
 
   constructor(
     private auth: AuthService, 
@@ -84,18 +82,15 @@ export class DeviceComponent implements OnInit {
   }
 
   updateDetails(){
+    console.log(this.record);
     this.deiveSvr.updatetItem(this.record['id'],
     { name: this.record['name'], tank_height: this.record['tank_height'],
      tank_capacity: this.record['tank_capacity'] , email_to: this.record['email_to'] } ).subscribe(
       res => {
-        console.log(res);
         this.toastService.success("Success", "Record  was updated successfully");
-        this.updateStatus = 'success';
       },
       error => {
-        console.error(error);
         this.toastService.error("Error!", "Updaing record was failed");
-        this.updateStatus = 'errorr';
       }
     );
   }

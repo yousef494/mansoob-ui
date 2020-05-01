@@ -14,19 +14,19 @@
       <div class="card-body" *ngIf="recordSelected">
         <div class="form-group">
           <label for="company">Name</label>
-          <input class="form-control" id="name" placeholder="Enter name" type="text" [ngModel]="record['name']"></div>
+          <input class="form-control" id="name" placeholder="Enter name" type="text" [(ngModel)]="record['name']"></div>
         <div class="form-group">
           <label for="vat">Tank Capacity (m3)</label>
           <input class="form-control" id="tank_capacity" placeholder="8" type="text"
-            [ngModel]="record['tank_capacity']"></div>
+            [(ngModel)]="record['tank_capacity']"></div>
         <div class="form-group">
           <label for="street">Tank Hieght (cm)</label>
-          <input class="form-control" id="tank_height" placeholder="150" type="text" [ngModel]="record['tank_height']">
+          <input class="form-control" id="tank_height" placeholder="150" type="text" [(ngModel)]="record['tank_height']">
         </div>
         <div class="form-group">
           <label for="street">Notify (Email To)</label>
           <input class="form-control" id="email_to" placeholder="Emails with comma seprated" type="text"
-            [ngModel]="record['email_to']"></div>
+            [(ngModel)]="record['email_to']"></div>
         <div class="row">
           <div class="form-group col-sm-10"><label for="city">Access Token</label>
             <input class="form-control form-control-custom" id="access_token" placeholder="" type="text" readonly
@@ -48,20 +48,6 @@
         <button class="btn btn-sm btn-danger ml-3" type="reset">
           <i class="fa fa-ban"></i> Reset
         </button>
-        <alert *ngIf="updateStatus == 'error'">
-          <div role="alert" class="alert alert-danger alert-dismissible">
-            <button aria-label="Close" class="close" type="button">
-              <span aria-hidden="true">×</span>
-              <span class="sr-only">Close</span>
-            </button><strong>Error!</strong>Updaing record was failed</div>
-        </alert>
-        <alert *ngIf="updateStatus == 'success'">
-          <div role="alert" class="alert alert-success alert-dismissible">
-            <button aria-label="Close" class="close" type="button">
-              <span aria-hidden="true">×</span>
-              <span class="sr-only">Close</span>
-            </button><strong>Success</strong>Record  was updated successfully</div>
-        </alert>
       </div>
     </div>
   </div>
