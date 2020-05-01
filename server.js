@@ -34,13 +34,15 @@ app.use(async (req, res, next) => {
             accessToken = req.headers["x-access-token-api"];
         }
         try { 
-            let { user_id, exp } = await jwt.verify(accessToken, process.env.JWT_SECRET);
+            let { userId, exp } = await jwt.verify(accessToken, process.env.JWT_SECRET);
             // Check expiration in case of x-access-token (from web not IOT)
             if (exp < Date.now().valueOf() / 1000 && req.headers["x-access-token"]) {
                 return res.status(401).json({ error: "JWT token has expired, please login to obtain a new one" });
             }
-            console.log("user: "+user_id);
-            console.log("user: "+exp);
+            let user_id = userId;
+            console.log("userId: "+user_id);
+            console.log("user_id: "+user_id);
+            console.log("exp: "+exp);
             Mysql.record('user', { id: user_id })
                 .then(function (user) {
                     if (!user) { return next('User does not exist'); }
