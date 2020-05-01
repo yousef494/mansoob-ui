@@ -30,8 +30,10 @@ Mysql.connect(config[env].mysqlOptions);
 app.use(async (req, res, next) => {
     if (req.headers["x-access-token"] || req.headers["x-access-token-api"] ) {
         let accessToken = req.headers["x-access-token"];
-        if(req.headers["x-access-token-api"]){
+        let device_id = '';
+        if(req.headers["x-access-token-api"] && req.headers["device_id"]){
             accessToken = req.headers["x-access-token-api"];
+            device_id = req.headers["device_id"];
         }
         try { 
             let { userId, exp } = await jwt.verify(accessToken, process.env.JWT_SECRET);
@@ -48,7 +50,6 @@ app.use(async (req, res, next) => {
                     if (!user) { return next('User does not exist'); }
                     // Check device token == given accessToken
                     if(req.headers["x-access-token-api"]){
-                        let device_id = req.headers["device_id"];
                         Mysql.record('device', { user_id: user_id, id: device_id })
                         .then(function (device) {
                             if (!device) { return next('Device does not exist: '+user_id); }
