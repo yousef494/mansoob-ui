@@ -88,10 +88,12 @@ export class DeviceComponent implements OnInit {
     { name: this.record['name'], tank_height: this.record['tank_height'],
      tank_capacity: this.record['tank_capacity'] , email_to: this.record['email_to'] } ).subscribe(
       res => {
+        console.log(res);
         this.toastService.success("Success", "Record  was updated successfully");
         this.updateStatus = 'success';
       },
       error => {
+        console.error(error);
         this.toastService.error("Error!", "Updaing record was failed");
         this.updateStatus = 'errorr';
       }

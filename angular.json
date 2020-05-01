@@ -23,6 +23,8 @@
               "node_modules/@coreui/icons/css/coreui-icons.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "node_modules/simple-line-icons/css/simple-line-icons.css",
+              "node_modules/ngx-easy-table/style.scss",
+              "node_modules/ngx-toastr/toastr.css",
               "src/scss/style.scss"
             ],
             "stylePreprocessorOptions": {
