@@ -165,7 +165,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
             const { device_id, user_id } = req.body;
             // gen_api_access_tocken
             try {
-                const accessToken = jwt.sign({ user_id: user_id }, process.env.JWT_SECRET);
+                const accessToken = jwt.sign({ userId: user_id }, process.env.JWT_SECRET);
                 Mysql.update(models.device.name, { id: device_id, user_id: user_id }, { access_token: accessToken })
                     .then(function (info) {
                         res.status(200).json({
