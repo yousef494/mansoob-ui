@@ -298,6 +298,8 @@ export class DashboardComponent implements OnInit {
 
 
   public refreshContent() {
+    this.readingChartLabels = [];
+    this.readingChartData = [];
     this.today = moment().format("dddd Do MMMM, YYYY");
     this.readingService.getItemsLimit(280).subscribe(
       res => {
@@ -367,7 +369,7 @@ export class DashboardComponent implements OnInit {
 
 
   private refreshSubscription: Subscription;
-  private refreshInterval: number = 300000;//every 5 minutes
+  private refreshInterval: number = (+localStorage.getItem("refreshInterval"));//300000 every 5 minutes
   public counter: number = 1;
 
   public setRefreshInterval(minutes){
@@ -384,6 +386,7 @@ export class DashboardComponent implements OnInit {
     }else{
       this.refreshInterval = -1;
     }
+    localStorage.setItem("refreshInterval", this.refreshInterval+'');
   }
 
   public isRefreshInterval(minutes){

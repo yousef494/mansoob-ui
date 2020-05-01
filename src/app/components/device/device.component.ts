@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '.././../services/auth.service';
+import { DeviceService } from '.././../services/device.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-device',
@@ -13,9 +15,14 @@ export class DeviceComponent implements OnInit {
   public record = {id:'', name:'', tank_height:'', tank_capacity: '' ,
    email_to: '', access_token: ''};
   public recordSelected = false;
+  public updateStatus = '';
 
 
-  constructor(private auth: AuthService, ) {}
+  constructor(
+    private auth: AuthService, 
+    private deiveSvr: DeviceService,
+    private toastService: ToastrService
+    ) {}
 
   options = {
     name: 'device',
@@ -72,6 +79,21 @@ export class DeviceComponent implements OnInit {
         this.record['access_token'] = res['accessToken'];
       },
       error => {
+      }
+    );
+  }
+
+  updateDetails(){
+    this.deiveSvr.updatetItem(this.record['id'],
+    { name: this.record['name'], tank_height: this.record['tank_height'],
+     tank_capacity: this.record['tank_capacity'] , email_to: this.record['email_to'] } ).subscribe(
+      res => {
+        this.toastService.success("Success", "Record  was updated successfully");
+        this.updateStatus = 'success';
+      },
+      error => {
+        this.toastService.error("Error!", "Updaing record was failed");
+        this.updateStatus = 'errorr';
       }
     );
   }

@@ -14,7 +14,6 @@ import { AdminGuard } from '../guards/admin.guard';
 
 import { UserComponent } from './components/user/user.component';
 import { DeviceComponent } from './components/device/device.component'
-//import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
 
@@ -95,10 +94,6 @@ export const routes: Routes = [
         data: {
           title: 'Profile'
         }
-      },
-      {
-        path: 'notifications',
-        loadChildren: () => import('./views/notifications/notifications.module').then(m => m.NotificationsModule)
       }
     ]
   },

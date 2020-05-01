@@ -27,8 +27,8 @@ import { RegisterComponent } from './views/register/register.component';
 
 import { AuthService } from './services/auth.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
-
-
+import { ToastrModule } from 'ngx-toastr';
+import { ToastrService } from './services/toastr.service';
 
 const APP_CONTAINERS = [
   DefaultLayoutComponent
@@ -91,7 +91,8 @@ import { ProfileComponent } from './components/profile/profile.component'
     ButtonsModule.forRoot(),
     TableModule,
     GaugeChartModule,
-    ModalModule
+    ModalModule,
+    ToastrModule.forRoot()
   ],
   declarations: [
     AppComponent,
@@ -115,7 +116,8 @@ import { ProfileComponent } from './components/profile/profile.component'
     },
     NgwWowService,
     NgbButtonsModule,
-    NgbModule
+    NgbModule,
+    ToastrService
   ],
   bootstrap: [AppComponent],
   schemas: [NO_ERRORS_SCHEMA]
