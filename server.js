@@ -38,7 +38,7 @@ app.use(async (req, res, next) => {
         try { 
             let { userId, exp } = await jwt.verify(accessToken, process.env.JWT_SECRET);
             // Check expiration in case of x-access-token (from web not IOT)
-            if (exp < Date.now().valueOf() / 1000 && req.headers["x-access-token"]) {
+            if (req.headers["x-access-token"] && exp < Date.now().valueOf() / 1000) {
                 return res.status(401).json({ error: "JWT token has expired, please login to obtain a new one" });
             }
             let user_id = userId;
