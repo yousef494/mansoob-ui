@@ -249,9 +249,11 @@ export class DashboardComponent implements OnInit {
     return Math.round((num / dum) * 100 * 10) / 10;
   }
 
+  public  limit:number = 280;
   public getData(limit) {
     this.readingChartLabels = [];
     this.readingChartData = [];
+    this.limit = limit;
     this.readingService.getItemsLimit(limit).subscribe(
       res => {
         let self = this;
@@ -301,7 +303,7 @@ export class DashboardComponent implements OnInit {
     this.readingChartLabels = [];
     this.readingChartData = [];
     this.today = moment().format("dddd Do MMMM, YYYY");
-    this.readingService.getItemsLimit(280).subscribe(
+    this.readingService.getItemsLimit(this.limit).subscribe(
       res => {
         let self = this;
         res[0].reverse().forEach(function (value) {

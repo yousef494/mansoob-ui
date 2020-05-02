@@ -26,7 +26,7 @@ export class ReadingService {
   }
 
   getItemsLimit(limit){
-    return forkJoin(this.http.get<any[]>(this.urlPrefix+'time?sort=id&limit='+limit, this.auth.httpOptions));
+    return forkJoin(this.http.get<any[]>(this.urlPrefix+'time?sort=timestamp&limit='+limit, this.auth.httpOptions));
   }
 
   getItemsConsumptionLimit(limit){
