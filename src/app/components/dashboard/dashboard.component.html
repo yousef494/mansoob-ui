@@ -16,6 +16,9 @@
                 <div class="brand-card-header {{severity_class}}">
                     <i class="card-header-custom fa {{severity_simple}}"></i>
                     <div class="chart-wrapper">
+                        <div class="btn-group m-3 float-left" dropdown>
+                            <span class="text-white">{formatDate(time,'dddd Do MMMM, YYYY')}}</span>
+                        </div>
                         <div class="btn-group m-3 float-right" dropdown>
                             <button type="button" class="btn btn-transparent dropdown-toggle p-0" dropdownToggle>
                                 <i class="dropdown-trigger-icon-custom icon-settings p-0"></i>
@@ -48,7 +51,7 @@
                 <div class="brand-card-body">
                     <div>
                         <div class="text-value">{{currentLevel}}</div>
-                        <div class="text-uppercase text-muted small">Current Status</div>
+                        <div class="text-uppercase text-muted small">{{ severity }} Status</div>
                     </div>
                     <div>
                         <div class="text-value">{{currentLevel_percentage}}</div>
@@ -171,7 +174,7 @@
             </div>
             <!--/.row-->
             <div class="chart-wrapper" style="height:300px;margin-top:40px;">
-                <canvas baseChart class="chart" [datasets]="readingChartDataset" [labels]="readingChartLabels"
+                <canvas baseChart id="readingChart" class="chart" [datasets]="readingChartDataset" [labels]="readingChartLabels"
                     [options]="readingChartOptions" [colors]="readingChartDatasetColors" [chartType]="readingChartType"
                     [legend]="readingChartLegend"></canvas>
             </div>

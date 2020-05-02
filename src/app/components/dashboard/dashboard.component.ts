@@ -20,6 +20,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 })
 export class DashboardComponent implements OnInit {
 
+  @ViewChild(BaseChartDirective, { static: true }) readingChart: BaseChartDirective;
   @ViewChild('infoModal') public infoModal: ModalDirective;
 
   constructor(
@@ -51,7 +52,6 @@ export class DashboardComponent implements OnInit {
     return isOutDated;
   }
 
-  @ViewChild(BaseChartDirective, { static: true }) chart: BaseChartDirective;
   radioModel: string = '24';
 
   public today: string = '';
@@ -59,6 +59,7 @@ export class DashboardComponent implements OnInit {
   public tankCapacity: number = 8.0;
   public severity_class: string = 'bg-primary';
   public severity_simple = '';
+  public severity = '';
 
   public currentLevel: number = 0;
   public currentLevel_percentage: number = 0;
@@ -194,6 +195,7 @@ export class DashboardComponent implements OnInit {
     var shape = ["fa-smile-o", "fa-smile-o", "fa-meh-o", "fa-meh-o", "fa-frown-o", "fa-frown-o", "fa-frown-o", "fa-frown-o", "fa-cubes"];
     var bar = ["bar-normal", "bar-normal", "bar-low", "bar-medium", "bar-high", "bar-critical", "bar-critical", "bar-critical", ""];
     var severity_class = ["status-normal", " status-normal", " status-low", " status-medium", " status-high", " status-critical", " status-critical", " status-critical", ""];
+    var severity_label = ["Normal", "Normal", "Low", "Medium", "High", "Critical", "Critical", "Critical", ""];
 
     var result = 0;
     if (currentlevel > t[0]) {
@@ -220,6 +222,7 @@ export class DashboardComponent implements OnInit {
     this.lable = labeles[result];
     this.time = timestamp.substring(0, 19);
     this.severity_class = severity_class[result];
+    this.severity = severity_label[result];
     this.severity_simple = shape[result];
 
     this.gaugeNeedleValue = (this.currentLevel / this.tankHeight * 100);//normalize from e.g. 150 scale to 100
@@ -263,7 +266,8 @@ export class DashboardComponent implements OnInit {
         });
         console.log(self.readingChartLabels);
         console.log(self.readingChartData)
-        this.chart.update();
+        this.readingChart.update()
+        this.readingChart.chart.update();
         let lastRecord = res[0][res[0].length - 1];
         this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
       },
@@ -312,6 +316,10 @@ export class DashboardComponent implements OnInit {
           self.readingChartLabels.push(value['timestamp']);
           self.readingChartData.push(+(value['level']));
         });
+        
+        this.readingChart.update()
+        this.readingChart.chart.update();
+
         let lastRecord = res[0][res[0].length - 1];
         this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
       },
