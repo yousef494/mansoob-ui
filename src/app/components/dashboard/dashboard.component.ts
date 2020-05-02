@@ -188,7 +188,6 @@ export class DashboardComponent implements OnInit {
 
 
   public reading_controller(timestamp, currentlevel) {
-    console.log(timestamp, currentlevel);
     var t = [112.5, 75, 49.5, 37.5, 25.5, 15, 7.5, 0];
     var labeles = ["Normal", "Normal", "Low", "Medium", "High", "Critical", "Critical", "Critical", "Unknown"];
     var color = ["#5cb85c", "#5cb85c", "#f0ad4e", "#ff8d00", "#d9534f", "#8b0202", "#8b0202", "#4D0000", "#382724"];
@@ -250,17 +249,20 @@ export class DashboardComponent implements OnInit {
   }
 
   public  limit:number = 280;
+
   public getData(limit) {
     this.readingChartLabels = [];
     this.readingChartData = [];
     this.limit = limit;
-    this.readingService.getItemsLimit(limit).subscribe(
+    this.readingService.getItemsLimit(this.limit).subscribe(
       res => {
         let self = this;
         res[0].reverse().forEach(function (value) {
           self.readingChartLabels.push(value['timestamp']);
           self.readingChartData.push(+(value['level']));
         });
+        console.log(self.readingChartLabels);
+        console.log(self.readingChartData)
         this.chart.update();
         let lastRecord = res[0][res[0].length - 1];
         this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
