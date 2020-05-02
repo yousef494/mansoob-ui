@@ -79,7 +79,7 @@ export class DashboardComponent implements OnInit {
   public readingChartDataset: Array<any> = [
     {
       data: this.readingChartData,
-      label: 'Current Level'
+      label: 'Level'
     }
   ];
   public readingChartDatasetColors: Array<any> = [{
@@ -264,6 +264,7 @@ export class DashboardComponent implements OnInit {
           self.readingChartLabels.push(value['timestamp']);
           self.readingChartData.push(+(value['level']));
         });
+        this.readingChartDataset['data'] = this.readingChartData;
         this.readingChart.chart.config.data.datasets = this.readingChartDataset;
         this.readingChart.chart.config.data.labels = this.readingChartLabels;
 
