@@ -1,0 +1,357 @@
+//name: united
+// =============== Variables ===============
+
+// --------------- Defaults ---------------
+
+$united-white:    #fff !default;
+$united-gray-100: #f8f9fa !default;
+$united-gray-200: #e9ecef !default;
+$united-gray-300: #dee2e6 !default;
+$united-gray-400: #ced4da !default;
+$united-gray-500: #AEA79F !default;
+$united-gray-600: #868e96 !default;
+$united-gray-700: #495057 !default;
+$united-gray-800: #333 !default;
+$united-gray-900: #212529 !default;
+$united-black:    #000 !default;
+
+$united-blue:    #007bff !default;
+$united-indigo:  #6610f2 !default;
+$united-purple:  #772953 !default;
+$united-pink:    #e83e8c !default;
+$united-red:     #DF382C !default;
+$united-orange:  #E95420 !default;
+$united-yellow:  #EFB73E !default;
+$united-green:   #38B44A !default;
+$united-teal:    #20c997 !default;
+$united-cyan:    #17a2b8 !default;
+
+$united-primary:       $united-orange !default;
+$united-secondary:     $united-gray-500 !default;
+$united-success:       $united-green !default;
+$united-info:          $united-cyan !default;
+$united-warning:       $united-yellow !default;
+$united-danger:        $united-red !default;
+$united-light:         $united-gray-200 !default;
+$united-dark:          $united-purple !default;
+
+$united-default-color: $united-gray-100;
+$united-default-bg: $united-gray-800;
+$united-default-dark-bg: $united-gray-900;
+$united-default-header-bg: $united-gray-900;
+$united-default-border: $united-gray-800;;
+
+
+$item-color: (
+	"primary": $united-gray-800 ,
+	"secondary": $united-gray-600 ,
+	"success": $united-green ,
+	"danger": $united-red ,
+	"warning": $united-yellow ,
+	"info": $united-cyan ,
+	"light": $united-gray-200 ,
+	"dark": $united-gray-900 
+);
+
+$item-bg: (
+		"primary": #0069d9,
+		"secondary": #5a6268,
+		"success": #218838,
+		"danger": #c82333,
+		"warning": #e0a800,
+		"info": #138496,
+		"light": #e2e6ea,
+		"dark": #23272b,
+);
+
+$item-hover: (
+		"primary": #0069d9,
+		"secondary": #5a6268,
+		"success": #218838,
+		"danger": #c82333,
+		"warning": #e0a800,
+		"info": #138496,
+		"light": #e2e6ea,
+		"dark": #23272b,
+);
+
+$united-color-lighten: 10;
+// --------------- Customized ---------------
+$united-color: $united-default-color;
+$united-bg: $united-default-dark-bg;
+$united-window-color: $united-default-color;
+$united-window-bg: $united-default-dark-bg;
+$united-window-header-color: $united-default-color;
+$united-window-header-bg: $united-default-header-bg;
+$united-window-border: $united-default-border;
+$united-card-color: $united-default-color;
+$united-card-bg: $united-default-bg;
+$united-card-header-color: $united-default-color;
+$united-card-header-bg: $united-default-header-bg;
+$united-card-hover-bg: $united-default-dark-bg;
+$united-card-border: $united-default-border;
+$united-form-color: $united-default-color;
+$united-form-placeholder-color: #666;
+$united-form-bg: #171717;
+$united-form-hover-bg: #242424;
+$united-form-border: $united-default-border;
+$united-form-addon-color: $united-default-color;
+$united-form-addon-bg: $united-default-header-bg;
+[data-theme="united"] {
+	color: $united-color;
+	background-color: $united-bg;
+	.bg-darkmode-dark {
+		background-color: #343a40 !important
+	}
+	.bg-darkmode-light {
+		background-color: #f8f9fa !important;
+	}
+	// --------------- Typography ---------------
+	pre {
+		color: $united-color;
+	}
+	// --------------- Images ---------------
+	img.icon,
+	svg.icon {
+		filter: invert(1);
+	}
+	// --------------- Tables ---------------
+	.table {
+		color: $united-color;
+	}
+	.table-hover tbody tr:hover {
+		color: $united-color;
+	}
+	// --------------- List Groups ---------------
+	.list-group-item {
+		color: $united-card-color;
+		background-color: $united-card-bg;
+		border-color: $united-card-border;
+		&.list-group-item-action:focus,
+		&.list-group-item-action:hover {
+			background-color: $united-card-hover-bg;
+		}
+	}
+	.list-group-item.active {
+		&,
+		&:focus,
+		&:hover {
+			color: map_get($item-color, "primary");
+			background-color: map_get($item-bg, "primary");
+			border-color: map_get($item-bg, "primary");
+		}
+	}
+	@each $name in map_keys($item-color) {
+		.list-group-item-#{$name} {
+			color: map_get($item-color, $name);
+			background-color: map_get($item-bg, $name);
+			border-color: map_get($item-bg, $name);
+			&.list-group-item-action:focus,
+			&.list-group-item-action:hover {
+				color: map_get($item-color, $name);
+				background-color: map_get($item-hover, $name);
+			}
+		}
+	}
+	// --------------- Buttons ---------------
+	.dropdown-menu {
+		background-color: $united-form-bg;
+		border-color: $united-form-border;
+	}
+	.dropdown-item:not(:disabled):not(.disabled) {
+		color: $united-form-color;
+	}
+	.dropdown-item:focus,
+	.dropdown-item:hover {
+		background-color: $united-form-hover-bg;
+	}
+	.dropdown-divider {
+		border-top-color: $united-form-border;
+	}
+	// --------------- Jumbotron ---------------
+	.jumbotron {
+		color: $united-card-color;
+		background-color: $united-card-bg;
+		border-color: $united-card-border;
+	}
+	// --------------- Cards ---------------
+	.card {
+		color: $united-card-color;
+		background-color: $united-card-bg;
+		border-color: $united-card-border;
+	}
+	.card-header,
+	.card-footer {
+		color: $united-card-header-color;
+		background-color: $united-card-header-bg;
+		border-top-color: $united-card-border;
+		border-bottom-color: $united-card-border;
+	}
+	// --------------- Forms ---------------
+	.form-control {
+		color: $united-form-color;
+		background-color: $united-form-bg;
+		border-color: $united-form-border;
+	}
+	.form-control-plaintext {
+		color: $united-form-color;
+	}
+	.custom-select {
+		color: $united-form-color;
+		background-color: $united-form-bg;
+		border-color: $united-form-border;
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23ffffff' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e");
+	}
+	.custom-file-label {
+		color: $united-form-color;
+		background-color: $united-form-bg;
+		border-color: $united-form-border;
+		&:after {
+			color: $united-form-addon-color;
+			background-color: $united-form-addon-bg;
+		}
+	}
+	.input-group-text {
+		color: $united-form-addon-color;
+		background-color: $united-form-addon-bg;
+		border-color: $united-form-border;
+	}
+	.page-item .page-link {
+		border-color: $united-form-border;
+	}
+	.page-item.disabled .page-link {
+		background-color: $united-form-bg;
+		color: $united-form-color;
+	}
+	.page-item:not(.active) .page-link {
+		background-color: $united-form-bg;
+	}
+	.page-item:not(.active) .page-link:hover {
+		background-color: $united-form-hover-bg;
+	}
+	// --------------- Navs ---------------
+	.breadcrumb {
+		background-color: $united-form-bg;
+		border-color: $united-form-border;
+	}
+	.nav-tabs {
+		border-bottom-color: $united-form-border;
+		.nav-link:focus,
+		.nav-link:hover {
+			background-color: $united-form-hover-bg;
+			border-color: $united-form-border;
+		}
+		.nav-item.show .nav-link,
+		.nav-link.active {
+			color: $united-color;
+			background-color: $united-bg;
+			border-color: $united-form-border;
+			border-bottom-color: $united-bg;
+		}
+	}
+	.nav-tabs.card-header-tabs {
+		.nav-item.show .nav-link,
+		.nav-link.active {
+			background-color: $united-card-bg;
+			border-bottom-color: $united-card-bg;
+		}
+	}
+	// --------------- Popovers ---------------
+	.popover {
+		background-color: $united-window-bg;
+		border-color: $united-window-border;
+	}
+	.popover-body {
+		color: $united-color;
+	}
+	.popover-header {
+		background-color: $united-window-header-bg;
+		border-bottom-color: $united-window-border;
+	}
+	@each $pos in (top,
+	right,
+	bottom,
+	left) {
+		.bs-popover-#{$pos},
+		.bs-popover-auto[x-placement^="#{$pos}"] {
+			&>.arrow::before {
+				border-#{$pos}-color: $united-window-border;
+			}
+			&>.arrow::after {
+				border-#{$pos}-color: $united-window-bg;
+			}
+		}
+	}
+	// --------------- Progress Bars --------------- */
+	.progress {
+		background-color: $united-form-bg;
+		border-color: $united-form-border;
+	}
+	// --------------- Modals ---------------
+	.close {
+		color: $united-color;
+		opacity: 1;
+	}
+	.modal-header,
+	.modal-footer {
+		color: $united-window-header-color;
+		background-color: $united-window-header-bg;
+		border-bottom-color: $united-window-border;
+		border-top-color: $united-window-border;
+	}
+	.modal-content {
+		color: $united-window-color;
+		background-color: $united-window-bg;
+		border-color: $united-card-border;
+	}
+	// --------------- header, breadcrumb, footer, navbar --------------- */
+	.app-header {
+		background-color: $united-default-bg;
+		border-bottom: 0px solid $united-default-dark-bg;
+		color: $united-default-color;
+	}
+	.breadcrumb {
+		background-color: $united-default-bg;
+		border: 1px solid $united-default-dark-bg;
+		color: $united-default-color;
+	}
+	.app-footer {
+		background-color: $united-default-bg;
+		border: 1px solid $united-default-dark-bg;
+		color: $united-default-color;
+	}
+	.navbar-nav .nav-link:hover {
+		color: $united-default-color;
+	}
+	.ngx-table {
+		color: $united-default-color;
+	}
+	//
+	// Base styles
+	//
+	.brand-card {
+		background-color: $united-card-bg;
+	}
+	.brand-card-header {
+
+		i {
+			font-size: 2rem;
+			color: #fff;
+		}
+
+	}
+	.brand-card-body {
+		>*:not(:last-child) {
+			border-right: 1px solid $united-card-border;
+		}
+	}
+	// stylelint-disable selector-max-universal
+	// Right-to-Left Support
+	*[dir="rtl"] {
+		.brand-card-body {
+			>*:not(:last-child) {
+				border-left: 1px solid $united-card-border;
+			}
+		}
+	}
+}

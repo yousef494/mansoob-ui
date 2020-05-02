@@ -47,7 +47,6 @@ module.exports = function (app, Mysql, urlPrefix, security) {
              WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '18:00:01' AND '24:59:59' THEN 4\
         END as quarter, COUNT(*) as count, MAX(level) - MIN(level) as consumption\
         FROM " + Mysql.escapeId(modelName) + "\
-        WHERE user_id = ? \
         GROUP BY DATE(" + Mysql.escapeId('timestamp') + "),\
         CASE WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '00:00:00' AND '06:00:00' THEN 1\
              WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '06:00:01' AND '12:00:00' THEN 2\

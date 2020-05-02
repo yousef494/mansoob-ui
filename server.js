@@ -28,6 +28,7 @@ var env = process.env.NODE_ENV || 'development';
 Mysql.connect(config[env].mysqlOptions);
 
 app.use(async (req, res, next) => {
+
     if (req.headers["x-access-token"] || req.headers["x-access-token-api"] ) {
         let accessToken = req.headers["x-access-token"];
         let device_id = '';
@@ -42,9 +43,6 @@ app.use(async (req, res, next) => {
                 return res.status(401).json({ error: "JWT token has expired, please login to obtain a new one" });
             }
             let user_id = userId;
-            console.log("userId: "+user_id);
-            console.log("user_id: "+user_id);
-            console.log("exp: "+exp);
             Mysql.record('user', { id: user_id })
                 .then(function (user) {
                     if (!user) { return next('User does not exist'); }

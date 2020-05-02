@@ -12,15 +12,21 @@ export class DeviceComponent implements OnInit {
 
   @ViewChild('table', { static: false }) table;
 
-  public record = {id:'', name:'', tank_height:'', tank_capacity: '' ,
-   email_to: '', access_token: ''};
+  public record = {
+    id: '', name: '', tank_height: '', tank_capacity: '',
+    email_to: '', access_token: ''
+  };
+  public record_cpy = {
+    id: '', name: '', tank_height: '', tank_capacity: '',
+    email_to: '', access_token: ''
+  };
   public recordSelected = false;
 
   constructor(
-    private auth: AuthService, 
+    private auth: AuthService,
     private deiveSvr: DeviceService,
     private toastService: ToastrService
-    ) {}
+  ) { }
 
   options = {
     name: 'device',
@@ -60,18 +66,19 @@ export class DeviceComponent implements OnInit {
       create: false
     }
   ];
-  
+
 
   showDetials($event) {
     if ($event == "unselected") {
       this.recordSelected = false;
     } else {
       this.record = Object.assign(this.record, $event);
+      this.record_cpy = Object.assign(this.record, $event);
       this.recordSelected = true;
     }
   }
 
-  generateAccessToken(){
+  generateAccessToken() {
     this.auth.generateAPIAccessToken(this.record['id']).subscribe(
       res => {
         this.record['access_token'] = res['accessToken'];
@@ -81,18 +88,24 @@ export class DeviceComponent implements OnInit {
     );
   }
 
-  updateDetails(){
+  resetDetails(){
+    this.record = this.record_cpy;
+  }
+
+  updateDetails() {
     console.log(this.record);
     this.deiveSvr.updatetItem(this.record['id'],
-    { name: this.record['name'], tank_height: this.record['tank_height'],
-     tank_capacity: this.record['tank_capacity'] , email_to: this.record['email_to'] } ).subscribe(
-      res => {
-        this.toastService.success("Success", "Record  was updated successfully");
-      },
-      error => {
-        this.toastService.error("Error!", "Updaing record was failed");
-      }
-    );
+      {
+        name: this.record['name'], tank_height: this.record['tank_height'],
+        tank_capacity: this.record['tank_capacity'], email_to: this.record['email_to']
+      }).subscribe(
+        res => {
+          this.toastService.success("Success", "Record  was updated successfully");
+        },
+        error => {
+          this.toastService.error("Error!", "Updaing record was failed");
+        }
+      );
   }
 
 

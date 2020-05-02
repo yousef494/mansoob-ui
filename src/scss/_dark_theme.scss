@@ -1,0 +1,357 @@
+//name: cssscript
+// =============== Variables ===============
+
+// --------------- Defaults ---------------
+
+$cssscript-white:    #fff !default;
+$cssscript-gray-100: #f8f9fa !default;
+$cssscript-gray-200: #e9ecef !default;
+$cssscript-gray-300: #dee2e6 !default;
+$cssscript-gray-400: #ced4da !default;
+$cssscript-gray-500: #999 !default;
+$cssscript-gray-600: #7A8288 !default;
+$cssscript-gray-700: #52575C !default;
+$cssscript-gray-800: #3A3F44 !default;
+$cssscript-gray-900: #272B30 !default;
+$cssscript-black:    #000 !default;
+
+$cssscript-blue:    #007bff !default;
+$cssscript-indigo:  #6610f2 !default;
+$cssscript-purple:  #6f42c1 !default;
+$cssscript-pink:    #e83e8c !default;
+$cssscript-red:     #ee5f5b !default;
+$cssscript-orange:  #fd7e14 !default;
+$cssscript-yellow:  #f89406 !default;
+$cssscript-green:   #62c462 !default;
+$cssscript-teal:    #20c997 !default;
+$cssscript-cyan:    #5bc0de !default;
+
+$cssscript-primary:       $cssscript-gray-800 !default;
+$cssscript-secondary:     $cssscript-gray-600 !default;
+$cssscript-success:       $cssscript-green !default;
+$cssscript-info:          $cssscript-cyan !default;
+$cssscript-warning:       $cssscript-yellow !default;
+$cssscript-danger:        $cssscript-red !default;
+$cssscript-light:         $cssscript-gray-200 !default;
+$cssscript-dark:          $cssscript-gray-900 !default;
+
+$cssscript-default-color: $cssscript-gray-100;
+$cssscript-default-bg: $cssscript-gray-800;
+$cssscript-default-dark-bg: $cssscript-gray-900;
+$cssscript-default-header-bg: $cssscript-gray-900;
+$cssscript-default-border: $cssscript-gray-800;;
+
+
+$item-color: (
+	"primary": $cssscript-gray-800 ,
+	"secondary": $cssscript-gray-600 ,
+	"success": $cssscript-green ,
+	"danger": $cssscript-red ,
+	"warning": $cssscript-yellow ,
+	"info": $cssscript-cyan ,
+	"light": $cssscript-gray-200 ,
+	"dark": $cssscript-gray-900 
+);
+
+$item-bg: (
+		"primary": #0069d9,
+		"secondary": #5a6268,
+		"success": #218838,
+		"danger": #c82333,
+		"warning": #e0a800,
+		"info": #138496,
+		"light": #e2e6ea,
+		"dark": #23272b,
+);
+
+$item-hover: (
+		"primary": #0069d9,
+		"secondary": #5a6268,
+		"success": #218838,
+		"danger": #c82333,
+		"warning": #e0a800,
+		"info": #138496,
+		"light": #e2e6ea,
+		"dark": #23272b,
+);
+
+$cssscript-color-lighten: 10;
+// --------------- Customized ---------------
+$cssscript-color: $cssscript-default-color;
+$cssscript-bg: $cssscript-default-dark-bg;
+$cssscript-window-color: $cssscript-default-color;
+$cssscript-window-bg: $cssscript-default-dark-bg;
+$cssscript-window-header-color: $cssscript-default-color;
+$cssscript-window-header-bg: $cssscript-default-header-bg;
+$cssscript-window-border: $cssscript-default-border;
+$cssscript-card-color: $cssscript-default-color;
+$cssscript-card-bg: $cssscript-default-bg;
+$cssscript-card-header-color: $cssscript-default-color;
+$cssscript-card-header-bg: $cssscript-default-header-bg;
+$cssscript-card-hover-bg: $cssscript-default-dark-bg;
+$cssscript-card-border: $cssscript-default-border;
+$cssscript-form-color: $cssscript-default-color;
+$cssscript-form-placeholder-color: #666;
+$cssscript-form-bg: #171717;
+$cssscript-form-hover-bg: #242424;
+$cssscript-form-border: $cssscript-default-border;
+$cssscript-form-addon-color: $cssscript-default-color;
+$cssscript-form-addon-bg: $cssscript-default-header-bg;
+[data-theme="dark"] {
+	color: $cssscript-color;
+	background-color: $cssscript-bg;
+	.bg-darkmode-dark {
+		background-color: #343a40 !important
+	}
+	.bg-darkmode-light {
+		background-color: #f8f9fa !important;
+	}
+	// --------------- Typography ---------------
+	pre {
+		color: $cssscript-color;
+	}
+	// --------------- Images ---------------
+	img.icon,
+	svg.icon {
+		filter: invert(1);
+	}
+	// --------------- Tables ---------------
+	.table {
+		color: $cssscript-color;
+	}
+	.table-hover tbody tr:hover {
+		color: $cssscript-color;
+	}
+	// --------------- List Groups ---------------
+	.list-group-item {
+		color: $cssscript-card-color;
+		background-color: $cssscript-card-bg;
+		border-color: $cssscript-card-border;
+		&.list-group-item-action:focus,
+		&.list-group-item-action:hover {
+			background-color: $cssscript-card-hover-bg;
+		}
+	}
+	.list-group-item.active {
+		&,
+		&:focus,
+		&:hover {
+			color: map_get($item-color, "primary");
+			background-color: map_get($item-bg, "primary");
+			border-color: map_get($item-bg, "primary");
+		}
+	}
+	@each $name in map_keys($item-color) {
+		.list-group-item-#{$name} {
+			color: map_get($item-color, $name);
+			background-color: map_get($item-bg, $name);
+			border-color: map_get($item-bg, $name);
+			&.list-group-item-action:focus,
+			&.list-group-item-action:hover {
+				color: map_get($item-color, $name);
+				background-color: map_get($item-hover, $name);
+			}
+		}
+	}
+	// --------------- Buttons ---------------
+	.dropdown-menu {
+		background-color: $cssscript-form-bg;
+		border-color: $cssscript-form-border;
+	}
+	.dropdown-item:not(:disabled):not(.disabled) {
+		color: $cssscript-form-color;
+	}
+	.dropdown-item:focus,
+	.dropdown-item:hover {
+		background-color: $cssscript-form-hover-bg;
+	}
+	.dropdown-divider {
+		border-top-color: $cssscript-form-border;
+	}
+	// --------------- Jumbotron ---------------
+	.jumbotron {
+		color: $cssscript-card-color;
+		background-color: $cssscript-card-bg;
+		border-color: $cssscript-card-border;
+	}
+	// --------------- Cards ---------------
+	.card {
+		color: $cssscript-card-color;
+		background-color: $cssscript-card-bg;
+		border-color: $cssscript-card-border;
+	}
+	.card-header,
+	.card-footer {
+		color: $cssscript-card-header-color;
+		background-color: $cssscript-card-header-bg;
+		border-top-color: $cssscript-card-border;
+		border-bottom-color: $cssscript-card-border;
+	}
+	// --------------- Forms ---------------
+	.form-control {
+		color: $cssscript-form-color;
+		background-color: $cssscript-form-bg;
+		border-color: $cssscript-form-border;
+	}
+	.form-control-plaintext {
+		color: $cssscript-form-color;
+	}
+	.custom-select {
+		color: $cssscript-form-color;
+		background-color: $cssscript-form-bg;
+		border-color: $cssscript-form-border;
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23ffffff' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e");
+	}
+	.custom-file-label {
+		color: $cssscript-form-color;
+		background-color: $cssscript-form-bg;
+		border-color: $cssscript-form-border;
+		&:after {
+			color: $cssscript-form-addon-color;
+			background-color: $cssscript-form-addon-bg;
+		}
+	}
+	.input-group-text {
+		color: $cssscript-form-addon-color;
+		background-color: $cssscript-form-addon-bg;
+		border-color: $cssscript-form-border;
+	}
+	.page-item .page-link {
+		border-color: $cssscript-form-border;
+	}
+	.page-item.disabled .page-link {
+		background-color: $cssscript-form-bg;
+		color: $cssscript-form-color;
+	}
+	.page-item:not(.active) .page-link {
+		background-color: $cssscript-form-bg;
+	}
+	.page-item:not(.active) .page-link:hover {
+		background-color: $cssscript-form-hover-bg;
+	}
+	// --------------- Navs ---------------
+	.breadcrumb {
+		background-color: $cssscript-form-bg;
+		border-color: $cssscript-form-border;
+	}
+	.nav-tabs {
+		border-bottom-color: $cssscript-form-border;
+		.nav-link:focus,
+		.nav-link:hover {
+			background-color: $cssscript-form-hover-bg;
+			border-color: $cssscript-form-border;
+		}
+		.nav-item.show .nav-link,
+		.nav-link.active {
+			color: $cssscript-color;
+			background-color: $cssscript-bg;
+			border-color: $cssscript-form-border;
+			border-bottom-color: $cssscript-bg;
+		}
+	}
+	.nav-tabs.card-header-tabs {
+		.nav-item.show .nav-link,
+		.nav-link.active {
+			background-color: $cssscript-card-bg;
+			border-bottom-color: $cssscript-card-bg;
+		}
+	}
+	// --------------- Popovers ---------------
+	.popover {
+		background-color: $cssscript-window-bg;
+		border-color: $cssscript-window-border;
+	}
+	.popover-body {
+		color: $cssscript-color;
+	}
+	.popover-header {
+		background-color: $cssscript-window-header-bg;
+		border-bottom-color: $cssscript-window-border;
+	}
+	@each $pos in (top,
+	right,
+	bottom,
+	left) {
+		.bs-popover-#{$pos},
+		.bs-popover-auto[x-placement^="#{$pos}"] {
+			&>.arrow::before {
+				border-#{$pos}-color: $cssscript-window-border;
+			}
+			&>.arrow::after {
+				border-#{$pos}-color: $cssscript-window-bg;
+			}
+		}
+	}
+	// --------------- Progress Bars --------------- */
+	.progress {
+		background-color: $cssscript-form-bg;
+		border-color: $cssscript-form-border;
+	}
+	// --------------- Modals ---------------
+	.close {
+		color: $cssscript-color;
+		opacity: 1;
+	}
+	.modal-header,
+	.modal-footer {
+		color: $cssscript-window-header-color;
+		background-color: $cssscript-window-header-bg;
+		border-bottom-color: $cssscript-window-border;
+		border-top-color: $cssscript-window-border;
+	}
+	.modal-content {
+		color: $cssscript-window-color;
+		background-color: $cssscript-window-bg;
+		border-color: $cssscript-card-border;
+	}
+	// --------------- header, breadcrumb, footer, navbar --------------- */
+	.app-header {
+		background-color: $cssscript-default-bg;
+		border-bottom: 0px solid $cssscript-default-dark-bg;
+		color: $cssscript-default-color;
+	}
+	.breadcrumb {
+		background-color: $cssscript-default-bg;
+		border: 1px solid $cssscript-default-dark-bg;
+		color: $cssscript-default-color;
+	}
+	.app-footer {
+		background-color: $cssscript-default-bg;
+		border: 1px solid $cssscript-default-dark-bg;
+		color: $cssscript-default-color;
+	}
+	.navbar-nav .nav-link:hover {
+		color: $cssscript-default-color;
+	}
+	.ngx-table {
+		color: $cssscript-default-color;
+	}
+	//
+	// Base styles
+	//
+	.brand-card {
+		background-color: $cssscript-card-bg;
+	}
+	.brand-card-header {
+
+		i {
+			font-size: 2rem;
+			color: #fff;
+		}
+
+	}
+	.brand-card-body {
+		>*:not(:last-child) {
+			border-right: 1px solid $cssscript-card-border;
+		}
+	}
+	// stylelint-disable selector-max-universal
+	// Right-to-Left Support
+	*[dir="rtl"] {
+		.brand-card-body {
+			>*:not(:last-child) {
+				border-left: 1px solid $cssscript-card-border;
+			}
+		}
+	}
+}

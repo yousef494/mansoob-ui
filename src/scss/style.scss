@@ -1,10 +1,21 @@
 // If you want to override variables do it here
+
+
 //@import "variables";
+
+// Import themes (it will overide @import variables"
+@import 'dark_theme';
+@import 'united_theme';
+@import 'puls_theme';
 
 // Import styles
 @import "~@coreui/coreui/scss/coreui";
 
+
+
 // If you want to add something do it here
 //@import "custom";
 
+
 @import "~ngx-easy-table/style.scss";
+

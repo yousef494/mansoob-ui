@@ -1,0 +1,357 @@
+//name: puls
+// =============== Variables ===============
+
+// --------------- Defaults ---------------
+
+$puls-white:    #fff !default;
+$puls-gray-100: #fafafa !default;
+$puls-gray-200: #F9F8FC !default;
+$puls-gray-300: #EDEDED !default;
+$puls-gray-400: #cbc8d0 !default;
+$puls-gray-500: #adb5bd !default;
+$puls-gray-600: #868e96 !default;
+$puls-gray-700: #444 !default;
+$puls-gray-800: #343a40 !default;
+$puls-gray-900: #17141F !default;
+$puls-black:    #000 !default;
+
+$puls-blue:    #007bff !default;
+$puls-indigo:  #6610f2 !default;
+$puls-purple:  #593196 !default;
+$puls-pink:    #e83e8c !default;
+$puls-red:     #FC3939 !default;
+$puls-orange:  #fd7e14 !default;
+$puls-yellow:  #EFA31D !default;
+$puls-green:   #13B955 !default;
+$puls-teal:    #20c997 !default;
+$puls-cyan:    #009CDC !default;
+
+$puls-primary:       $puls-purple !default;
+$puls-secondary:     #A991D4 !default;
+$puls-success:       $puls-green !default;
+$puls-info:          $puls-cyan !default;
+$puls-warning:       $puls-yellow !default;
+$puls-danger:        $puls-red !default;
+$puls-light:         $puls-gray-200 !default;
+$puls-dark:          $puls-gray-900 !default;
+
+$puls-default-color: $puls-gray-100;
+$puls-default-bg: $puls-gray-800;
+$puls-default-dark-bg: $puls-gray-900;
+$puls-default-header-bg: $puls-gray-900;
+$puls-default-border: $puls-gray-800;;
+
+
+$item-color: (
+	"primary": $puls-gray-800 ,
+	"secondary": $puls-gray-600 ,
+	"success": $puls-green ,
+	"danger": $puls-red ,
+	"warning": $puls-yellow ,
+	"info": $puls-cyan ,
+	"light": $puls-gray-200 ,
+	"dark": $puls-gray-900 
+);
+
+$item-bg: (
+		"primary": #0069d9,
+		"secondary": #5a6268,
+		"success": #218838,
+		"danger": #c82333,
+		"warning": #e0a800,
+		"info": #138496,
+		"light": #e2e6ea,
+		"dark": #23272b,
+);
+
+$item-hover: (
+		"primary": #0069d9,
+		"secondary": #5a6268,
+		"success": #218838,
+		"danger": #c82333,
+		"warning": #e0a800,
+		"info": #138496,
+		"light": #e2e6ea,
+		"dark": #23272b,
+);
+
+$puls-color-lighten: 10;
+// --------------- Customized ---------------
+$puls-color: $puls-default-color;
+$puls-bg: $puls-default-dark-bg;
+$puls-window-color: $puls-default-color;
+$puls-window-bg: $puls-default-dark-bg;
+$puls-window-header-color: $puls-default-color;
+$puls-window-header-bg: $puls-default-header-bg;
+$puls-window-border: $puls-default-border;
+$puls-card-color: $puls-default-color;
+$puls-card-bg: $puls-default-bg;
+$puls-card-header-color: $puls-default-color;
+$puls-card-header-bg: $puls-default-header-bg;
+$puls-card-hover-bg: $puls-default-dark-bg;
+$puls-card-border: $puls-default-border;
+$puls-form-color: $puls-default-color;
+$puls-form-placeholder-color: #666;
+$puls-form-bg: #171717;
+$puls-form-hover-bg: #242424;
+$puls-form-border: $puls-default-border;
+$puls-form-addon-color: $puls-default-color;
+$puls-form-addon-bg: $puls-default-header-bg;
+[data-theme="puls"] {
+	color: $puls-color;
+	background-color: $puls-bg;
+	.bg-darkmode-dark {
+		background-color: #343a40 !important
+	}
+	.bg-darkmode-light {
+		background-color: #f8f9fa !important;
+	}
+	// --------------- Typography ---------------
+	pre {
+		color: $puls-color;
+	}
+	// --------------- Images ---------------
+	img.icon,
+	svg.icon {
+		filter: invert(1);
+	}
+	// --------------- Tables ---------------
+	.table {
+		color: $puls-color;
+	}
+	.table-hover tbody tr:hover {
+		color: $puls-color;
+	}
+	// --------------- List Groups ---------------
+	.list-group-item {
+		color: $puls-card-color;
+		background-color: $puls-card-bg;
+		border-color: $puls-card-border;
+		&.list-group-item-action:focus,
+		&.list-group-item-action:hover {
+			background-color: $puls-card-hover-bg;
+		}
+	}
+	.list-group-item.active {
+		&,
+		&:focus,
+		&:hover {
+			color: map_get($item-color, "primary");
+			background-color: map_get($item-bg, "primary");
+			border-color: map_get($item-bg, "primary");
+		}
+	}
+	@each $name in map_keys($item-color) {
+		.list-group-item-#{$name} {
+			color: map_get($item-color, $name);
+			background-color: map_get($item-bg, $name);
+			border-color: map_get($item-bg, $name);
+			&.list-group-item-action:focus,
+			&.list-group-item-action:hover {
+				color: map_get($item-color, $name);
+				background-color: map_get($item-hover, $name);
+			}
+		}
+	}
+	// --------------- Buttons ---------------
+	.dropdown-menu {
+		background-color: $puls-form-bg;
+		border-color: $puls-form-border;
+	}
+	.dropdown-item:not(:disabled):not(.disabled) {
+		color: $puls-form-color;
+	}
+	.dropdown-item:focus,
+	.dropdown-item:hover {
+		background-color: $puls-form-hover-bg;
+	}
+	.dropdown-divider {
+		border-top-color: $puls-form-border;
+	}
+	// --------------- Jumbotron ---------------
+	.jumbotron {
+		color: $puls-card-color;
+		background-color: $puls-card-bg;
+		border-color: $puls-card-border;
+	}
+	// --------------- Cards ---------------
+	.card {
+		color: $puls-card-color;
+		background-color: $puls-card-bg;
+		border-color: $puls-card-border;
+	}
+	.card-header,
+	.card-footer {
+		color: $puls-card-header-color;
+		background-color: $puls-card-header-bg;
+		border-top-color: $puls-card-border;
+		border-bottom-color: $puls-card-border;
+	}
+	// --------------- Forms ---------------
+	.form-control {
+		color: $puls-form-color;
+		background-color: $puls-form-bg;
+		border-color: $puls-form-border;
+	}
+	.form-control-plaintext {
+		color: $puls-form-color;
+	}
+	.custom-select {
+		color: $puls-form-color;
+		background-color: $puls-form-bg;
+		border-color: $puls-form-border;
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23ffffff' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e");
+	}
+	.custom-file-label {
+		color: $puls-form-color;
+		background-color: $puls-form-bg;
+		border-color: $puls-form-border;
+		&:after {
+			color: $puls-form-addon-color;
+			background-color: $puls-form-addon-bg;
+		}
+	}
+	.input-group-text {
+		color: $puls-form-addon-color;
+		background-color: $puls-form-addon-bg;
+		border-color: $puls-form-border;
+	}
+	.page-item .page-link {
+		border-color: $puls-form-border;
+	}
+	.page-item.disabled .page-link {
+		background-color: $puls-form-bg;
+		color: $puls-form-color;
+	}
+	.page-item:not(.active) .page-link {
+		background-color: $puls-form-bg;
+	}
+	.page-item:not(.active) .page-link:hover {
+		background-color: $puls-form-hover-bg;
+	}
+	// --------------- Navs ---------------
+	.breadcrumb {
+		background-color: $puls-form-bg;
+		border-color: $puls-form-border;
+	}
+	.nav-tabs {
+		border-bottom-color: $puls-form-border;
+		.nav-link:focus,
+		.nav-link:hover {
+			background-color: $puls-form-hover-bg;
+			border-color: $puls-form-border;
+		}
+		.nav-item.show .nav-link,
+		.nav-link.active {
+			color: $puls-color;
+			background-color: $puls-bg;
+			border-color: $puls-form-border;
+			border-bottom-color: $puls-bg;
+		}
+	}
+	.nav-tabs.card-header-tabs {
+		.nav-item.show .nav-link,
+		.nav-link.active {
+			background-color: $puls-card-bg;
+			border-bottom-color: $puls-card-bg;
+		}
+	}
+	// --------------- Popovers ---------------
+	.popover {
+		background-color: $puls-window-bg;
+		border-color: $puls-window-border;
+	}
+	.popover-body {
+		color: $puls-color;
+	}
+	.popover-header {
+		background-color: $puls-window-header-bg;
+		border-bottom-color: $puls-window-border;
+	}
+	@each $pos in (top,
+	right,
+	bottom,
+	left) {
+		.bs-popover-#{$pos},
+		.bs-popover-auto[x-placement^="#{$pos}"] {
+			&>.arrow::before {
+				border-#{$pos}-color: $puls-window-border;
+			}
+			&>.arrow::after {
+				border-#{$pos}-color: $puls-window-bg;
+			}
+		}
+	}
+	// --------------- Progress Bars --------------- */
+	.progress {
+		background-color: $puls-form-bg;
+		border-color: $puls-form-border;
+	}
+	// --------------- Modals ---------------
+	.close {
+		color: $puls-color;
+		opacity: 1;
+	}
+	.modal-header,
+	.modal-footer {
+		color: $puls-window-header-color;
+		background-color: $puls-window-header-bg;
+		border-bottom-color: $puls-window-border;
+		border-top-color: $puls-window-border;
+	}
+	.modal-content {
+		color: $puls-window-color;
+		background-color: $puls-window-bg;
+		border-color: $puls-card-border;
+	}
+	// --------------- header, breadcrumb, footer, navbar --------------- */
+	.app-header {
+		background-color: $puls-default-bg;
+		border-bottom: 0px solid $puls-default-dark-bg;
+		color: $puls-default-color;
+	}
+	.breadcrumb {
+		background-color: $puls-default-bg;
+		border: 1px solid $puls-default-dark-bg;
+		color: $puls-default-color;
+	}
+	.app-footer {
+		background-color: $puls-default-bg;
+		border: 1px solid $puls-default-dark-bg;
+		color: $puls-default-color;
+	}
+	.navbar-nav .nav-link:hover {
+		color: $puls-default-color;
+	}
+	.ngx-table {
+		color: $puls-default-color;
+	}
+	//
+	// Base styles
+	//
+	.brand-card {
+		background-color: $puls-card-bg;
+	}
+	.brand-card-header {
+
+		i {
+			font-size: 2rem;
+			color: #fff;
+		}
+
+	}
+	.brand-card-body {
+		>*:not(:last-child) {
+			border-right: 1px solid $puls-card-border;
+		}
+	}
+	// stylelint-disable selector-max-universal
+	// Right-to-Left Support
+	*[dir="rtl"] {
+		.brand-card-body {
+			>*:not(:last-child) {
+				border-left: 1px solid $puls-card-border;
+			}
+		}
+	}
+}
