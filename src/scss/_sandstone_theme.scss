@@ -1,0 +1,357 @@
+//name: sandstone
+// =============== Variables ===============
+
+// --------------- Defaults ---------------
+
+$sandstone-white:    #fff !default;
+$sandstone-gray-100: #f8f9fa !default;
+$sandstone-gray-200: #F8F5F0 !default;
+$sandstone-gray-300: #DFD7CA !default;
+$sandstone-gray-400: #ced4da !default;
+$sandstone-gray-500: #98978B !default;
+$sandstone-gray-600: #8E8C84 !default;
+$sandstone-gray-700: #495057 !default;
+$sandstone-gray-800: #3E3F3A !default;
+$sandstone-gray-900: #212529 !default;
+$sandstone-black:    #000 !default;
+
+$sandstone-blue:    #325D88 !default;
+$sandstone-indigo:  #6610f2 !default;
+$sandstone-purple:  #6f42c1 !default;
+$sandstone-pink:    #e83e8c !default;
+$sandstone-red:     #d9534f !default;
+$sandstone-orange:  #F47C3C !default;
+$sandstone-yellow:  #ffc107 !default;
+$sandstone-green:   #93C54B !default;
+$sandstone-teal:    #20c997 !default;
+$sandstone-cyan:    #29ABE0 !default;
+
+$sandstone-primary:       $sandstone-blue !default;
+$sandstone-secondary:     $sandstone-gray-600 !default;
+$sandstone-success:       $sandstone-green !default;
+$sandstone-info:          $sandstone-cyan !default;
+$sandstone-warning:       $sandstone-orange !default;
+$sandstone-danger:        $sandstone-red !default;
+$sandstone-light:         $sandstone-gray-200 !default;
+$sandstone-dark:          $sandstone-gray-800 !default;
+
+$sandstone-default-color: $sandstone-gray-100;
+$sandstone-default-bg: $sandstone-gray-800;
+$sandstone-default-dark-bg: $sandstone-gray-900;
+$sandstone-default-header-bg: $sandstone-gray-900;
+$sandstone-default-border: $sandstone-gray-800;;
+
+
+$item-color: (
+	"primary": $sandstone-gray-800 ,
+	"secondary": $sandstone-gray-600 ,
+	"success": $sandstone-green ,
+	"danger": $sandstone-red ,
+	"warning": $sandstone-yellow ,
+	"info": $sandstone-cyan ,
+	"light": $sandstone-gray-200 ,
+	"dark": $sandstone-gray-900 
+);
+
+$item-bg: (
+		"primary": #0069d9,
+		"secondary": #5a6268,
+		"success": #218838,
+		"danger": #c82333,
+		"warning": #e0a800,
+		"info": #138496,
+		"light": #e2e6ea,
+		"dark": #23272b,
+);
+
+$item-hover: (
+		"primary": #0069d9,
+		"secondary": #5a6268,
+		"success": #218838,
+		"danger": #c82333,
+		"warning": #e0a800,
+		"info": #138496,
+		"light": #e2e6ea,
+		"dark": #23272b,
+);
+
+$sandstone-color-lighten: 10;
+// --------------- Customized ---------------
+$sandstone-color: $sandstone-default-color;
+$sandstone-bg: $sandstone-default-dark-bg;
+$sandstone-window-color: $sandstone-default-color;
+$sandstone-window-bg: $sandstone-default-dark-bg;
+$sandstone-window-header-color: $sandstone-default-color;
+$sandstone-window-header-bg: $sandstone-default-header-bg;
+$sandstone-window-border: $sandstone-default-border;
+$sandstone-card-color: $sandstone-default-color;
+$sandstone-card-bg: $sandstone-default-bg;
+$sandstone-card-header-color: $sandstone-default-color;
+$sandstone-card-header-bg: $sandstone-default-header-bg;
+$sandstone-card-hover-bg: $sandstone-default-dark-bg;
+$sandstone-card-border: $sandstone-default-border;
+$sandstone-form-color: $sandstone-default-color;
+$sandstone-form-placeholder-color: #666;
+$sandstone-form-bg: #171717;
+$sandstone-form-hover-bg: #242424;
+$sandstone-form-border: $sandstone-default-border;
+$sandstone-form-addon-color: $sandstone-default-color;
+$sandstone-form-addon-bg: $sandstone-default-header-bg;
+[data-theme="sandstone"] {
+	color: $sandstone-color;
+	background-color: $sandstone-bg;
+	.bg-darkmode-dark {
+		background-color: #343a40 !important
+	}
+	.bg-darkmode-light {
+		background-color: #f8f9fa !important;
+	}
+	// --------------- Typography ---------------
+	pre {
+		color: $sandstone-color;
+	}
+	// --------------- Images ---------------
+	img.icon,
+	svg.icon {
+		filter: invert(1);
+	}
+	// --------------- Tables ---------------
+	.table {
+		color: $sandstone-color;
+	}
+	.table-hover tbody tr:hover {
+		color: $sandstone-color;
+	}
+	// --------------- List Groups ---------------
+	.list-group-item {
+		color: $sandstone-card-color;
+		background-color: $sandstone-card-bg;
+		border-color: $sandstone-card-border;
+		&.list-group-item-action:focus,
+		&.list-group-item-action:hover {
+			background-color: $sandstone-card-hover-bg;
+		}
+	}
+	.list-group-item.active {
+		&,
+		&:focus,
+		&:hover {
+			color: map_get($item-color, "primary");
+			background-color: map_get($item-bg, "primary");
+			border-color: map_get($item-bg, "primary");
+		}
+	}
+	@each $name in map_keys($item-color) {
+		.list-group-item-#{$name} {
+			color: map_get($item-color, $name);
+			background-color: map_get($item-bg, $name);
+			border-color: map_get($item-bg, $name);
+			&.list-group-item-action:focus,
+			&.list-group-item-action:hover {
+				color: map_get($item-color, $name);
+				background-color: map_get($item-hover, $name);
+			}
+		}
+	}
+	// --------------- Buttons ---------------
+	.dropdown-menu {
+		background-color: $sandstone-form-bg;
+		border-color: $sandstone-form-border;
+	}
+	.dropdown-item:not(:disabled):not(.disabled) {
+		color: $sandstone-form-color;
+	}
+	.dropdown-item:focus,
+	.dropdown-item:hover {
+		background-color: $sandstone-form-hover-bg;
+	}
+	.dropdown-divider {
+		border-top-color: $sandstone-form-border;
+	}
+	// --------------- Jumbotron ---------------
+	.jumbotron {
+		color: $sandstone-card-color;
+		background-color: $sandstone-card-bg;
+		border-color: $sandstone-card-border;
+	}
+	// --------------- Cards ---------------
+	.card {
+		color: $sandstone-card-color;
+		background-color: $sandstone-card-bg;
+		border-color: $sandstone-card-border;
+	}
+	.card-header,
+	.card-footer {
+		color: $sandstone-card-header-color;
+		background-color: $sandstone-card-header-bg;
+		border-top-color: $sandstone-card-border;
+		border-bottom-color: $sandstone-card-border;
+	}
+	// --------------- Forms ---------------
+	.form-control {
+		color: $sandstone-form-color;
+		background-color: $sandstone-form-bg;
+		border-color: $sandstone-form-border;
+	}
+	.form-control-plaintext {
+		color: $sandstone-form-color;
+	}
+	.custom-select {
+		color: $sandstone-form-color;
+		background-color: $sandstone-form-bg;
+		border-color: $sandstone-form-border;
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='%23ffffff' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e");
+	}
+	.custom-file-label {
+		color: $sandstone-form-color;
+		background-color: $sandstone-form-bg;
+		border-color: $sandstone-form-border;
+		&:after {
+			color: $sandstone-form-addon-color;
+			background-color: $sandstone-form-addon-bg;
+		}
+	}
+	.input-group-text {
+		color: $sandstone-form-addon-color;
+		background-color: $sandstone-form-addon-bg;
+		border-color: $sandstone-form-border;
+	}
+	.page-item .page-link {
+		border-color: $sandstone-form-border;
+	}
+	.page-item.disabled .page-link {
+		background-color: $sandstone-form-bg;
+		color: $sandstone-form-color;
+	}
+	.page-item:not(.active) .page-link {
+		background-color: $sandstone-form-bg;
+	}
+	.page-item:not(.active) .page-link:hover {
+		background-color: $sandstone-form-hover-bg;
+	}
+	// --------------- Navs ---------------
+	.breadcrumb {
+		background-color: $sandstone-form-bg;
+		border-color: $sandstone-form-border;
+	}
+	.nav-tabs {
+		border-bottom-color: $sandstone-form-border;
+		.nav-link:focus,
+		.nav-link:hover {
+			background-color: $sandstone-form-hover-bg;
+			border-color: $sandstone-form-border;
+		}
+		.nav-item.show .nav-link,
+		.nav-link.active {
+			color: $sandstone-color;
+			background-color: $sandstone-bg;
+			border-color: $sandstone-form-border;
+			border-bottom-color: $sandstone-bg;
+		}
+	}
+	.nav-tabs.card-header-tabs {
+		.nav-item.show .nav-link,
+		.nav-link.active {
+			background-color: $sandstone-card-bg;
+			border-bottom-color: $sandstone-card-bg;
+		}
+	}
+	// --------------- Popovers ---------------
+	.popover {
+		background-color: $sandstone-window-bg;
+		border-color: $sandstone-window-border;
+	}
+	.popover-body {
+		color: $sandstone-color;
+	}
+	.popover-header {
+		background-color: $sandstone-window-header-bg;
+		border-bottom-color: $sandstone-window-border;
+	}
+	@each $pos in (top,
+	right,
+	bottom,
+	left) {
+		.bs-popover-#{$pos},
+		.bs-popover-auto[x-placement^="#{$pos}"] {
+			&>.arrow::before {
+				border-#{$pos}-color: $sandstone-window-border;
+			}
+			&>.arrow::after {
+				border-#{$pos}-color: $sandstone-window-bg;
+			}
+		}
+	}
+	// --------------- Progress Bars --------------- */
+	.progress {
+		background-color: $sandstone-form-bg;
+		border-color: $sandstone-form-border;
+	}
+	// --------------- Modals ---------------
+	.close {
+		color: $sandstone-color;
+		opacity: 1;
+	}
+	.modal-header,
+	.modal-footer {
+		color: $sandstone-window-header-color;
+		background-color: $sandstone-window-header-bg;
+		border-bottom-color: $sandstone-window-border;
+		border-top-color: $sandstone-window-border;
+	}
+	.modal-content {
+		color: $sandstone-window-color;
+		background-color: $sandstone-window-bg;
+		border-color: $sandstone-card-border;
+	}
+	// --------------- header, breadcrumb, footer, navbar --------------- */
+	.app-header {
+		background-color: $sandstone-default-bg;
+		border-bottom: 0px solid $sandstone-default-dark-bg;
+		color: $sandstone-default-color;
+	}
+	.breadcrumb {
+		background-color: $sandstone-default-bg;
+		border: 1px solid $sandstone-default-dark-bg;
+		color: $sandstone-default-color;
+	}
+	.app-footer {
+		background-color: $sandstone-default-bg;
+		border: 1px solid $sandstone-default-dark-bg;
+		color: $sandstone-default-color;
+	}
+	.navbar-nav .nav-link:hover {
+		color: $sandstone-default-color;
+	}
+	.ngx-table {
+		color: $sandstone-default-color;
+	}
+	//
+	// Base styles
+	//
+	.brand-card {
+		background-color: $sandstone-card-bg;
+	}
+	.brand-card-header {
+
+		i {
+			font-size: 2rem;
+			color: #fff;
+		}
+
+	}
+	.brand-card-body {
+		>*:not(:last-child) {
+			border-right: 1px solid $sandstone-card-border;
+		}
+	}
+	// stylelint-disable selector-max-universal
+	// Right-to-Left Support
+	*[dir="rtl"] {
+		.brand-card-body {
+			>*:not(:last-child) {
+				border-left: 1px solid $sandstone-card-border;
+			}
+		}
+	}
+}

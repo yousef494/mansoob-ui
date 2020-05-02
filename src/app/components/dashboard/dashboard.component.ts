@@ -93,7 +93,7 @@ export class DashboardComponent implements OnInit {
     tooltips: {
       enabled: false,
       custom: CustomTooltips,
-      //plugins: [ChartAnnotation],
+      plugins: [ChartAnnotation],
       intersect: true,
       mode: 'index',
       position: 'nearest',

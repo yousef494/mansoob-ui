@@ -80,7 +80,6 @@ export class DefaultLayoutComponent {
   }
 
   switchTheme() {    
-    console.log(localStorage.getItem('theme'));
     const checked = this.themeSwitcherIsChecked;
     let body = document.getElementsByTagName('body')[0];
     if (checked) {
