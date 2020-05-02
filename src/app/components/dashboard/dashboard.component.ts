@@ -264,8 +264,9 @@ export class DashboardComponent implements OnInit {
           self.readingChartLabels.push(value['timestamp']);
           self.readingChartData.push(+(value['level']));
         });
-        console.log(self.readingChartLabels);
-        console.log(self.readingChartData)
+        this.readingChart.chart.config.data.datasets = this.readingChartDataset;
+        this.readingChart.chart.config.data.labels = this.readingChartLabels;
+
         this.readingChart.update()
         this.readingChart.chart.update();
         let lastRecord = res[0][res[0].length - 1];
