@@ -174,7 +174,7 @@
             </div>
             <!--/.row-->
             <div class="chart-wrapper" style="height:300px;margin-top:40px;">
-                <canvas baseChart id="readingChart" class="chart" [datasets]="readingChartDataset" [labels]="readingChartLabels"
+                <canvas #readingChart baseChart class="chart" [datasets]="readingChartDataset" [labels]="readingChartLabels"
                     [options]="readingChartOptions" [colors]="readingChartDatasetColors" [chartType]="readingChartType"
                     [legend]="readingChartLegend"></canvas>
             </div>
