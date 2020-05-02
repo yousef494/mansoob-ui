@@ -264,12 +264,12 @@ export class DashboardComponent implements OnInit {
           self.readingChartLabels.push(value['timestamp']);
           self.readingChartData.push(+(value['level']));
         });
-        this.readingChartDataset['data'] = this.readingChartData;
-        this.readingChart.chart.config.data.datasets = this.readingChartDataset;
-        this.readingChart.chart.config.data.labels = this.readingChartLabels;
+     //   this.readingChartDataset['data'] = this.readingChartData;
+       // this.readingChart.chart.config.data.datasets = this.readingChartDataset;
+        //this.readingChart.chart.config.data.labels = this.readingChartLabels;
 
-        this.readingChart.update()
-        this.readingChart.chart.update();
+       // this.readingChart.update()
+      //  this.readingChart.chart.update();
         let lastRecord = res[0][res[0].length - 1];
         this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
       },
@@ -319,8 +319,8 @@ export class DashboardComponent implements OnInit {
           self.readingChartData.push(+(value['level']));
         });
         
-        this.readingChart.update()
-        this.readingChart.chart.update();
+       // this.readingChart.update()
+        //this.readingChart.chart.update();
 
         let lastRecord = res[0][res[0].length - 1];
         this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
