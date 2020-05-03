@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { ShareService } from '@ngx-share/core';
 
 
 @Component({
@@ -19,12 +20,15 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-
+  
   @ViewChild(BaseChartDirective, { static: true }) readingChart: BaseChartDirective;
+  @ViewChild(BaseChartDirective, { static: true }) consChart: BaseChartDirective;
+
   @ViewChild('infoModal') public infoModal: ModalDirective;
 
   constructor(
-    private readingService: ReadingService
+    private readingService: ReadingService,
+    public share: ShareService
   ) {
   }
 
@@ -243,6 +247,7 @@ export class DashboardComponent implements OnInit {
   public consChartLabels: Array<any> = [];
   public consChartOptions: any = {
     scaleShowVerticalLines: false,
+    maintainAspectRatio: false,
     responsive: true
   };
 
@@ -264,12 +269,10 @@ export class DashboardComponent implements OnInit {
           self.readingChartLabels.push(value['timestamp']);
           self.readingChartData.push(+(value['level']));
         });
-     //   this.readingChartDataset['data'] = this.readingChartData;
-       // this.readingChart.chart.config.data.datasets = this.readingChartDataset;
-        //this.readingChart.chart.config.data.labels = this.readingChartLabels;
 
-       // this.readingChart.update()
-      //  this.readingChart.chart.update();
+        this.readingChart.datasets[0].data = this.readingChartData;
+        this.readingChart.update();
+
         let lastRecord = res[0][res[0].length - 1];
         this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
       },
@@ -279,8 +282,13 @@ export class DashboardComponent implements OnInit {
   }
 
 
+
   public genPDF(elementId) {
     var data = document.getElementById(elementId);
+    var dropdowns =data.getElementsByClassName('dropdown-menu');
+    for(var i =0;i<dropdowns.length;i++){
+      dropdowns[i].classList.remove('show');
+    }
     html2canvas(data).then(canvas => {
       // Few necessary setting options
       var imgWidth = 200;
@@ -310,7 +318,7 @@ export class DashboardComponent implements OnInit {
   public refreshContent() {
     this.readingChartLabels = [];
     this.readingChartData = [];
-    this.today = moment().format("dddd Do MMMM, YYYY");
+    this.today = moment().format("YYYY-MM-DD");
     this.readingService.getItemsLimit(this.limit).subscribe(
       res => {
         let self = this;
@@ -319,8 +327,8 @@ export class DashboardComponent implements OnInit {
           self.readingChartData.push(+(value['level']));
         });
         
-       // this.readingChart.update()
-        //this.readingChart.chart.update();
+        this.readingChart.datasets[0].data = this.readingChartData;
+        this.readingChart.update();
 
         let lastRecord = res[0][res[0].length - 1];
         this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
@@ -365,7 +373,10 @@ export class DashboardComponent implements OnInit {
             self.consChartDataset[4]['data'][index] = d_total;
             self.consChartDataset[q - 1]['data'][index] = (diff);
           }
+          self.consChart.datasets = self.consChartDataset;
+          self.consChart.update();
         });
+
         this.averageConsumption = this.fixIfNaN(this.getRoundedNumber(this.averageConsumption, this.consChartLabels.length));
         //calculate today's consumption
         let todayIndex = this.consChartLabels.indexOf(this.today);
@@ -374,6 +385,14 @@ export class DashboardComponent implements OnInit {
           this.dConsLst.push(this.fixIfNaN(temp));
           this.dConsPercLst.push(this.fixIfNaN(this.getRoundedNumber(this.consChartDataset[i]['data'][todayIndex], this.tankHeight)));
           document.getElementById('q' + (i + 1) + 'ProgressBar').style.width = (this.dConsPercLst[i] | 0) + '%';
+        }
+
+        //calculate yesterday's consumption
+        let yesterdayIndex = this.consChartLabels.indexOf(moment().add(-1,'day').format("YYYY-MM-DD"));
+        console.log(moment().add(-1,'day').format("YYYY-MM-DD"));
+        for (let i = 0; i < 5; i++) {
+          let temp = this.consChartDataset[i]['data'][yesterdayIndex];
+          this.dConsLst.push(this.fixIfNaN(temp));
         }
       },
       error => {
@@ -414,7 +433,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.today = moment().format("dddd Do MMMM, YYYY");
+    this.today = moment().format("YYYY-MM-DD");
 
     this.readingService.getItemsLimit(280).subscribe(
       res => {
@@ -474,7 +493,12 @@ export class DashboardComponent implements OnInit {
           this.dConsPercLst.push(this.fixIfNaN(this.getRoundedNumber(this.consChartDataset[i]['data'][todayIndex], this.tankHeight)));
           document.getElementById('q' + (i + 1) + 'ProgressBar').style.width = (this.dConsPercLst[i] | 0) + '%';
         }
-
+        //calculate yesterday's consumption
+        let yesterdayIndex = this.consChartLabels.indexOf(moment().add(-1,'day').format("YYYY-MM-DD"));
+        for (let i = 0; i < 5; i++) {
+          let temp = this.consChartDataset[i]['data'][yesterdayIndex];
+          this.dConsLst.push(this.fixIfNaN(temp));
+        }
         //calculate time to refill
         this.timeToRefill = Math.ceil(this.currentLevel/this.averageConsumption) - 1;
         if(isNaN(this.timeToRefill)){

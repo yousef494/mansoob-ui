@@ -63,7 +63,6 @@ app.use(async (req, res, next) => {
                     }else{
                         res.locals.loggedInUser = user;
                         req.user_id = user_id;
-                        console.log("user_id: "+req.user_id);
                         next();
                     }
                 })

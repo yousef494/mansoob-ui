@@ -30,6 +30,9 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
 import { ToastrService } from './services/toastr.service';
 
+import { ShareModule } from '@ngx-share/core';
+
+
 const APP_CONTAINERS = [
   DefaultLayoutComponent
 ];
@@ -92,7 +95,8 @@ import { ProfileComponent } from './components/profile/profile.component'
     TableModule,
     GaugeChartModule,
     ModalModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    ShareModule
   ],
   declarations: [
     AppComponent,
