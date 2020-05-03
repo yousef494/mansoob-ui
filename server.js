@@ -17,6 +17,7 @@ const jwt = require('jsonwebtoken');
 const security = require('./controller/role.ctr');
 
 const endpoints = require('./endpoints');
+const util = require('./util');
 const config = require('./config/config');
 
 const app = express();
@@ -26,6 +27,9 @@ app.use(methodOverride())
 
 var env = process.env.NODE_ENV || 'development';
 Mysql.connect(config[env].mysqlOptions);
+
+//schedule for reports notification
+util.scheduler.scheduleReports(Mysql);
 
 app.use(async (req, res, next) => {
 

@@ -1,3 +1,4 @@
 module.exports = {
-    notifier : require('./notifier')
+    notifier : require('./notifier'),
+    scheduler : require('./scheduler')
 }

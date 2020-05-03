@@ -64,5 +64,6 @@ var processEmail = function (subject, text, html, to) {
 
 
 module.exports = {
-    alert: alert
+    alert: alert,
+    report: report
 };
