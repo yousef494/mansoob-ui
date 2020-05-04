@@ -7,6 +7,11 @@ export const navItems: INavData[] = [
     icon: 'icon-speedometer'
   },
   {
+    name: 'Devices',
+    url: '/device',
+    icon: 'fa fa-tablet'
+  },
+  {
     title: true,
     name: 'Adminstration'
   },

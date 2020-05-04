@@ -31,7 +31,7 @@
                                 shareButton="whatsapp" title="Mansoob Current Status"
                                 description="The severity level of the tank reaches the {{severity}} state ({{currentLevel}})"><i 
                                     class="dropdown-item-icon-custom fa fa-whatsapp text-success"></i>
-                                    WhatsApp</a>
+                                    Share on WhatsApp</a>
                                 <a class="dropdown-item" (click)="genPDF('dashboard')" href="#"><i
                                         class="dropdown-item-icon-custom icon-cloud-download text-primary"></i>Downlaod
                                     Dashboard as PDF</a>
@@ -192,7 +192,7 @@
     </div>
 
     <!-- Consumption  chart-->
-    <div class="card">
+    <div  id="consChartArea" class="card">
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-5">
@@ -204,7 +204,7 @@
                 </div>
                 <!--/.col-->
                 <div class="col-sm-7 d-none d-md-block">
-                    <button type="button" class="btn btn-primary float-right"><i
+                    <button type="button" class="btn btn-primary float-right" (click)="genPDF('consChartArea')"><i
                             class="icon-cloud-download"></i></button>
                     <div class="btn-group btn-group-toggle float-right mr-3" data-toggle="buttons">
 

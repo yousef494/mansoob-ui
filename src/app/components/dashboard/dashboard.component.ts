@@ -20,7 +20,7 @@ import { ShareService } from '@ngx-share/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  
+
   @ViewChild(BaseChartDirective, { static: true }) readingChart: BaseChartDirective;
   @ViewChild(BaseChartDirective, { static: true }) consChart: BaseChartDirective;
 
@@ -256,8 +256,9 @@ export class DashboardComponent implements OnInit {
     return Math.round((num / dum) * 100 * 10) / 10;
   }
 
-  public  limit:number = 280;
+  public limit: number = 280;
 
+  //switch betwwen waterlevel 6 hrs and 24 hrs
   public getData(limit) {
     this.readingChartLabels = [];
     this.readingChartData = [];
@@ -285,8 +286,8 @@ export class DashboardComponent implements OnInit {
 
   public genPDF(elementId) {
     var data = document.getElementById(elementId);
-    var dropdowns =data.getElementsByClassName('dropdown-menu');
-    for(var i =0;i<dropdowns.length;i++){
+    var dropdowns = data.getElementsByClassName('dropdown-menu');
+    for (var i = 0; i < dropdowns.length; i++) {
       dropdowns[i].classList.remove('show');
     }
     html2canvas(data).then(canvas => {
@@ -326,7 +327,7 @@ export class DashboardComponent implements OnInit {
           self.readingChartLabels.push(value['timestamp']);
           self.readingChartData.push(+(value['level']));
         });
-        
+
         this.readingChart.datasets[0].data = this.readingChartData;
         this.readingChart.update();
 
@@ -388,12 +389,19 @@ export class DashboardComponent implements OnInit {
         }
 
         //calculate yesterday's consumption
-        let yesterdayIndex = this.consChartLabels.indexOf(moment().add(-1,'day').format("YYYY-MM-DD"));
-        console.log(moment().add(-1,'day').format("YYYY-MM-DD"));
+        let yesterdayIndex = this.consChartLabels.indexOf(moment().add(-1, 'day').format("YYYY-MM-DD"));
+        console.log(moment().add(-1, 'day').format("YYYY-MM-DD"));
         for (let i = 0; i < 5; i++) {
           let temp = this.consChartDataset[i]['data'][yesterdayIndex];
           this.dConsLst.push(this.fixIfNaN(temp));
         }
+
+        //calculate time to refill
+        this.timeToRefill = Math.ceil(this.currentLevel / this.averageConsumption) - 1;
+        if (isNaN(this.timeToRefill)) {
+          this.timeToRefill = 0;
+        }
+        this.dayToRefill = moment().add(this.timeToRefill, 'day').format('ddd D MMM HH:mm');
       },
       error => {
       }
@@ -405,28 +413,28 @@ export class DashboardComponent implements OnInit {
   private refreshInterval: number = (+localStorage.getItem("refreshInterval"));//300000 every 5 minutes
   public counter: number = 1;
 
-  public setRefreshInterval(minutes){
-    if(this.refreshSubscription != null){
+  public setRefreshInterval(minutes) {
+    if (this.refreshSubscription != null) {
       this.refreshSubscription.unsubscribe();
     }
-    if(minutes != 'M'){
-      this.refreshInterval = (minutes * 60 * 1000 );
+    if (minutes != 'M') {
+      this.refreshInterval = (minutes * 60 * 1000);
       this.refreshSubscription = interval(this.refreshInterval).subscribe(
-        (val) => { 
+        (val) => {
           this.refreshContent();
           this.counter++;
-      });
-    }else{
+        });
+    } else {
       this.refreshInterval = -1;
     }
-    localStorage.setItem("refreshInterval", this.refreshInterval+'');
+    localStorage.setItem("refreshInterval", this.refreshInterval + '');
   }
 
-  public isRefreshInterval(minutes){
-    if(minutes != 'M'){
-      const tmp = (minutes * 60 * 1000 );
+  public isRefreshInterval(minutes) {
+    if (minutes != 'M') {
+      const tmp = (minutes * 60 * 1000);
       return (this.refreshInterval === tmp);
-    }else{
+    } else {
       return (this.refreshInterval === -1);
     }
   }
@@ -494,24 +502,24 @@ export class DashboardComponent implements OnInit {
           document.getElementById('q' + (i + 1) + 'ProgressBar').style.width = (this.dConsPercLst[i] | 0) + '%';
         }
         //calculate yesterday's consumption
-        let yesterdayIndex = this.consChartLabels.indexOf(moment().add(-1,'day').format("YYYY-MM-DD"));
+        let yesterdayIndex = this.consChartLabels.indexOf(moment().add(-1, 'day').format("YYYY-MM-DD"));
         for (let i = 0; i < 5; i++) {
           let temp = this.consChartDataset[i]['data'][yesterdayIndex];
           this.dConsLst.push(this.fixIfNaN(temp));
         }
         //calculate time to refill
-        this.timeToRefill = Math.ceil(this.currentLevel/this.averageConsumption) - 1;
-        if(isNaN(this.timeToRefill)){
+        this.timeToRefill = Math.ceil(this.currentLevel / this.averageConsumption) - 1;
+        if (isNaN(this.timeToRefill)) {
           this.timeToRefill = 0;
         }
-        this.dayToRefill = moment().add(this.timeToRefill,'day').format('ddd D MMM HH:mm');
-        
+        this.dayToRefill = moment().add(this.timeToRefill, 'day').format('ddd D MMM HH:mm');
+
       },
       error => {
       }
     );
 
-    this.setRefreshInterval(5);
+    this.setRefreshInterval(+localStorage.getItem('refreshInterval') | 5);
   }
 
 
