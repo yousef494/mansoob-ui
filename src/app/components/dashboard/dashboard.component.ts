@@ -12,7 +12,7 @@ import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ShareService } from '@ngx-share/core';
-
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-dashboard',
@@ -28,7 +28,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private readingService: ReadingService,
-    public share: ShareService
+    public share: ShareService,
+    private router: Router,
   ) {
   }
 
@@ -278,6 +279,9 @@ export class DashboardComponent implements OnInit {
         this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
       },
       error => {
+        if(error['error']!=undefined && error.error== "jwt expired"){
+          this.router.navigate(["/login"]);
+        }
       }
     );
   }
@@ -404,6 +408,9 @@ export class DashboardComponent implements OnInit {
         this.dayToRefill = moment().add(this.timeToRefill, 'day').format('ddd D MMM HH:mm');
       },
       error => {
+        if(error['error']!=undefined && error.error== "jwt expired"){
+          this.router.navigate(["/login"]);
+        }
       }
     );
   }
@@ -454,6 +461,9 @@ export class DashboardComponent implements OnInit {
         this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
       },
       error => {
+        if(error['error']!=undefined && error.error== "jwt expired"){
+          this.router.navigate(["/login"]);
+        }
       }
     );
 
@@ -516,10 +526,13 @@ export class DashboardComponent implements OnInit {
 
       },
       error => {
+        if(error['error']!=undefined && error.error== "jwt expired"){
+          this.router.navigate(["/login"]);
+        }
       }
     );
 
-    this.setRefreshInterval(+localStorage.getItem('refreshInterval') | 5);
+    this.setRefreshInterval(+(localStorage.getItem('refreshInterval') ) | 5);
   }
 
 
