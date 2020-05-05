@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public isOutDated() {
-    let isOutDated = moment().isAfter(moment(this.time).add(10, 'minutes'));
+    let isOutDated = moment().isAfter(moment(this.time).add(11, 'minutes'));
     return isOutDated;
   }
 
@@ -434,7 +434,7 @@ export class DashboardComponent implements OnInit {
     } else {
       this.refreshInterval = -1;
     }
-    localStorage.setItem("refreshInterval", this.refreshInterval + '');
+    localStorage.setItem("refreshInterval", minutes+ '');
   }
 
   public isRefreshInterval(minutes) {
