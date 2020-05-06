@@ -14,7 +14,8 @@ module.exports = {
             database: 'mansoob',
             socketPath: false,
             connectionLimit: 5
-        }
+        },
+        uploadDir: '/Users/Yousef/Documents/myworkspace/Mansoob V2/uploads/avatars'
     },
     production: {
         server: {
@@ -30,7 +31,8 @@ module.exports = {
             database: 'mansoob',
             socketPath: false,
             connectionLimit: 5
-        }
+        },
+        uploadDir: '/home/fz12klftt4ot/www/uploads/avatars'
     },
     mailserver: {
         host: 'n3plcpnl0274.prod.ams3.secureserver.net',
@@ -40,7 +42,7 @@ module.exports = {
             user: 'noreply@mansoob.yousefcave.com',
             pass: '1stEmail*user'
         },
-        from: 'noreply@mansoob.yousefcave.com'
+        from: 'Mansoob <noreply@mansoob.yousefcave.com>'
     },
     severity: {
         color: {

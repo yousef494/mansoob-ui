@@ -14,7 +14,7 @@ module.exports = function(app, Mysql, urlPrefix, security){
     router.get(uriItem+'/user',  function (req, res) {
         var query = "SELECT d.name as device, u.name as user, n.subject, n.message, n.urgency, DATE_FORMAT(" + Mysql.escapeId('n.timestamp') +" , '%Y-%m-%d') AS day\
         FROM notification n, user u, device d \
-        WHERE n.device_id = d.id and d.user_id = u.id and u.id= ? ORDER BY " + Mysql.escapeId('timestamp') +" DESC";
+        WHERE n.device_id = d.id and d.user_id = u.id and u.id= ? ORDER BY " + Mysql.escapeId('timestamp') +" DESC LIMIT 10";
         
         Mysql.query(query, [req.query['id']])
             .then(function (results) {

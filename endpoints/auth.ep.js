@@ -81,7 +81,8 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                     Mysql.update(models.user.name, { id: user.id }, { accessToken: accessToken })
                         .then(function (info) {
                             res.status(200).json({
-                                data: { email: user.email, role: user.role, id: user.id, name: user.name },
+                                data: { email: user.email, role: user.role, id: user.id, 
+                                    firstName: user.firstName, lastName: user.lastName },
                                 accessToken
                             })
                         })

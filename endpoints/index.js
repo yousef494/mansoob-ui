@@ -3,5 +3,6 @@ module.exports = {
     auth : require('./auth.ep'),
     device: require('./device.ep'),
     noti: require('./notification.ep'),
-    process: require('./process.ep')
+    process: require('./process.ep'),
+    upload: require('./upload.ep')
 }

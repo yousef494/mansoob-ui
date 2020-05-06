@@ -50,16 +50,13 @@ var processEmail = function (subject, text, html, to) {
     const sendMail = async ({ mailserver, mail }) => {
         // create a nodemailer transporter using smtp
         let transporter = nodemailer.createTransport(mailserver);
-
         // send mail using transporter
         let info = await transporter.sendMail(mail);
-
-        console.log(`Preview: ${nodemailer.getTestMessageUrl(info)}`);
+        //console.log(`Preview: ${nodemailer.getTestMessageUrl(info)}`);
     };
 
     sendMail(mailConfig).catch(console.error);
-    console.log('email sent...');
-
+    //console.log('email sent...');
 };
 
 

@@ -19,7 +19,7 @@ import { Router } from "@angular/router";
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
 
   @ViewChild(BaseChartDirective, { static: true }) readingChart: BaseChartDirective;
   @ViewChild(BaseChartDirective, { static: true }) consChart: BaseChartDirective;
@@ -33,6 +33,11 @@ export class DashboardComponent implements OnInit {
   ) {
   }
 
+  ngOnInit(): void {
+    this.limit = 280;
+    this.refreshContent();
+    this.setRefreshInterval(+(localStorage.getItem('refreshInterval')) | 5);
+  }
 
   public canvasWidth = 200
   public centralLabel = ''
@@ -279,7 +284,7 @@ export class DashboardComponent implements OnInit {
         this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
       },
       error => {
-        if(error['error']!=undefined && error.error== "jwt expired"){
+        if (error['error'] != undefined && error.error == "jwt expired") {
           this.router.navigate(["/login"]);
         }
       }
@@ -321,12 +326,19 @@ export class DashboardComponent implements OnInit {
 
 
   public refreshContent() {
-    this.readingChartLabels = [];
-    this.readingChartData = [];
+
     this.today = moment().format("YYYY-MM-DD");
     this.readingService.getItemsLimit(this.limit).subscribe(
       res => {
         let self = this;
+        this.readingChartLabels = [];
+        this.readingChartData = [];
+        this.readingChartDataset = [
+          {
+            data: this.readingChartData,
+            label: 'Level'
+          }
+        ];
         res[0].reverse().forEach(function (value) {
           self.readingChartLabels.push(value['timestamp']);
           self.readingChartData.push(+(value['level']));
@@ -339,6 +351,9 @@ export class DashboardComponent implements OnInit {
         this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
       },
       error => {
+        if (error['error'] != undefined && error.error == "jwt expired") {
+          this.router.navigate(["/login"]);
+        }
       }
     );
 
@@ -355,6 +370,7 @@ export class DashboardComponent implements OnInit {
       res => {
         let self = this;
         let revInx = 6;
+        
         res[0].forEach(function (record) {
           let diff = record['consumption'];
           let day = record['day'];
@@ -408,7 +424,7 @@ export class DashboardComponent implements OnInit {
         this.dayToRefill = moment().add(this.timeToRefill, 'day').format('ddd D MMM HH:mm');
       },
       error => {
-        if(error['error']!=undefined && error.error== "jwt expired"){
+        if (error['error'] != undefined && error.error == "jwt expired") {
           this.router.navigate(["/login"]);
         }
       }
@@ -434,7 +450,7 @@ export class DashboardComponent implements OnInit {
     } else {
       this.refreshInterval = -1;
     }
-    localStorage.setItem("refreshInterval", minutes+ '');
+    localStorage.setItem("refreshInterval", minutes + '');
   }
 
   public isRefreshInterval(minutes) {
@@ -446,7 +462,8 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+
+  /*ngOnInit(): void {
 
     this.today = moment().format("YYYY-MM-DD");
 
@@ -533,7 +550,7 @@ export class DashboardComponent implements OnInit {
     );
 
     this.setRefreshInterval(+(localStorage.getItem('refreshInterval') ) | 5);
-  }
+  }*/
 
 
 }

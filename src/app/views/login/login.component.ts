@@ -3,6 +3,7 @@ import { NgForm, EmailValidator } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { User } from "../../services/user";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -10,19 +11,23 @@ import { User } from "../../services/user";
   providers: [EmailValidator]
 })
 export class LoginComponent {
-    user = {
-      email: null,
-      password: null
-    };
+  user = {
+    email: null,
+    password: null
+  };
   errorInUserCreate = false;
   errorMessage: any;
   createUser;
 
+  alreadyLoggedIn: boolean = false;
+
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastService: ToastrService
   ) {
+    this.alreadyLoggedIn = this.authService.isAuthenticated();
     this.createUser = new User();
   }
 
@@ -35,14 +40,9 @@ export class LoginComponent {
         password: userForm.value["password"]
       }).subscribe(
         res => {
-          this.authService.setLoggedInUser(res['data']);
-          localStorage.setItem('token', res['accessToken']);
-          localStorage.setItem('name', res['data']['name']);
-          localStorage.setItem('email', res['data']['email']);
-          localStorage.setItem('role', res['data']['role']);
-          localStorage.setItem('id', res['data']['id']);
+          this.authService.setUser(res['data'], res['accessToken']);
 
-          //	this.toastService.success("Authentication Success", "Logging in please wait");
+          this.toastService.success("Authentication Success", "Logging in please wait");
 
           const returnUrl = this.route.snapshot.queryParamMap.get("returnUrl");
 
@@ -53,10 +53,13 @@ export class LoginComponent {
           this.router.navigate(["/"]);
         },
         error => {
-          //this.toastService.error("Authentication Failed", error);
+          this.toastService.error("Authentication Failed", error);
         }
       );
+  }
 
-
+  logout() {
+    this.authService.logout();
+    this.alreadyLoggedIn = this.authService.isAuthenticated();
   }
 }

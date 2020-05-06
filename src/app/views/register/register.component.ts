@@ -3,6 +3,7 @@ import { NgForm, EmailValidator } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { User } from "../../services/user";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -26,7 +27,8 @@ export class RegisterComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastService: ToastrService
   ) {
     this.createUser = new User();
   }
@@ -53,12 +55,14 @@ export class RegisterComponent {
           this.feedbackType = (res.status=='Error')?'danger':'success';
           this.feedbackMessage =res.message;
           if(res.status!='Error'){
+            this.toastService.success("Registeration Success", "Logging in please wait");
             setTimeout(() => {
               this.router.navigate(["/login"]);
-            }, 3000);  //5s
+            }, 1000);  //1s
           }
         },
         error => {
+          this.toastService.error("Registeration Failed!", error);
         }
       );
   }

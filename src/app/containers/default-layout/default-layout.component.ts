@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { navItems } from '../../_nav';
 import { AuthService } from '.././../services/auth.service';
+import { User } from "../../services/user";
 import { NotificationService } from "../../services/notification.service";
 import * as moment from 'moment';
 
@@ -13,9 +14,7 @@ export class DefaultLayoutComponent {
   public sidebarMinimized = false;
   public navItems = navItems;
 
-  public userName: String;
-  public role: String;
-  public userId: String;
+  public user: User;
   public notifications: any[] = [];
 
   public timeNow: string = '';
@@ -26,6 +25,7 @@ export class DefaultLayoutComponent {
     private router: Router) {
     this.isAdmin = this.auth.isAdmin();
     this.sidebarMinimized = this.isAdmin;
+    this.user = this.auth.getUser();
     this.getNotifications();
     this.timeNow = moment().format("dddd Do MMMM, YYYY HH:mm");
     setInterval(() => {
@@ -34,8 +34,6 @@ export class DefaultLayoutComponent {
   }
 
   ngOnInit() {
-    this.userName = this.auth.getUserName();
-    this.role = this.auth.getRole();
     this.setTheme();
   }
 
@@ -49,9 +47,8 @@ export class DefaultLayoutComponent {
   }
 
   getNotifications() {
-    this.userId = this.auth.getUserId();
     let self = this;
-    this.noti.getItemsByUser(this.userId).subscribe(
+    this.noti.getItemsByUser(this.user.id).subscribe(
       res => {
         let groupsTmp = [];
         self.notifications = [];

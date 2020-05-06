@@ -1,41 +1,40 @@
-import { Component } from '@angular/core';
+import { Component ,ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '.././../services/auth.service';
+import { User } from '../../services/user';
 import { NotificationService} from "../../services/notification.service";
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: './profile.component.html'
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent {
 
-  public userName: String;
-  public role: String;
-  public userId: String;
-  public email: String;
-  public notifications: any[] = [];
+  @ViewChild('updateAvatarModal') public updateAvatarModal: ModalDirective;
 
+  public user: User;
+  public notifications: any[] = [];
 
   public isAdmin: boolean = false;
 
   constructor(private auth: AuthService, private noti: NotificationService,
     private router: Router) {
       this.isAdmin = this.auth.isAdmin();
+      this.user = this.auth.getUser();
+
       this.getNotifications();
   }
 
   ngOnInit() {
-    this.userName = this.auth.getUserName();
-    this.role = this.auth.getRole();
-    this.email = this.auth.getUserEmail();
   }
 
 
   getNotifications(){
-    this.userId = this.auth.getUserId();
     let self = this;
-    this.noti.getItemsByUser(this.userId).subscribe(
+    this.noti.getItemsByUser(this.user.id).subscribe(
       res => {
         let groupsTmp = [];
         self.notifications = [];
@@ -54,5 +53,6 @@ export class ProfileComponent {
       }
     );
   }
+
 
 }

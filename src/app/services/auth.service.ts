@@ -14,7 +14,7 @@ export class AuthService {
   urlPrefix = '';
   endpoint = '/';
 
-  private loggedInUser: User = null;
+  private user: User = null;
 
   public httpOptions = {
     headers: new HttpHeaders({
@@ -28,30 +28,100 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    if (this.loggedInUser !== null) {
+    if (this.user !== null) {
       return true;
     }
   }
 
-  setLoggedInUser(user) {
+  setUser(user, token) {
     if (user != null) {
-      this.loggedInUser = new User();
-      this.loggedInUser.id = user.id;
-      this.loggedInUser.name = user.name;
-      this.loggedInUser.email = user.email;
-      this.loggedInUser.role = user.role;
+      let name = user['firstName'] + ' ' + user['lastName'];
+      this.user = new User();
+      this.user.id = user.id;
+      this.user.name = name;
+      this.user.firstName = user.firstName;
+      this.user.lastName = user.lastName;
+      this.user.email = user.email;
+      this.user.role = user.role;
+      this.user.avatar = user.id+"_avatar.png";
+      //store in local storage
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(this.user));
     }
   }
 
-  getLoggedInUser(): User {
-    return this.loggedInUser;
+  getUser(): User {
+    return this.user || JSON.parse(localStorage.getItem('user'));
+  }
+
+  getUserId() {
+    return this.getUser().id;
+  }
+
+
+  getUserName() {
+    if (this.getUser() !== null) {
+      return this.getUser().name;
+    }
+    return '';
+  }
+
+  getUserFirstName() {
+    if (this.getUser() !== null) {
+      return this.getUser().firstName;
+    }
+    return '';
+  }
+
+  getUserLastName() {
+    if (this.getUser() !== null) {
+      return this.getUser().lastName;
+    }
+    return '';
+  }
+
+  getUserEmail() {
+    if (this.getUser() !== null) {
+      return this.getUser().email;
+    }
+    return '';
+  }
+
+  getRole() {
+    if (this.getUser() !== null) {
+      return this.getUser().role;
+    }
+    return '';
+  }
+
+
+  getAvatar() {
+    if (this.getUser() !== null) {
+      return this.getUser().avatar;
+    }
+    return '';
   }
 
   isAdmin(): boolean {
-    if (localStorage.getItem('role') === "ADMIN") {
+      if (this.getRole() === "ADMIN") {
+        return true;
+      }
+    return false;
+  }
+
+
+  isAuthenticated() {
+    if (localStorage.getItem('token')) {
       return true;
     }
     return false;
+  }
+
+
+  // ------------- Methods ------------
+
+  register(user) {
+    return this.http.post<any>(environment.baseUrl + '/signup', user);
   }
 
   login(credentials) {
@@ -61,9 +131,14 @@ export class AuthService {
     );
   }
 
-  register(user) {
-    return this.http.post<any>(environment.baseUrl + '/signup', user);
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    localStorage.removeItem('user');
+    localStorage.removeItem('role');
+    localStorage.removeItem('id');
   }
+
 
   findUserByEmail(email) {
     let query = { 'email': email };
@@ -78,56 +153,7 @@ export class AuthService {
     return this.http.post<any>(environment.baseUrl + '/auth', auth);
   }
 
-
-
-  isAuthenticated() {
-    if (localStorage.getItem('token')) {
-      return true;
-    }
-    return false;
-  }
-
-  getUserName() {
-    if (localStorage.getItem('name') !== null) {
-      return localStorage.getItem('name');
-    }
-    return '';
-  }
-
-  getUserEmail() {
-    if (localStorage.getItem('email') !== null) {
-      return localStorage.getItem('email');
-    }
-    return '';
-  }
-
-  getUserId(){
-    return localStorage.getItem('id');
-  }
-
-  logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('email');
-    localStorage.removeItem('user');
-    localStorage.removeItem('role');
-    localStorage.removeItem('id');
-  }
-
-  getUser() {
-    if (localStorage.getItem('user') !== null) {
-      return localStorage.getItem('user');
-    }
-    return '';
-  }
-
-  getRole() {
-    if (localStorage.getItem('role') !== null) {
-      return localStorage.getItem('role');
-    }
-    return '';
-  }
-
-  generateAPIAccessToken(device_id){
+  generateAPIAccessToken(device_id) {
     let data = { device_id: device_id, user_id: this.getUserId() };
     return this.http.post<any>(environment.baseUrl + '/auth/deviceToken', data);
   }

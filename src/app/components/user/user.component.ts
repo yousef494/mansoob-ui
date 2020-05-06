@@ -31,6 +31,14 @@ export class UserComponent implements OnInit {
       title: 'Email'
     },
     {
+      key: 'firstName',
+      title: 'First Name'
+    },
+    {
+      key: 'lastName',
+      title: 'Last Name'
+    },
+    {
       key: 'role',
       title: 'Role',
       options: ['BASIC','ADMIN']

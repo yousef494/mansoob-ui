@@ -29,6 +29,7 @@ import { AuthService } from './services/auth.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
 import { ToastrService } from './services/toastr.service';
+import { AvatarModule, AvatarSource } from 'ngx-avatar';
 
 import { ShareModule } from '@ngx-share/core';
 
@@ -68,7 +69,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import { GaugeChartModule } from 'angular-gauge-chart';
 import { SettingsComponent } from './components/settings/settings.component';
-import { ProfileComponent } from './components/profile/profile.component'
+import { ProfileComponent } from './components/profile/profile.component';
+import { AvatarUpdateComponent } from './components/profile/avatar-update/avatar-update.component'
 
 
 @NgModule({
@@ -96,7 +98,11 @@ import { ProfileComponent } from './components/profile/profile.component'
     GaugeChartModule,
     ModalModule,
     ToastrModule.forRoot(),
-    ShareModule
+    ShareModule,
+    AvatarModule.forRoot({
+      colors: ["#FFB6C1", "#2c3e50", "#95a5a6", "#f39c12", "#1abc9c"],
+      sourcePriorityOrder: [AvatarSource.CUSTOM, AvatarSource.INITIALS]
+    })
   ],
   declarations: [
     AppComponent,
@@ -110,7 +116,8 @@ import { ProfileComponent } from './components/profile/profile.component'
     UserComponent,
     DashboardComponent,
     SettingsComponent,
-    ProfileComponent
+    ProfileComponent,
+    AvatarUpdateComponent
   ],
   providers: [
     AuthService,
