@@ -14,7 +14,8 @@ import { ToastrService } from 'ngx-toastr';
 export class RegisterComponent {
 
   user = {
-    name: null,
+    firstName: null,
+    lastName: null,
     email: null,
     password: null,
     rpassword: null
@@ -45,7 +46,8 @@ export class RegisterComponent {
     }
     this.authService
       .register({
-        name: userForm.value["name"],
+        firstName: userForm.value["firstName"],
+        lastName: userForm.value["lastName"],
         email: userForm.value["email"],
         password: userForm.value["password"]
       }).subscribe(
@@ -69,7 +71,8 @@ export class RegisterComponent {
 
   vaidate(userForm: NgForm){
     this.feedbackType = "danger";
-    if(userForm.value["name"] == null || userForm.value["email"] == null
+    if(userForm.value["firstName"] == null || userForm.value["lastName"] == null 
+    || userForm.value["email"] == null
     || userForm.value["password"] == null || userForm.value["rpassword"] == null){
       this.feedbackInUserCreate= true;
       this.feedbackMessage ="Cannot be empty!";

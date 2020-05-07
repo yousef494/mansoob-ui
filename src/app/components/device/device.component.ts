@@ -33,7 +33,7 @@ export class DeviceComponent implements OnInit {
     pKey: 'id',
     pKey_label: 'ID',
     apiURL: 'api/v1',
-    loadURL: 'api/v1/device',
+    loadURL: 'api/v1/device?user_id='+this.auth.getUserId(),
     forceServerUpdate: true,
     type: 'simple',
     csv: false,

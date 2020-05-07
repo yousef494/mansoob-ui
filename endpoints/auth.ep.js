@@ -23,7 +23,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
     //signup (GUEST)
     var signup = async (req, res, next) => {
         try {
-            const { email, name, password } = req.body;
+            const { email, firstName, lastName, password } = req.body;
             Mysql.record(models.user.name, { email: email })
                 .then(async function (record) {
                     console.log(record);
@@ -36,7 +36,8 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                         res.end();
                     } else {
                         const hashedPassword = await hashPassword(password);
-                        const newUser = { email, password: hashedPassword, name: name, role: "BASIC" };
+                        const newUser = { email, password: hashedPassword, 
+                            firstName: firstName,  lastName: lastName,role: "BASIC" };
                         const accessToken = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, {
                             expiresIn: "1d"
                         });

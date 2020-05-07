@@ -189,8 +189,8 @@ var parseQuery = function (tokens, Mysql) {
         } else if (param == 'tail') {//select last inserted row
             query = query + ' ORDER BY ID DESC LIMIT 1'
         } else {
-            query = query + ' WHERE ? = ?'
-            vals.push(param);
+            query = query + ' WHERE ' + Mysql.escapeId(param) + ' = ?'
+            //vals.push(param);
             vals.push(value);
         }
         // break;

@@ -36,7 +36,8 @@ export class DashboardComponent {
   ngOnInit(): void {
     this.limit = 280;
     this.refreshContent();
-    this.setRefreshInterval(+(localStorage.getItem('refreshInterval')) | 5);
+    let initR: any = localStorage.getItem('refreshInterval') || '5';
+    this.setRefreshInterval(+initR);
   }
 
   public canvasWidth = 200
@@ -83,6 +84,13 @@ export class DashboardComponent {
 
   public timeToRefill: number = 0;
   public dayToRefill: string;
+
+
+  public limit: number = 280;
+  private refreshSubscription: Subscription;
+  private refreshInterval: number = (+localStorage.getItem("refreshInterval"));//300000 every 5 minutes
+  public counter: number = 1;
+
 
   // readingChart setup ***
   public readingChartData: Array<number> = [];
@@ -241,7 +249,7 @@ export class DashboardComponent {
     this.currentCapacity = Math.round(this.currentLevel * (this.tankCapacity / this.tankHeight) * 10) / 10;
   }
 
-  // consumpiton chart setyo
+  // consumpiton chart setup
   public consChartType = "bar";
   public consChartLegend = true;
   public consChartDataset: any[] = [
@@ -258,76 +266,10 @@ export class DashboardComponent {
   };
 
 
-  public getRoundedNumber(num, dum) {
-    return Math.round((num / dum) * 100 * 10) / 10;
-  }
 
-  public limit: number = 280;
-
-  //switch betwwen waterlevel 6 hrs and 24 hrs
-  public getData(limit) {
-    this.readingChartLabels = [];
-    this.readingChartData = [];
+  //update/switch betwen waterlevel 6 hrs and 24 hrs
+  public getReadingData(limit) {
     this.limit = limit;
-    this.readingService.getItemsLimit(this.limit).subscribe(
-      res => {
-        let self = this;
-        res[0].reverse().forEach(function (value) {
-          self.readingChartLabels.push(value['timestamp']);
-          self.readingChartData.push(+(value['level']));
-        });
-
-        this.readingChart.datasets[0].data = this.readingChartData;
-        this.readingChart.update();
-
-        let lastRecord = res[0][res[0].length - 1];
-        this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
-      },
-      error => {
-        if (error['error'] != undefined && error.error == "jwt expired") {
-          this.router.navigate(["/login"]);
-        }
-      }
-    );
-  }
-
-
-
-  public genPDF(elementId) {
-    var data = document.getElementById(elementId);
-    var dropdowns = data.getElementsByClassName('dropdown-menu');
-    for (var i = 0; i < dropdowns.length; i++) {
-      dropdowns[i].classList.remove('show');
-    }
-    html2canvas(data).then(canvas => {
-      // Few necessary setting options
-      var imgWidth = 200;
-      var pageHeight = 500;
-      var imgHeight = 500;
-      //    if(canvas.width < canvas.height){
-      //    imgHeight = canvas.height + pageHeight;
-      //}else{
-      imgHeight = (canvas.height * imgWidth) / canvas.width;
-      //}
-      var heightLeft = imgHeight;
-      const contentDataURL = canvas.toDataURL('image/png');
-      var pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
-      var top_position = 5;
-      var left_position = 5;
-      // pdf.addImage(agency_logo.src, 'PNG', logo_sizes.centered_x, _y, logo_sizes.w, logo_sizes.h);
-      pdf.addImage(contentDataURL, 'PNG', left_position, top_position, imgWidth, imgHeight);
-      pdf.save(elementId + '.pdf'); // Generated PDF
-    });
-  }
-
-  public fixIfNaN(number) {
-    return isNaN(number) ? '-' : number;
-  }
-
-
-  public refreshContent() {
-
-    this.today = moment().format("YYYY-MM-DD");
     this.readingService.getItemsLimit(this.limit).subscribe(
       res => {
         let self = this;
@@ -356,7 +298,10 @@ export class DashboardComponent {
         }
       }
     );
+  }
 
+  // update consumption data, refill
+  public getConsData(){
     //Assign quarters 0 as init.
     this.consChartLabels = [];
     for (let i = 0; i < 4; i++) {
@@ -410,7 +355,6 @@ export class DashboardComponent {
 
         //calculate yesterday's consumption
         let yesterdayIndex = this.consChartLabels.indexOf(moment().add(-1, 'day').format("YYYY-MM-DD"));
-        console.log(moment().add(-1, 'day').format("YYYY-MM-DD"));
         for (let i = 0; i < 5; i++) {
           let temp = this.consChartDataset[i]['data'][yesterdayIndex];
           this.dConsLst.push(this.fixIfNaN(temp));
@@ -432,9 +376,15 @@ export class DashboardComponent {
   }
 
 
-  private refreshSubscription: Subscription;
-  private refreshInterval: number = (+localStorage.getItem("refreshInterval"));//300000 every 5 minutes
-  public counter: number = 1;
+  // dashboard refresh methods
+
+  public refreshContent() {
+    this.today = moment().format("YYYY-MM-DD");
+    //update water level data
+    this.getReadingData(this.limit);
+    //update consumption data
+    this.getConsData();
+  }
 
   public setRefreshInterval(minutes) {
     if (this.refreshSubscription != null) {
@@ -462,95 +412,43 @@ export class DashboardComponent {
     }
   }
 
+  //helper methods
+  
+  public getRoundedNumber(num, dum) {
+    return Math.round((num / dum) * 100 * 10) / 10;
+  }
 
-  /*ngOnInit(): void {
+  public fixIfNaN(number) {
+    return isNaN(number) ? '-' : number;
+  }
 
-    this.today = moment().format("YYYY-MM-DD");
-
-    this.readingService.getItemsLimit(280).subscribe(
-      res => {
-        let self = this;
-        res[0].reverse().forEach(function (value) {
-          self.readingChartLabels.push(value['timestamp']);
-          self.readingChartData.push(+(value['level']));
-        });
-        let lastRecord = res[0][res[0].length - 1];
-        this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
-      },
-      error => {
-        if(error['error']!=undefined && error.error== "jwt expired"){
-          this.router.navigate(["/login"]);
-        }
-      }
-    );
-
-    //Assign quarters 0 as init.
-    for (let i = 0; i < 4; i++) {
-      this.consChartLabels.push('');
-      for (let j = 0; j < 7; j++) {
-        this.consChartDataset[i]['data'].push(0);
-      }
+  public genPDF(elementId) {
+    var data = document.getElementById(elementId);
+    var dropdowns = data.getElementsByClassName('dropdown-menu');
+    for (var i = 0; i < dropdowns.length; i++) {
+      dropdowns[i].classList.remove('show');
     }
-    this.readingService.getItemsConsumptionLimit(28).subscribe(
-      res => {
-        let self = this;
-        let revInx = 6;
-        res[0].forEach(function (record) {
-          let diff = record['consumption'];
-          let day = record['day'];
-          let q = record['quarter'];
+    html2canvas(data).then(canvas => {
+      // Few necessary setting options
+      var imgWidth = 200;
+      var pageHeight = 500;
+      var imgHeight = 500;
+      //    if(canvas.width < canvas.height){
+      //    imgHeight = canvas.height + pageHeight;
+      //}else{
+      imgHeight = (canvas.height * imgWidth) / canvas.width;
+      //}
+      var heightLeft = imgHeight;
+      const contentDataURL = canvas.toDataURL('image/png');
+      var pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
+      var top_position = 5;
+      var left_position = 5;
+      // pdf.addImage(agency_logo.src, 'PNG', logo_sizes.centered_x, _y, logo_sizes.w, logo_sizes.h);
+      pdf.addImage(contentDataURL, 'PNG', left_position, top_position, imgWidth, imgHeight);
+      pdf.save(elementId + '.pdf'); // Generated PDF
+    });
+  }
 
-          self.averageConsumption = self.averageConsumption + diff;
-
-          let index = self.consChartLabels.indexOf(day);
-          if (revInx == -1 && index == -1) {
-            return;
-          }
-          if (index == -1) {
-            self.consChartLabels[revInx] = day;
-            self.consChartDataset[4]['data'][revInx] = diff;
-            //add quarter cons. in corresponding data list
-            self.consChartDataset[q - 1]['data'][revInx] = diff;
-            revInx--;
-          } else {
-            //update day total            
-            let d_total = self.consChartDataset[4]['data'][index] + diff;
-            self.consChartDataset[4]['data'][index] = d_total;
-            self.consChartDataset[q - 1]['data'][index] = (diff);
-          }
-        });
-        this.averageConsumption = this.fixIfNaN(this.getRoundedNumber(this.averageConsumption, this.consChartLabels.length));
-        //calculate today's consumption
-        let todayIndex = this.consChartLabels.indexOf(this.today);
-        for (let i = 0; i < 5; i++) {
-          let temp = this.consChartDataset[i]['data'][todayIndex];
-          this.dConsLst.push(this.fixIfNaN(temp));
-          this.dConsPercLst.push(this.fixIfNaN(this.getRoundedNumber(this.consChartDataset[i]['data'][todayIndex], this.tankHeight)));
-          document.getElementById('q' + (i + 1) + 'ProgressBar').style.width = (this.dConsPercLst[i] | 0) + '%';
-        }
-        //calculate yesterday's consumption
-        let yesterdayIndex = this.consChartLabels.indexOf(moment().add(-1, 'day').format("YYYY-MM-DD"));
-        for (let i = 0; i < 5; i++) {
-          let temp = this.consChartDataset[i]['data'][yesterdayIndex];
-          this.dConsLst.push(this.fixIfNaN(temp));
-        }
-        //calculate time to refill
-        this.timeToRefill = Math.ceil(this.currentLevel / this.averageConsumption) - 1;
-        if (isNaN(this.timeToRefill)) {
-          this.timeToRefill = 0;
-        }
-        this.dayToRefill = moment().add(this.timeToRefill, 'day').format('ddd D MMM HH:mm');
-
-      },
-      error => {
-        if(error['error']!=undefined && error.error== "jwt expired"){
-          this.router.navigate(["/login"]);
-        }
-      }
-    );
-
-    this.setRefreshInterval(+(localStorage.getItem('refreshInterval') ) | 5);
-  }*/
 
 
 }
