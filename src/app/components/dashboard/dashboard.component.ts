@@ -315,7 +315,7 @@ export class DashboardComponent {
       res => {
         let self = this;
         let revInx = 6;
-        
+        this.averageConsumption  = 0;
         res[0].forEach(function (record) {
           let diff = record['consumption'];
           let day = record['day'];
@@ -327,8 +327,9 @@ export class DashboardComponent {
           if (revInx == -1 && index == -1) {
             return;
           }
-          if (index == -1) {
+          if (index == -1) {//first quarter record of the day
             self.consChartLabels[revInx] = day;
+            //add day total
             self.consChartDataset[4]['data'][revInx] = diff;
             //add quarter cons. in corresponding data list
             self.consChartDataset[q - 1]['data'][revInx] = diff;
@@ -339,9 +340,10 @@ export class DashboardComponent {
             self.consChartDataset[4]['data'][index] = d_total;
             self.consChartDataset[q - 1]['data'][index] = (diff);
           }
-          self.consChart.datasets = self.consChartDataset;
-          self.consChart.update();
         });
+        self.consChart.datasets = self.consChartDataset;
+        console.log(self.consChartDataset);
+        self.consChart.update();
 
         this.averageConsumption = this.fixIfNaN(this.getRoundedNumber(this.averageConsumption, this.consChartLabels.length));
         //calculate today's consumption
@@ -413,7 +415,7 @@ export class DashboardComponent {
   }
 
   //helper methods
-  
+
   public getRoundedNumber(num, dum) {
     return Math.round((num / dum) * 100 * 10) / 10;
   }

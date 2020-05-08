@@ -25,9 +25,21 @@ var report = function (data, to) {
     processEmail(data['subject'] , data['text'], html, to );
 };
 
+var resetPassowrd = function (token, to) {
+    let data = [];
+    data['subject'] = 'Password Reset';
+    data['text'] = 'Please click the button below to continue the password reset process for your '
+    + to + ' Mansoob account.';
+    data['to'] = to;
+    data['link'] = "http://mansoob.yousefcave.com/#/reset?mode=reset&token="+token;
+
+    var template = fs.readFileSync('./resources/emailTemps/reset.html', { encoding: 'utf-8' });
+    var html = ejs.render(template, data);
+
+    processEmail(data['subject'] , data['text'], html, to );
+};
+
 var processEmail = function (subject, text, html, to) {
-
-
     const mailConfig = {
         mailserver: {
             host: config.mailserver.host,
@@ -62,5 +74,6 @@ var processEmail = function (subject, text, html, to) {
 
 module.exports = {
     alert: alert,
-    report: report
+    report: report,
+    reset: resetPassowrd
 };

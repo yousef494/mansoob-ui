@@ -12,7 +12,7 @@ import * as moment from 'moment';
 })
 export class DefaultLayoutComponent {
   public sidebarMinimized = false;
-  public navItems = navItems;
+  public navItems = navItems(this.auth.getRole());
 
   public user: User;
   public notifications: any[] = [];

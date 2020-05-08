@@ -17,8 +17,9 @@ RewriteRule ^(.*)$ http://127.0.0.1:3000/$1 [P,L]
    sync -ru ../Mansoob\ V2/mansoob-ui/dist/* fz12klftt4ot@yousefcave.com:~/public_html/mansoob.yousefcave.com/dist/
 3- mv/clone(git) nodejs backend
 4- dep_loc run: npm i pm2 -g
-5- pm2 start server.js --watch or indirectory pm2 start run.sh
-   pm2 should execute run.sh --> npm start --prod
+5- pm2 start mansoob-app-pm2.json --env production (prefered)
+   pm2 start server.js --watch or indirectary pm2 start run.sh
+                                  pm2 should execute run.sh --> npm start --prod
 
 MySql connection configuration:
 Host:localhost, port:3306, user:manssobdb, db:mansoob

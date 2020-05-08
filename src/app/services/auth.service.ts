@@ -123,6 +123,14 @@ export class AuthService {
   register(user) {
     return this.http.post<any>(environment.baseUrl + '/signup', user);
   }
+  
+  forgetPassword(user){
+    return this.http.post<any>(environment.baseUrl + '/forget', user);
+  }
+
+  resetPassword(user){
+    return this.http.post<any>(environment.baseUrl + '/reset', user);
+  }
 
   login(credentials) {
     return this.http.post<any>(

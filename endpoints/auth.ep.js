@@ -4,6 +4,7 @@ const restify = require('./mysql-restify')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
+let util = require('../util');
 
 
 module.exports = function (app, Mysql, urlPrefix, security) {
@@ -26,9 +27,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
             const { email, firstName, lastName, password } = req.body;
             Mysql.record(models.user.name, { email: email })
                 .then(async function (record) {
-                    console.log(record);
                     if (record != null) {
-                        console.log(record);
                         res.json({
                             status: "Error",
                             message: "Email already exist"
@@ -36,8 +35,10 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                         res.end();
                     } else {
                         const hashedPassword = await hashPassword(password);
-                        const newUser = { email, password: hashedPassword, 
-                            firstName: firstName,  lastName: lastName,role: "BASIC" };
+                        const newUser = {
+                            email, password: hashedPassword,
+                            firstName: firstName, lastName: lastName, role: "BASIC"
+                        };
                         const accessToken = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, {
                             expiresIn: "1d"
                         });
@@ -65,6 +66,90 @@ module.exports = function (app, Mysql, urlPrefix, security) {
         }
     }
 
+    //forget (GUEST)
+    var forget = async (req, res, next) => {
+        try {
+            const { email } = req.body;
+            if (!email) {
+                return next('Insufficient input');
+            }
+            Mysql.record(models.user.name, { email: email })
+                .then(async function (user) {
+                    if (user.length == 0) {
+                        res.json({
+                            status: "Error",
+                            message: "Email does not exist"
+                        });
+                        res.end();
+                        return;
+                    }
+                    const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+                        expiresIn: "1d"
+                    });
+                    Mysql.update(models.user.name, { id: user.id }, { accessToken: accessToken })
+                        .then(function (info) {
+                            util.notifier.reset(accessToken, user.email);
+                            res.status(200).json({
+                                data: { email: user.email }
+                            })
+                        })
+                        .catch(function (err) {
+                            return next('Error while updating the token....');
+                        });
+                })
+                .catch(function (err) {
+                    return next('Email does not exist');
+                });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    //reset (GUEST)
+   var reset = async (req, res, next) => {
+    try {
+        const { email, password, token } = req.body;
+
+        Mysql.record(models.user.name, { email: email, accessToken: token })
+            .then(async function (user) {
+                if (user == null) {
+                    res.json({
+                        status: "Error",
+                        message: "Invalid input"
+                    });
+                    res.end();
+                } else {
+                    const hashedPassword = await hashPassword(password);
+                    const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+                        expiresIn: "1d"
+                    });
+
+                    Mysql.update(models.user.name, { id: user.id },
+                         { accessToken: accessToken, password: hashedPassword })
+                        .then(function (info) {
+                            res.status(200).json({
+                                data: {
+                                    email: user.email, role: user.role, id: user.id,
+                                    firstName: user.firstName, lastName: user.lastName
+                                },
+                                accessToken
+                            })
+                        })
+                        .catch(function (err) {
+                            return next('Error while updating the info....');
+                        });
+
+                }
+            });
+
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+
     //login (GUEST)
     var login = async (req, res, next) => {
         try {
@@ -82,16 +167,16 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                     Mysql.update(models.user.name, { id: user.id }, { accessToken: accessToken })
                         .then(function (info) {
                             res.status(200).json({
-                                data: { email: user.email, role: user.role, id: user.id, 
-                                    firstName: user.firstName, lastName: user.lastName },
+                                data: {
+                                    email: user.email, role: user.role, id: user.id,
+                                    firstName: user.firstName, lastName: user.lastName
+                                },
                                 accessToken
                             })
                         })
                         .catch(function (err) {
                             return next('Error while updating the token....');
                         });
-
-
                 })
                 .catch(function (err) {
                     return next('Email does not exist');
@@ -192,6 +277,9 @@ module.exports = function (app, Mysql, urlPrefix, security) {
 
     router.post(urlPrefix + '/signup', signup);
     router.post(urlPrefix + '/login', login);
+    router.post(urlPrefix + '/forget', forget);
+    router.post(urlPrefix + '/reset', reset);
+
     router.patch(urlPrefix + '/user/:id', updateUser);
     router.post(urlPrefix + '/auth/deviceToken', genAPIAccessToken);
 

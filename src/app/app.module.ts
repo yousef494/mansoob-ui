@@ -71,6 +71,7 @@ import { GaugeChartModule } from 'angular-gauge-chart';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AvatarUpdateComponent } from './components/profile/avatar-update/avatar-update.component'
+import { ResetComponent } from './views/reset/reset.component';
 
 
 @NgModule({
@@ -110,6 +111,7 @@ import { AvatarUpdateComponent } from './components/profile/avatar-update/avatar
     P404Component,
     P500Component,
     LoginComponent,
+    ResetComponent,
     RegisterComponent,
     DeviceComponent,
     RDTableComponent,
