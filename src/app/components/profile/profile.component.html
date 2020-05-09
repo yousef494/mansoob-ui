@@ -5,7 +5,8 @@
                 <div class="card-body">
                     <div class="col-lg-2 col-md-2 col-sm-6">
                         <div class="float-lg-left">
-                            <ngx-avatar size="100" src="http://yousefcave.com/uploads/avatars/{{user.id}}-avatar.png" name="{{user.name}}">
+                            <ngx-avatar size="100" src="http://yousefcave.com/uploads/avatars/{{user.id}}-avatar.png"
+                                name="{{user.name}}">
                             </ngx-avatar>
                             <button type="button" class=" btn btn-transparent fa fa-camera overlap"
                                 (click)="updateAvatarModal.show()">
@@ -25,10 +26,14 @@
             <div class="card">
                 <div class="card-body" id="about">
                     <small class="text-muted">First Name: </small>
-                    <p>{{ user.firstName }}</p>
+                    <p  *ngIf="mode!='edit'" >{{ user.firstName }}</p>
+                    <input *ngIf="mode=='edit'" class="form-control" id="firstName" placeholder="Enter first name"
+                        type="text" [(ngModel)]="user.firstName">
                     <hr>
                     <small class="text-muted">Last Name: </small>
-                    <p>{{ user.lastName }}</p>
+                    <p  *ngIf="mode!='edit'" >{{ user.lastName }}</p>
+                    <input *ngIf="mode=='edit'" class="form-control" id="lastName" placeholder="Enter last name"
+                        type="text" [(ngModel)]="user.lastName">
                     <hr>
                     <small class="text-muted">Email address: </small>
                     <p>{{ user.email }}</p>
@@ -38,6 +43,17 @@
                     <hr>
                     <small class="text-muted">Id: </small>
                     <p class="m-b-0">{{user.id }}</p>
+                </div>
+                <div class="card-footer">
+                    <button  *ngIf="mode!='edit'" class="btn btn-sm btn-primary" type="button" (click)="mode='edit'">
+                        <i class="fa fa-edit"></i> Edit
+                    </button>
+                    <button  *ngIf="mode=='edit'" class="btn btn-sm btn-primary" type="button" (click)="updateDetails()">
+                        <i class="fa fa-dot-circle-o"></i> Submit
+                    </button>
+                    <button  *ngIf="mode=='edit'"  class="btn btn-sm btn-danger ml-3" type="reset" (click)="resetDetails()">
+                        <i class="fa fa-ban"></i> Cancel
+                      </button>
                 </div>
             </div>
         </div>

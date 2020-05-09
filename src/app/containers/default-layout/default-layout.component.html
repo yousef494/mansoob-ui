@@ -1,4 +1,4 @@
-<app-header [navbarBrandRouterLink]="['/login']" [fixed]="true"
+<app-header [navbarBrandRouterLink]="['/']" [fixed]="true"
   [navbarBrandFull]="{src: 'assets/img/brand/logo.png', width: 89, alt: 'Mansoob Logo'}"
   [navbarBrandMinimized]="{src: 'assets/img/brand/logo_small.png', width: 30, height: 30, alt: 'Mansoob Logo'}"
   [sidebarToggler]="isAdmin?'lg':false" [asideMenuToggler]="'lg'">
@@ -16,7 +16,7 @@
       <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="darkSwitch" [(ngModel)]="themeSwitcherIsChecked"
           (change)="switchTheme()">
-        <label class="custom-control-label" for="darkSwitch"></label>
+        <label class="custom-control-label" for="darkSwitch">Dark mode</label>
       </div>
     </li>
  

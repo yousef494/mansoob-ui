@@ -159,6 +159,13 @@ module.exports = function (app, Mysql, urlPrefix, security) {
             }
             Mysql.record(models.user.name, { email: email })
                 .then(async function (user) {
+                    if(user.status != 'ACTIVE'){
+                        res.status(400).json({
+                            status: 'Error',
+                            message: 'User disabled'
+                        })
+                        return;
+                    }
                     const validPassword = await validatePassword(password, user.password);
                     if (!validPassword) return next('Password is not correct');
                     const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
@@ -167,6 +174,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                     Mysql.update(models.user.name, { id: user.id }, { accessToken: accessToken })
                         .then(function (info) {
                             res.status(200).json({
+                                status: 'OK',
                                 data: {
                                     email: user.email, role: user.role, id: user.id,
                                     firstName: user.firstName, lastName: user.lastName
@@ -175,10 +183,18 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                             })
                         })
                         .catch(function (err) {
+                            res.status(400).json({
+                                status: 'Error',
+                                message: 'Error while updating the token....'
+                            })
                             return next('Error while updating the token....');
                         });
                 })
                 .catch(function (err) {
+                    res.status(400).json({
+                        status: 'Error',
+                        message: 'Email does not exist'
+                    })
                     return next('Email does not exist');
                 });
 
@@ -275,11 +291,15 @@ module.exports = function (app, Mysql, urlPrefix, security) {
 
 
 
+    // define auth endpoints
     router.post(urlPrefix + '/signup', signup);
     router.post(urlPrefix + '/login', login);
     router.post(urlPrefix + '/forget', forget);
     router.post(urlPrefix + '/reset', reset);
 
+    /**
+     * To do: seprate user endpoints from auth ones
+     */
     router.patch(urlPrefix + '/user/:id', updateUser);
     router.post(urlPrefix + '/auth/deviceToken', genAPIAccessToken);
 

@@ -42,6 +42,11 @@ export class UserComponent implements OnInit {
       key: 'role',
       title: 'Role',
       options: ['BASIC','ADMIN']
+    },
+    {
+      key: 'status',
+      title: 'Status',
+      options: ['ACTIVE','INACTIVE']
     }
   ];
 

@@ -1,9 +1,10 @@
 import { Component ,ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '.././../services/auth.service';
-import { User } from '../../services/user';
+import { User, UserService } from '../../services/user';
 import { NotificationService} from "../../services/notification.service";
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -15,15 +16,24 @@ export class ProfileComponent {
 
   @ViewChild('updateAvatarModal') public updateAvatarModal: ModalDirective;
 
+  public mode = '';
+
   public user: User;
+  public user_cp: User;
   public notifications: any[] = [];
 
   public isAdmin: boolean = false;
 
-  constructor(private auth: AuthService, private noti: NotificationService,
-    private router: Router) {
+  constructor(
+    private auth: AuthService, 
+    private noti: NotificationService,
+    private userService: UserService,
+    private router: Router,
+    private toastService: ToastrService
+    ) {
       this.isAdmin = this.auth.isAdmin();
       this.user = this.auth.getUser();
+      this.user_cp = this.auth.getUser();
 
       this.getNotifications();
   }
@@ -52,6 +62,28 @@ export class ProfileComponent {
       error => {
       }
     );
+  }
+
+  updateDetails() {
+    this.userService.updatetItem(this.user.id,
+      {
+        firstName: this.user.firstName, lastName: this.user.lastName
+      }).subscribe(
+        res => {
+          this.toastService.success("Success", "Record  was updated successfully");
+          this.auth.setUserInfo(this.user);
+          this.user = this.auth.getUser();
+          this.mode = '';
+        },
+        error => {
+          this.toastService.error("Error!", "Updaing record was failed");
+        }
+      );
+  }
+
+  resetDetails(){
+    this.user = this.user_cp;
+    this.mode = '';
   }
 
 

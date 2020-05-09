@@ -72,6 +72,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AvatarUpdateComponent } from './components/profile/avatar-update/avatar-update.component'
 import { ResetComponent } from './views/reset/reset.component';
+import { HomeComponent } from './components/home/home.component';
 
 
 @NgModule({
@@ -119,7 +120,8 @@ import { ResetComponent } from './views/reset/reset.component';
     DashboardComponent,
     SettingsComponent,
     ProfileComponent,
-    AvatarUpdateComponent
+    AvatarUpdateComponent,
+    HomeComponent
   ],
   providers: [
     AuthService,

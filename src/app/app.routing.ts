@@ -13,6 +13,7 @@ import { ResetComponent } from './views/reset/reset.component';
 import { AuthGuard } from '../guards/auth.guard';
 import { AdminGuard } from '../guards/admin.guard';
 
+import { HomeComponent } from './components/home/home.component';
 import { UserComponent } from './components/user/user.component';
 import { DeviceComponent } from './components/device/device.component'
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -69,8 +70,11 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: 'base',
-        loadChildren: () => import('./views/base/base.module').then(m => m.BaseModule)
+        path: 'home',
+        component: HomeComponent,
+        data: {
+          title: 'Home'
+        }
       },
       {
         path: 'dashboard',
@@ -78,7 +82,6 @@ export const routes: Routes = [
         data: {
           title: 'Dashboard'
         }
-        //loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
       {
         path: 'device',

@@ -93,7 +93,6 @@ export class DeviceComponent implements OnInit {
   }
 
   updateDetails() {
-    console.log(this.record);
     this.deiveSvr.updatetItem(this.record['id'],
       {
         name: this.record['name'], tank_height: this.record['tank_height'],

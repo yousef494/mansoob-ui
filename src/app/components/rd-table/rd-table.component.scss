@@ -22,3 +22,7 @@ tbody tr:nth-of-type(odd){
 .alert-modal .modal-title {
     color: $red;
   }*/
+
+table > tbody > tr:hover {
+      color: black;
+  }

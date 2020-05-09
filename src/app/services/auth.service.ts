@@ -50,6 +50,23 @@ export class AuthService {
     }
   }
 
+
+  setUserInfo(user) {
+    if (user != null) {
+      let name = user['firstName'] + ' ' + user['lastName'];
+      this.user = new User();
+      this.user.id = user.id;
+      this.user.name = name;
+      this.user.firstName = user.firstName;
+      this.user.lastName = user.lastName;
+      this.user.email = user.email;
+      this.user.role = user.role;
+      this.user.avatar = user.id+"_avatar.png";
+      //store in local storage
+      localStorage.setItem('user', JSON.stringify(this.user));
+    }
+  }
+
   getUser(): User {
     return this.user || JSON.parse(localStorage.getItem('user'));
   }
@@ -65,6 +82,7 @@ export class AuthService {
     }
     return '';
   }
+  
 
   getUserFirstName() {
     if (this.getUser() !== null) {

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, NgModule } from '@angular/core';
 import { Observable, interval, Subscription } from 'rxjs';
+import { Router, ActivatedRoute } from "@angular/router";
 
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
@@ -12,7 +13,6 @@ import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ShareService } from '@ngx-share/core';
-import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-dashboard',
@@ -26,14 +26,20 @@ export class DashboardComponent {
 
   @ViewChild('infoModal') public infoModal: ModalDirective;
 
+  public device_id ='';
+
   constructor(
     private readingService: ReadingService,
     public share: ShareService,
     private router: Router,
+    private route: ActivatedRoute
   ) {
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.device_id = params['device_id'];
+    });
     this.limit = 280;
     this.refreshContent();
     let initR: any = localStorage.getItem('refreshInterval') || '5';
@@ -342,7 +348,6 @@ export class DashboardComponent {
           }
         });
         self.consChart.datasets = self.consChartDataset;
-        console.log(self.consChartDataset);
         self.consChart.update();
 
         this.averageConsumption = this.fixIfNaN(this.getRoundedNumber(this.averageConsumption, this.consChartLabels.length));

@@ -53,7 +53,7 @@ export class LoginComponent {
           this.router.navigate(["/"]);
         },
         error => {
-          this.toastService.error("Authentication Failed", error);
+          this.toastService.error(error.error.status, error.error.message);
         }
       );
   }
