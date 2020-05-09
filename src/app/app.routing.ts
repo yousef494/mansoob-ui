@@ -22,7 +22,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'home',
     pathMatch: 'full',
     canActivate: [AuthGuard]
   },

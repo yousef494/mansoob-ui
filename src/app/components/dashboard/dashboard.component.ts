@@ -13,6 +13,7 @@ import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ShareService } from '@ngx-share/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,20 +27,28 @@ export class DashboardComponent {
 
   @ViewChild('infoModal') public infoModal: ModalDirective;
 
-  public device_id ='';
+  public device_id = '';
 
   constructor(
     private readingService: ReadingService,
     public share: ShareService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastService: ToastrService
   ) {
   }
 
   ngOnInit(): void {
+    //get device id
     this.route.queryParams.subscribe(params => {
-      this.device_id = params['device_id'];
+      this.device_id = params['device_id'] || localStorage.getItem('device_id');
+      if (this.device_id === null) {
+        this.router.navigate(["/"]);
+      } else {
+        localStorage.setItem('device_id', this.device_id);
+      }
     });
+
     this.limit = 280;
     this.refreshContent();
     let initR: any = localStorage.getItem('refreshInterval') || '5';
@@ -275,111 +284,135 @@ export class DashboardComponent {
 
   //update/switch betwen waterlevel 6 hrs and 24 hrs
   public getReadingData(limit) {
-    this.limit = limit;
-    this.readingService.getItemsLimit(this.limit).subscribe(
-      res => {
-        let self = this;
-        this.readingChartLabels = [];
-        this.readingChartData = [];
-        this.readingChartDataset = [
-          {
-            data: this.readingChartData,
-            label: 'Level'
+    try {
+      this.limit = limit;
+      this.readingService.getItemsLimit(this.limit, { 'device_id': this.device_id }).subscribe(
+        res => {
+          try {
+            let self = this;
+            this.readingChartLabels = [];
+            this.readingChartData = [];
+            this.readingChartDataset = [
+              {
+                data: this.readingChartData,
+                label: 'Level'
+              }
+            ];
+
+            res[0].reverse().forEach(function (value) {
+              self.readingChartLabels.push(value['timestamp']);
+              self.readingChartData.push(+(value['level']));
+            });
+
+            // The hidden line might cause an error of mixing up readingChartDataset and consChartDataset
+            //this.readingChart.datasets[0].data = this.readingChartData;
+            console.log("g1.1 "+this.consChartDataset[0]['data'].length);
+            
+            this.readingChart.update();
+
+            let lastRecord = res[0][res[0].length - 1];
+            this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
+          } catch (err) {
+            this.toastService.error("Error!", "Error while parsing the data (Reading controller)");
           }
-        ];
-        res[0].reverse().forEach(function (value) {
-          self.readingChartLabels.push(value['timestamp']);
-          self.readingChartData.push(+(value['level']));
-        });
-
-        this.readingChart.datasets[0].data = this.readingChartData;
-        this.readingChart.update();
-
-        let lastRecord = res[0][res[0].length - 1];
-        this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
-      },
-      error => {
-        if (error['error'] != undefined && error.error == "jwt expired") {
-          this.router.navigate(["/login"]);
+        },
+        error => {
+          if (error['error'] != undefined && error.error == "jwt expired") {
+            this.router.navigate(["/login"]);
+          }
         }
-      }
-    );
+      );
+    } catch (err) {
+      this.toastService.error("Error!", "Error while parsing the data (Reading controller)");
+    }
   }
 
   // update consumption data, refill
-  public getConsData(){
-    //Assign quarters 0 as init.
-    this.consChartLabels = [];
-    for (let i = 0; i < 4; i++) {
-      this.consChartDataset[i]['data'] = [];
-      this.consChartLabels.push('');
-      for (let j = 0; j < 7; j++) {
-        this.consChartDataset[i]['data'].push(0);
+  public getConsData() {
+    try {
+      //Assign quarters 0 as init.
+      this.consChartLabels = [];
+      for (let i = 0; i < 5; i++) {
+        this.consChartDataset[i]['data'] = [];
+        this.consChartLabels.push('');
+        for (let j = 0; j < 7; j++) {
+          this.consChartDataset[i]['data'].push(0);
+        }
       }
+      this.readingService.getItemsConsumptionLimit(28, this.device_id ).subscribe(
+        res => {
+          let self = this;
+          let revInx = 6;
+          this.averageConsumption = 0;
+          res[0].forEach(function (record) {
+            let diff = record['consumption'];
+            let day = record['day'];
+            let q = record['quarter'];
+
+            self.averageConsumption = self.averageConsumption + diff;
+
+            let index = self.consChartLabels.indexOf(day);
+
+           // console.log(day+": "+q+": "+ diff+": "+revInx+": "+ index);
+
+            //to break the loop
+            if (revInx == -1 && index == -1) {
+              return;
+            }
+
+            if (index == -1) {//first quarter record of the day
+              self.consChartLabels[revInx] = day;
+              //add day total
+              self.consChartDataset[4]['data'][revInx] = diff;
+              //add quarter cons. in corresponding data list
+              self.consChartDataset[(q - 1)]['data'][revInx] = diff;
+              revInx--;
+            } else {
+              //update day total            
+              let d_total = self.consChartDataset[4]['data'][index] + diff;
+              self.consChartDataset[4]['data'][index] = d_total;
+              self.consChartDataset[(q - 1)]['data'][index] = (diff);
+            }
+          });
+
+          self.consChart.datasets = self.consChartDataset;
+          self.consChart.update();
+
+
+          this.averageConsumption = this.fixIfNaN(this.getRoundedNumber(this.averageConsumption, this.consChartLabels.length));
+          //calculate today's consumption
+          let todayIndex = this.consChartLabels.indexOf(this.today);
+          for (let i = 0; i < 5; i++) {
+            let temp = this.consChartDataset[i]['data'][todayIndex];
+            this.dConsLst.push(this.fixIfNaN(temp));
+            this.dConsPercLst.push(this.fixIfNaN(this.getRoundedNumber(this.consChartDataset[i]['data'][todayIndex], this.tankHeight)));
+            document.getElementById('q' + (i + 1) + 'ProgressBar').style.width = (this.dConsPercLst[i] | 0) + '%';
+          }
+
+          //calculate yesterday's consumption
+          let yesterdayIndex = this.consChartLabels.indexOf(moment().add(-1, 'day').format("YYYY-MM-DD"));
+          for (let i = 0; i < 5; i++) {
+            let temp = this.consChartDataset[i]['data'][yesterdayIndex];
+            this.dConsLst.push(this.fixIfNaN(temp));
+          }
+
+          //calculate time to refill
+          this.timeToRefill = Math.ceil(this.currentLevel / this.averageConsumption) - 1;
+          if (isNaN(this.timeToRefill)) {
+            this.timeToRefill = 0;
+          }
+
+          this.dayToRefill = moment().add(this.timeToRefill, 'day').format('ddd D MMM HH:mm');
+        },
+        error => {
+          if (error['error'] != undefined && error.error == "jwt expired") {
+            this.router.navigate(["/login"]);
+          }
+        }
+      );
+    } catch (err) {
+      this.toastService.error("Error!", "Error while parsing the data (Consumption controller)");
     }
-    this.readingService.getItemsConsumptionLimit(28).subscribe(
-      res => {
-        let self = this;
-        let revInx = 6;
-        this.averageConsumption  = 0;
-        res[0].forEach(function (record) {
-          let diff = record['consumption'];
-          let day = record['day'];
-          let q = record['quarter'];
-
-          self.averageConsumption = self.averageConsumption + diff;
-
-          let index = self.consChartLabels.indexOf(day);
-          if (revInx == -1 && index == -1) {
-            return;
-          }
-          if (index == -1) {//first quarter record of the day
-            self.consChartLabels[revInx] = day;
-            //add day total
-            self.consChartDataset[4]['data'][revInx] = diff;
-            //add quarter cons. in corresponding data list
-            self.consChartDataset[q - 1]['data'][revInx] = diff;
-            revInx--;
-          } else {
-            //update day total            
-            let d_total = self.consChartDataset[4]['data'][index] + diff;
-            self.consChartDataset[4]['data'][index] = d_total;
-            self.consChartDataset[q - 1]['data'][index] = (diff);
-          }
-        });
-        self.consChart.datasets = self.consChartDataset;
-        self.consChart.update();
-
-        this.averageConsumption = this.fixIfNaN(this.getRoundedNumber(this.averageConsumption, this.consChartLabels.length));
-        //calculate today's consumption
-        let todayIndex = this.consChartLabels.indexOf(this.today);
-        for (let i = 0; i < 5; i++) {
-          let temp = this.consChartDataset[i]['data'][todayIndex];
-          this.dConsLst.push(this.fixIfNaN(temp));
-          this.dConsPercLst.push(this.fixIfNaN(this.getRoundedNumber(this.consChartDataset[i]['data'][todayIndex], this.tankHeight)));
-          document.getElementById('q' + (i + 1) + 'ProgressBar').style.width = (this.dConsPercLst[i] | 0) + '%';
-        }
-
-        //calculate yesterday's consumption
-        let yesterdayIndex = this.consChartLabels.indexOf(moment().add(-1, 'day').format("YYYY-MM-DD"));
-        for (let i = 0; i < 5; i++) {
-          let temp = this.consChartDataset[i]['data'][yesterdayIndex];
-          this.dConsLst.push(this.fixIfNaN(temp));
-        }
-
-        //calculate time to refill
-        this.timeToRefill = Math.ceil(this.currentLevel / this.averageConsumption) - 1;
-        if (isNaN(this.timeToRefill)) {
-          this.timeToRefill = 0;
-        }
-        this.dayToRefill = moment().add(this.timeToRefill, 'day').format('ddd D MMM HH:mm');
-      },
-      error => {
-        if (error['error'] != undefined && error.error == "jwt expired") {
-          this.router.navigate(["/login"]);
-        }
-      }
-    );
   }
 
 

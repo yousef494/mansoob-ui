@@ -58,7 +58,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
      */
     let updateReading = function (device_id, timestamp, level, d_info) {
         // Insert the data into reading table
-        let data = { 'timestamp': timestamp, 'level': level };
+        let data = { 'timestamp': timestamp, 'level': level, 'device_id': device_id };
         Mysql.insert(models.reading.name, data)
             .then(function (info) {
                 log('info', 'reading1', info);

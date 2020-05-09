@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
     this.deviceService.queryItems(query).subscribe(
       res =>{
         this.devices = res[0];
+        this.devices.push({name: 'العماره', severity: '-', level: '-', id: 1 });
       },
       err=>{
         console.log(err);

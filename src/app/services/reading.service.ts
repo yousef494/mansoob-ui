@@ -25,12 +25,12 @@ export class ReadingService {
     return forkJoin(this.http.get<any[]>(this.urlPrefix));
   }
 
-  getItemsLimit(limit){
-    return forkJoin(this.http.get<any[]>(this.urlPrefix+'time?sort=timestamp&limit='+limit, this.auth.httpOptions));
+  getItemsLimit(limit, query){
+    return forkJoin(this.http.get<any[]>(this.urlPrefix+'time?query='+JSON.stringify(query)+'&sort=timestamp&limit='+limit, this.auth.httpOptions));
   }
 
-  getItemsConsumptionLimit(limit){
-    return forkJoin(this.http.get<any[]>(this.urlPrefix+'consumption?limit='+limit));
+  getItemsConsumptionLimit(limit,device_id){
+    return forkJoin(this.http.get<any[]>(this.urlPrefix+'consumption?device_id='+device_id+'&limit='+limit));
   }
 
   getItem(id){
