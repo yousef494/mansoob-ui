@@ -72,7 +72,10 @@ export class AuthService {
   }
 
   getUserId() {
-    return this.getUser().id;
+    if (this.getUser() !== null) {
+      return this.getUser().id;
+    }
+    return '';
   }
 
 
