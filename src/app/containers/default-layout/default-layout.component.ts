@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from "@angular/router";
 import { navItems } from '../../_nav';
 import { AuthService } from '.././../services/auth.service';
 import { User } from "../../services/user";
@@ -21,8 +21,16 @@ export class DefaultLayoutComponent {
 
   public isAdmin: boolean = false;
 
-  constructor(private auth: AuthService, private noti: NotificationService,
-    private router: Router) {
+  constructor(
+    private auth: AuthService,
+    private noti: NotificationService,
+    private router: Router,
+    private route: ActivatedRoute,
+    ) {
+      if(!this.auth.isLoggedIn()){
+        this.router.navigate(["/login"]);
+
+      }
     this.isAdmin = this.auth.isAdmin();
     this.sidebarMinimized = this.isAdmin;
     this.user = this.auth.getUser();
@@ -47,9 +55,6 @@ export class DefaultLayoutComponent {
   }
 
   getNotifications() {
-    if(this.user == null){
-      return;
-    }
     let self = this;
     this.noti.getItemsByUser(this.user.id).subscribe(
       res => {
