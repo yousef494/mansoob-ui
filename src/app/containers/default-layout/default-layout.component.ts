@@ -47,6 +47,9 @@ export class DefaultLayoutComponent {
   }
 
   getNotifications() {
+    if(this.user == null){
+      return;
+    }
     let self = this;
     this.noti.getItemsByUser(this.user.id).subscribe(
       res => {
