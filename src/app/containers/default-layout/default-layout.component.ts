@@ -27,10 +27,6 @@ export class DefaultLayoutComponent {
     private router: Router,
     private route: ActivatedRoute,
     ) {
-      if(!this.auth.isLoggedIn()){
-        this.router.navigate(["/login"]);
-
-      }
     this.isAdmin = this.auth.isAdmin();
     this.sidebarMinimized = this.isAdmin;
     this.user = this.auth.getUser();

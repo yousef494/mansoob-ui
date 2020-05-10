@@ -36,18 +36,19 @@ export class DashboardComponent {
     private route: ActivatedRoute,
     private toastService: ToastrService
   ) {
+        //get device id
+        this.route.queryParams.subscribe(params => {
+          this.device_id = params['device_id'] || localStorage.getItem('device_id');
+          if (this.device_id === null) {
+            this.router.navigate(["/"]);
+          } else {
+            localStorage.setItem('device_id', this.device_id);
+          }
+        });
   }
 
   ngOnInit(): void {
-    //get device id
-    this.route.queryParams.subscribe(params => {
-      this.device_id = params['device_id'] || localStorage.getItem('device_id');
-      if (this.device_id === null) {
-        this.router.navigate(["/"]);
-      } else {
-        localStorage.setItem('device_id', this.device_id);
-      }
-    });
+
 
     this.limit = 280;
     this.refreshContent();
@@ -352,8 +353,6 @@ export class DashboardComponent {
             self.averageConsumption = self.averageConsumption + diff;
 
             let index = self.consChartLabels.indexOf(day);
-
-           // console.log(day+": "+q+": "+ diff+": "+revInx+": "+ index);
 
             //to break the loop
             if (revInx == -1 && index == -1) {
