@@ -91,6 +91,7 @@ endpoints.noti(app, Mysql, config[env].urlPrefix, security);
 endpoints.auth(app, Mysql, config[env].urlPrefix, security);
 endpoints.process(app, Mysql, config[env].urlPrefix, security);
 endpoints.upload(app, Mysql, config[env].urlPrefix, security);
+endpoints.user_device(app, Mysql, config[env].urlPrefix, security);
 
 //app.listen(config[env].server.port, config[env].server.host, function () {
 

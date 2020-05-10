@@ -14,14 +14,34 @@ export class HomeComponent implements OnInit {
   constructor(
     private deviceService: DeviceService,
     private auth: AuthService
-  ) { 
-    let query = {user_id: this.auth.getUserId()}
+  ) {
+    let query = { user_id: this.auth.getUserId() }
     this.deviceService.queryItems(query).subscribe(
-      res =>{
+      res => {
         this.devices = res[0];
-        this.devices.push({name: 'العماره', severity: '-', level: '-', id: 1 });
       },
-      err=>{
+      err => {
+        console.log(err);
+      }
+    );
+    
+    this.deviceService.queryShares(query).subscribe(
+      res => {
+        res[0].forEach(device => {
+          let q = { id: device['device_id'] }
+          this.deviceService.queryItems(q).subscribe(
+            res => {
+              res[0].forEach(item=>{
+                this.devices.push(Object.assign(item, {type: 'shared'}));
+              });
+            },
+            err => {
+              console.log(err);
+            }
+          );
+        });
+      },
+      err => {
         console.log(err);
       }
     );

@@ -20,11 +20,17 @@ export class DeviceComponent implements OnInit {
     id: '', name: '', tank_height: '', tank_capacity: '',
     email_to: '', access_token: ''
   };
+
+  public recordShared_string: string = '';
+  public recordShared = [];
+  public recordShared_cpy = [];
+  public recordShared_ids = [];
+
   public recordSelected = false;
 
   constructor(
     private auth: AuthService,
-    private deiveSvr: DeviceService,
+    private deviceService: DeviceService,
     private toastService: ToastrService
   ) { }
 
@@ -33,7 +39,7 @@ export class DeviceComponent implements OnInit {
     pKey: 'id',
     pKey_label: 'ID',
     apiURL: 'api/v1',
-    loadURL: 'api/v1/device?user_id='+this.auth.getUserId(),
+    loadURL: 'api/v1/device?user_id=' + this.auth.getUserId(),
     forceServerUpdate: true,
     type: 'simple',
     csv: false,
@@ -75,7 +81,41 @@ export class DeviceComponent implements OnInit {
       this.record = Object.assign(this.record, $event);
       this.record_cpy = Object.assign(this.record, $event);
       this.recordSelected = true;
+      this.showShared(this.record['id']);
     }
+  }
+
+  showShared(device_id) {
+    this.recordShared = [];
+    this.recordShared_cpy = [];
+    this.recordShared_ids = [];
+    let query = { device_id: device_id };
+    this.deviceService.queryShares(query).subscribe(
+      res => {
+        console.log(res);
+        //extract only users whom whared with
+        res[0].forEach(share => {
+          this.recordShared.push(share['user_id']);
+          this.recordShared_cpy.push(share['user_id']);
+          this.recordShared_ids.push(share['id']);
+        });
+        this.recordShared_string = this.list_to_csv(this.recordShared);
+      },
+      err => {
+
+      }
+    );
+  }
+
+  list_to_csv(list) {
+    let str = '';
+    for (let i = 0; i < list.length; i++) {
+      str = str + list[i]+',';
+    }
+    if(str.length>0){
+      str = str.substring(0,str.length-1);
+    }
+    return str;
   }
 
   generateAccessToken() {
@@ -88,12 +128,12 @@ export class DeviceComponent implements OnInit {
     );
   }
 
-  resetDetails(){
+  resetDetails() {
     this.record = this.record_cpy;
   }
 
   updateDetails() {
-    this.deiveSvr.updatetItem(this.record['id'],
+    this.deviceService.updatetItem(this.record['id'],
       {
         name: this.record['name'], tank_height: this.record['tank_height'],
         tank_capacity: this.record['tank_capacity'], email_to: this.record['email_to']
@@ -105,6 +145,39 @@ export class DeviceComponent implements OnInit {
           this.toastService.error("Error!", "Updaing record was failed");
         }
       );
+  }
+
+
+  resetShared() {
+    this.recordShared = this.recordShared_cpy;
+    this.recordShared_string = this.list_to_csv(this.recordShared);
+  }
+
+  updateShared() {
+    //get the new items
+    this.recordShared = this.recordShared_string.split(',');
+    //delete all existing ids for this device
+    if (this.recordShared_ids.length > 0) {
+      this.recordShared_ids.forEach(id => {
+        this.deviceService.deleteShare(id).subscribe(
+          res => {},
+          error => {}
+        );
+      });
+    }
+
+    let device_id = this.record['id'];
+    //addd the defined ones from the form
+    if (this.recordShared.length > 0) {
+      this.recordShared.forEach(user_id => {
+        this.deviceService.createShare(
+          { device_id: device_id, user_id: user_id }).subscribe(
+          res => { },
+          error => {}
+        );
+      });
+    }
+
   }
 
 

@@ -4,5 +4,6 @@ module.exports = {
     device: require('./device.ep'),
     noti: require('./notification.ep'),
     process: require('./process.ep'),
-    upload: require('./upload.ep')
+    upload: require('./upload.ep'),
+    user_device: require('./user_device.ep')
 }
