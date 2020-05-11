@@ -10,3 +10,12 @@
     border-color: #4dbd74;
     color: #4dbd74;
 }
+
+
+.multiple_emails-ul{
+    list-style-type: none;
+    margin-top: -2px;
+    border-top: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}

@@ -43,6 +43,13 @@ export class DeviceService {
     );
   }
 
+  queryItemsWithEmails(device_id){
+    return forkJoin(
+      this.http.get<any[]>(
+        environment.baseUrl + '/user_device/shares/' + device_id
+      )
+    );
+  }
 
   queryShares(query) {
     return forkJoin(
@@ -57,6 +64,15 @@ export class DeviceService {
     return forkJoin(
       this.http.post<any>(
         environment.baseUrl + '/user_device/',
+        item
+      )
+    );
+  }
+
+  createItemFromEmail(item) {
+    return forkJoin(
+      this.http.post<any>(
+        environment.baseUrl + '/user_device/shares',
         item
       )
     );

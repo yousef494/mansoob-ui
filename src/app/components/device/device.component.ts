@@ -9,6 +9,7 @@ import {
   Validators
 } from '@angular/forms';
 import { ValidationHelper, NumbericValidator } from '../../_helper/validator_hp';
+import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 
 @Component({
   selector: 'app-device',
@@ -58,7 +59,8 @@ export class DeviceComponent implements OnInit {
         name: new FormControl('', [Validators.required]),
         tank_capacity: new FormControl(8, [Validators.required, NumbericValidator.numeric]),
         tank_height: new FormControl(150, [Validators.required, NumbericValidator.numeric]),
-        email_to: new FormControl('', [])
+        email_to: new FormControl('', []),
+        email_to_input: new FormControl('', [])
       });
   }
 
@@ -110,6 +112,8 @@ export class DeviceComponent implements OnInit {
       this.record_cpy = Object.assign(this.record, $event);
       this.recordSelected = true;
       this.showShared(this.record['id']);
+      //for multiple email control
+      this.email_to_input = this.record.email_to;
     }
   }
 
@@ -118,16 +122,17 @@ export class DeviceComponent implements OnInit {
     this.recordShared_cpy = [];
     this.recordShared_ids = [];
     let query = { device_id: device_id };
-    this.deviceService.queryShares(query).subscribe(
+    this.deviceService.queryItemsWithEmails(device_id).subscribe(
       res => {
-        console.log(res);
         //extract only users whom whared with
         res[0].forEach(share => {
-          this.recordShared.push(share['user_id']);
-          this.recordShared_cpy.push(share['user_id']);
+          this.recordShared.push(share['email']);
+          this.recordShared_cpy.push(share['email']);
           this.recordShared_ids.push(share['id']);
         });
         this.recordShared_string = this.list_to_csv(this.recordShared);
+        this.recordShared_emails_input = this.recordShared_string;
+
       },
       err => {
 
@@ -138,10 +143,10 @@ export class DeviceComponent implements OnInit {
   list_to_csv(list) {
     let str = '';
     for (let i = 0; i < list.length; i++) {
-      str = str + list[i]+',';
+      str = str + list[i] + ',';
     }
-    if(str.length>0){
-      str = str.substring(0,str.length-1);
+    if (str.length > 0) {
+      str = str.substring(0, str.length - 1);
     }
     return str;
   }
@@ -188,8 +193,8 @@ export class DeviceComponent implements OnInit {
     if (this.recordShared_ids.length > 0) {
       this.recordShared_ids.forEach(id => {
         this.deviceService.deleteShare(id).subscribe(
-          res => {},
-          error => {}
+          res => { },
+          error => { }
         );
       });
     }
@@ -197,12 +202,16 @@ export class DeviceComponent implements OnInit {
     let device_id = this.record['id'];
     //addd the defined ones from the form
     if (this.recordShared.length > 0) {
-      this.recordShared.forEach(user_id => {
-        this.deviceService.createShare(
-          { device_id: device_id, user_id: user_id }).subscribe(
-          res => { },
-          error => {}
-        );
+      this.recordShared.forEach(email => {
+        this.deviceService.createItemFromEmail(
+          { device_id: device_id, email: email }).subscribe(
+            res => {
+              this.toastService.success("Success", "Record  was updated successfully");
+             },
+            error => {
+              this.toastService.error("Error!", "Updaing record was failed");
+             }
+          );
       });
     }
 
@@ -223,6 +232,50 @@ export class DeviceComponent implements OnInit {
     document.execCommand('copy');
     document.body.removeChild(selBox);
   }
+
+  //Code related to multiple email control
+  public emails = [];
+  public email_to_input = '';
+
+  public recordShared_emails = [];
+  public recordShared_emails_input = '';
+  multipleEmailInput(id, formNum, items_list: string[]) {
+    let element = (<HTMLInputElement>document.getElementById(id));
+    let val = element.value;
+    if (val == undefined || val.length == 0) {
+      return;
+    }
+    var EMAIL_REGEXP = /^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\.[a-z0-9-]+)*$/i;
+    let invalidEmails = [];
+    let potEmails = val.split(',');
+    potEmails.forEach(email => {
+      EMAIL_REGEXP.test(email.trim()) ?
+      items_list.push(email.trim()) :
+        invalidEmails.push(email.trim());
+    })
+    element.value = invalidEmails.join(',');
+    if(items_list.length>0){
+      this.updateInput(formNum, items_list);
+    }
+  }
+
+  removeEmailItem(email,formNum, items_list: string[]) {
+    const index = items_list.indexOf(email, 0);
+    if (index > -1) {
+      items_list.splice(index, 1);
+    }
+    this.updateInput(formNum, items_list);
+  }
+
+  updateInput(formNum, items_list: string[]){
+    if(formNum == 1){
+      this.record.email_to = items_list.join(',');
+    }
+    if(formNum == 2){
+      this.recordShared_string = items_list.join(',');
+    }
+  }
+  //end of multiple control code
 
 
 }

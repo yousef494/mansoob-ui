@@ -18,38 +18,57 @@
               <div class="form-group">
                 <label for="company">Name</label>
                 <input class="form-control" id="name" placeholder="Enter name" type="text" [(ngModel)]="record['name']"
-                [ngClass]="{ 'is-invalid': !vh.isValid(detialsForm, 'name') }" required formControlName="name">
+                  [ngClass]="{ 'is-invalid': !vh.isValid(detialsForm, 'name') }" required formControlName="name">
                 <div class="form-text invalid-feedback" *ngIf="!vh.isValid(detialsForm, 'name')">
-                    {{ vh.getMsg(detialsForm,'name') }}
+                  {{ vh.getMsg(detialsForm,'name') }}
                 </div>
               </div>
               <div class="form-group">
                 <label for="vat">Tank Capacity (m3)</label>
-                <input class="form-control" id="tank_capacity" placeholder="8" type="text"
+                <input class="form-control" id="tank_capacity" placeholder="8" type="number"
                   [(ngModel)]="record['tank_capacity']"
-                  [ngClass]="{ 'is-invalid': !vh.isValid(detialsForm, 'tank_capacity') }" required formControlName="tank_capacity">
-                  <div class="form-text invalid-feedback" *ngIf="!vh.isValid(detialsForm, 'tank_capacity')">
-                      {{ vh.getMsg(detialsForm,'tank_capacity') }}
-                  </div>
+                  [ngClass]="{ 'is-invalid': !vh.isValid(detialsForm, 'tank_capacity') }" required
+                  formControlName="tank_capacity">
+                <div class="form-text invalid-feedback" *ngIf="!vh.isValid(detialsForm, 'tank_capacity')">
+                  {{ vh.getMsg(detialsForm,'tank_capacity') }}
                 </div>
+              </div>
               <div class="form-group">
                 <label for="street">Tank Hieght (cm)</label>
-                <input class="form-control" id="tank_height" placeholder="150" type="text"
+                <input class="form-control" id="tank_height" placeholder="150" type="number"
                   [(ngModel)]="record['tank_height']"
-                  [ngClass]="{ 'is-invalid': !vh.isValid(detialsForm, 'tank_height') }" required formControlName="tank_height">
-                  <div class="form-text invalid-feedback" *ngIf="!vh.isValid(detialsForm, 'tank_height')">
-                      {{ vh.getMsg(detialsForm,'tank_height') }}
-                  </div>
+                  [ngClass]="{ 'is-invalid': !vh.isValid(detialsForm, 'tank_height') }" required
+                  formControlName="tank_height">
+                <div class="form-text invalid-feedback" *ngIf="!vh.isValid(detialsForm, 'tank_height')">
+                  {{ vh.getMsg(detialsForm,'tank_height') }}
+                </div>
               </div>
               <div class="form-group">
                 <label for="street">Notify (Email To)</label>
-                <input class="form-control" id="email_to" placeholder="Emails with comma seprated" type="text"
+                <!-- full multiple email controller -->
+                <input class="form-control" id="email_to_input" placeholder="Emails with comma seprated" type="text"
+                  [(ngModel)]="email_to_input"  (focusout)="multipleEmailInput('email_to_input', 1, emails)" formControlName="email_to_input">
+
+                <input class="form-control" id="email_to" placeholder="" type="text" 
                   [(ngModel)]="record['email_to']"
-                  [ngClass]="{ 'is-invalid': !vh.isValid(detialsForm, 'email_to') }" required formControlName="email_to">
-                  <div class="form-text invalid-feedback" *ngIf="!vh.isValid(detialsForm, 'email_to')">
-                      {{ vh.getMsg(detialsForm,'email_to') }}
-                  </div>
+                  [ngClass]="{ 'is-invalid': !vh.isValid(detialsForm, 'email_to') }" required hidden
+                  formControlName="email_to">
+
+                <div class="multiple_emails-ul form-control">
+                  <span class="multiple_emails-email" *ngFor="let email of emails">
+                    <a  [routerLink]="" (click)="removeEmailItem(email, 1, emails)" class="multiple_emails-close" title="Remove">
+                      <span class="fa fa-remove"></span>
+                    </a>
+                    <span class="email_name" data-email="{{email}}">
+                      {{email}}
+                    </span>
+                  </span>
                 </div>
+                <!-- end of full multiple email controller-->
+                <div class="form-text invalid-feedback" *ngIf="!vh.isValid(detialsForm, 'email_to')">
+                  {{ vh.getMsg(detialsForm,'email_to') }}
+                </div>
+              </div>
               <div class="row">
                 <div class="form-group col-sm-10"><label for="city">Access Token</label>
                   <input class="form-control form-control-custom" id="access_token" placeholder="" type="text" readonly
@@ -66,8 +85,7 @@
               </div>
             </div>
             <div class="card-footer">
-              <button class="btn btn-sm btn-primary" type="submit" 
-              [disabled]="!detialsForm.valid">
+              <button class="btn btn-sm btn-primary" type="submit" [disabled]="!detialsForm.valid">
                 <i class="fa fa-dot-circle-o"></i> Submit
               </button>
               <button class="btn btn-sm btn-danger ml-3" type="reset" (click)="resetDetails()">
@@ -85,8 +103,25 @@
           <div class="card-body" *ngIf="recordSelected">
             <div class="form-group">
               <label for="company"></label>
-              <input class="form-control" id="shared" placeholder="Enter ids comma seprated vallues" type="text"
-                [(ngModel)]="recordShared_string">
+                <!-- full multiple email controller -->
+                <input class="form-control" id="recordShared_string_input" placeholder="Emails with comma seprated" type="text"
+                  [(ngModel)]="recordShared_emails_input" 
+                  (focusout)="multipleEmailInput('recordShared_string_input', 2, recordShared_emails)">
+
+                  <input class="form-control" id="shared" placeholder="Enter ids comma seprated vallues" 
+                  type="text" [(ngModel)]="recordShared_string" hidden>
+
+                <div class="multiple_emails-ul form-control">
+                  <span class="multiple_emails-email" *ngFor="let email of recordShared_emails">
+                    <a  [routerLink]="" (click)="removeEmailItem(email, 2, recordShared_emails)" class="multiple_emails-close" title="Remove">
+                      <span class="fa fa-remove"></span>
+                    </a>
+                    <span class="email_name" data-email="{{email}}">
+                      {{email}}
+                    </span>
+                  </span>
+                </div>
+                <!-- end of full multiple email controller-->
             </div>
           </div>
           <div class="card-footer">
