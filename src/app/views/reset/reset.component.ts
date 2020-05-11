@@ -30,15 +30,17 @@ export class ResetComponent {
   token: string = '';
   mode: string = 'request';
   createUser;
-
+  vh;
   constructor(
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
     private toastService: ToastrService,
     private formBuilder: FormBuilder,
-    private vh: ValidationHelper
+    private validationHelper: ValidationHelper
   ) {
+    this.vh = validationHelper;
+
     this.createUser = new User();
   }
 

@@ -31,14 +31,17 @@ export class RegisterComponent {
   feedbackMessage: any;
   createUser;
 
+  vh;
+
   constructor(
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
     private toastService: ToastrService,
     private formBuilder: FormBuilder,
-    vh: ValidationHelper
+    private validationHelper: ValidationHelper
   ) {
+    this.vh = validationHelper;
     this.createUser = new User();
   }
 

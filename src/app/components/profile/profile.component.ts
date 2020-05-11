@@ -29,6 +29,7 @@ export class ProfileComponent {
   public notifications: any[] = [];
 
   public isAdmin: boolean = false;
+  vh;
 
   constructor(
     private auth: AuthService, 
@@ -37,8 +38,9 @@ export class ProfileComponent {
     private router: Router,
     private toastService: ToastrService,
     private formBuilder: FormBuilder,
-    private vh: ValidationHelper
-    ) {
+    private validationHelper: ValidationHelper
+  ) {
+    this.vh = validationHelper;
       this.isAdmin = this.auth.isAdmin();
       this.user = this.auth.getUser();
       this.user_cp = this.auth.getUser();

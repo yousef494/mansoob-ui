@@ -25,6 +25,7 @@ export class LoginComponent {
   errorInUserCreate = false;
   errorMessage: any;
   createUser;
+  vh;
 
   alreadyLoggedIn: boolean = false;
 
@@ -34,8 +35,9 @@ export class LoginComponent {
     private route: ActivatedRoute,
     private toastService: ToastrService,
     private formBuilder: FormBuilder,
-    private vh: ValidationHelper
+    private validationHelper: ValidationHelper
   ) {
+    this.vh = validationHelper;
     this.alreadyLoggedIn = this.authService.isAuthenticated();
     this.createUser = new User();
   }

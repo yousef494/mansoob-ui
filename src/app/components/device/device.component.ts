@@ -34,14 +34,17 @@ export class DeviceComponent implements OnInit {
   public recordShared_ids = [];
 
   public recordSelected = false;
+  vh;
 
   constructor(
     private auth: AuthService,
     private deviceService: DeviceService,
     private toastService: ToastrService,
     private formBuilder: FormBuilder,
-    private vh: ValidationHelper
-  ) { }
+    private validationHelper: ValidationHelper
+  ) {
+    this.vh = validationHelper;
+  }
 
 
   ngOnInit() {
