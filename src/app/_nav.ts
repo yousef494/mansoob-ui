@@ -3,6 +3,12 @@ import { INavData } from '@coreui/angular';
 
 let navItems_list = [
   {
+    name: 'Home',
+    url: '/home',
+    icon: 'icon-home',
+    roles: ['ADMIN', 'BASIC']
+  },
+  {
     name: 'Dashboard',
     url: '/dashboard',
     icon: 'icon-speedometer',
@@ -31,7 +37,7 @@ let navItems_list = [
 export function navItems(role){
   let navItems_array: INavData[] = [];
   navItems_list.forEach(item =>{
-    if(item.roles && item.roles.indexOf(role)>-1){
+    if((item.roles && item.roles.indexOf(role)>-1) || item.title){
       delete item.roles;
       navItems_array.push(item);
     }

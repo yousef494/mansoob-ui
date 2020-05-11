@@ -73,6 +73,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AvatarUpdateComponent } from './components/profile/avatar-update/avatar-update.component'
 import { ResetComponent } from './views/reset/reset.component';
 import { HomeComponent } from './components/home/home.component';
+import { ValidationHelper } from './_helper/validator_hp';
 
 
 @NgModule({
@@ -105,7 +106,7 @@ import { HomeComponent } from './components/home/home.component';
       colors: ["#FFB6C1", "#2c3e50", "#95a5a6", "#f39c12", "#1abc9c"],
       sourcePriorityOrder: [AvatarSource.CUSTOM, AvatarSource.INITIALS]
     })
-  ],
+    ],
   declarations: [
     AppComponent,
     ...APP_CONTAINERS,
@@ -132,7 +133,8 @@ import { HomeComponent } from './components/home/home.component';
     NgwWowService,
     NgbButtonsModule,
     NgbModule,
-    ToastrService
+    ToastrService,
+    ValidationHelper
   ],
   bootstrap: [AppComponent],
   schemas: [NO_ERRORS_SCHEMA]

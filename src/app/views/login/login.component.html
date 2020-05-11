@@ -19,7 +19,7 @@
                     </div>
                   </div>
                 </div>
-                <form #loginForm="ngForm" *ngIf="!alreadyLoggedIn" (ngSubmit)="signInWithEmail(loginForm)">
+                <form [formGroup]="loginForm"  *ngIf="!alreadyLoggedIn" (ngSubmit)="signInWithEmail(loginForm)">
                   <h1>Login</h1>
                   <p class="text-muted">Sign In to your account</p>
                   <div class="input-group mb-3">
@@ -27,24 +27,30 @@
                       <span class="input-group-text"><i class="icon-user"></i></span>
                     </div>
                     <input type="email" class="form-control" id="loginEmailId" aria-describedby="emailHelp"
-                      placeholder="Enter email" name="email" [(ngModel)]="user.email" mdbInputValidate [email]="true"
-                      required>
+                      placeholder="Enter email" name="email" [(ngModel)]="user.email"
+                      [ngClass]="{ 'is-invalid': !vh.isValid(loginForm, 'email') }" required formControlName="email">
+                    <div class="form-text invalid-feedback" *ngIf="!vh.isValid(loginForm, 'email')">
+                      {{ vh.getMsg(loginForm,'email') }}
+                    </div>
                   </div>
                   <div class="input-group mb-4">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="icon-lock"></i></span>
                     </div>
                     <input type="password" class="form-control" id="loginPassword" name="password"
-                      [(ngModel)]="user.password" autocomplete="current-password" placeholder="Password" required>
+                      [(ngModel)]="user.password" autocomplete="current-password" placeholder="Password" required
+                      [ngClass]="{ 'is-invalid': !vh.isValid(loginForm, 'password') }" required formControlName="password">
+                      <div class="form-text invalid-feedback" *ngIf="!vh.isValid(loginForm, 'password')">
+                        {{ vh.getMsg(loginForm, 'password') }}
+                      </div>
                   </div>
                   <div class="row">
                     <div class="col-6">
-                      <button type="submit" class="btn btn-primary px-4">Login</button>
+                      <button type="submit" class="btn btn-primary px-4" [disabled]="!loginForm.valid">Login</button>
                     </div>
                     <div class="col-6 text-right">
-                      <button type="button" class="btn btn-link px-0"
-                      [routerLink]="['/reset']"
-                      [queryParams]="{mode: 'request'}">Forgot password?</button>
+                      <button type="button" class="btn btn-link px-0" [routerLink]="['/reset']"
+                        [queryParams]="{mode: 'request'}">Forgot password?</button>
                     </div>
                   </div>
                 </form>

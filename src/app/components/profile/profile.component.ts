@@ -5,7 +5,13 @@ import { User, UserService } from '../../services/user';
 import { NotificationService} from "../../services/notification.service";
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
-
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators
+} from '@angular/forms';
+import { ValidationHelper } from '../../_helper/validator_hp';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,7 +35,9 @@ export class ProfileComponent {
     private noti: NotificationService,
     private userService: UserService,
     private router: Router,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private formBuilder: FormBuilder,
+    private vh: ValidationHelper
     ) {
       this.isAdmin = this.auth.isAdmin();
       this.user = this.auth.getUser();
@@ -39,8 +47,17 @@ export class ProfileComponent {
   }
 
   ngOnInit() {
+    this.initLoginForm();
   }
 
+  profileForm: FormGroup;
+  initLoginForm() {
+    this.profileForm = this.formBuilder.group(
+      {
+        firstName: new FormControl('', [Validators.required]),
+        lastName: new FormControl('', [Validators.required])
+      });
+  }
 
   getNotifications(){
     let self = this;
@@ -65,6 +82,9 @@ export class ProfileComponent {
   }
 
   updateDetails() {
+    if (this.profileForm.invalid) {
+      return;
+    }
     this.userService.updatetItem(this.user.id,
       {
         firstName: this.user.firstName, lastName: this.user.lastName

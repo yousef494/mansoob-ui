@@ -29,10 +29,9 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
                                 <div class="dropdown-header text-center"><strong>Tools</strong></div>
-                                <a class="dropdown-item" href="#"
-                                shareButton="whatsapp" title="Mansoob Current Status"
-                                description="The severity level of the tank reaches the {{severity}} state ({{currentLevel}})"><i 
-                                    class="dropdown-item-icon-custom fa fa-whatsapp text-success"></i>
+                                <a class="dropdown-item" href="#" shareButton="whatsapp" title="Mansoob Current Status"
+                                    description="The severity level of the tank reaches the {{severity}} state ({{currentLevel}})"><i
+                                        class="dropdown-item-icon-custom fa fa-whatsapp text-success"></i>
                                     Share on WhatsApp</a>
                                 <a class="dropdown-item" (click)="genPDF('dashboard')" href="#"><i
                                         class="dropdown-item-icon-custom icon-cloud-download text-primary"></i>Downlaod
@@ -40,18 +39,18 @@
                                 <a class="dropdown-item" (click)="infoModal.show()" data-toggle="modal" href="#"><i
                                         class="dropdown-item-icon-custom icon-info text-info"></i>Quick Information</a>
                                 <div class="dropdown-header text-center"><strong>Refresh Interval</strong></div>
-                                <a class="dropdown-item {{isRefreshInterval(5)?'active':''}}"
-                                    (click)="setRefreshInterval(5)" href="#">5 minutes</a>
-                                <a class="dropdown-item {{isRefreshInterval(10)?'active':''}}"
-                                    (click)="setRefreshInterval(10)" href="#">10 Minutes</a>
-                                <a class="dropdown-item {{isRefreshInterval(20)?'active':''}}"
-                                    (click)="setRefreshInterval(20)" href="#">20 Minutes</a>
-                                <a class="dropdown-item {{isRefreshInterval(30)?'active':''}}"
-                                    (click)="setRefreshInterval(30)" href="#">30 Minutes</a>
-                                <a class="dropdown-item {{isRefreshInterval(60)?'active':''}}"
-                                    (click)="setRefreshInterval(60)" href="#">1 Hour</a>
-                                <a class="dropdown-item {{isRefreshInterval('M')?'active':''}}"
-                                    (click)="setRefreshInterval('M')" href="#">Manually</a>
+                                <a class="dropdown-item {{isRefreshInterval(5)?'active':''}}" [routerLink]=""
+                                    (click)="setRefreshInterval(5)">5 minutes</a>
+                                <a class="dropdown-item {{isRefreshInterval(10)?'active':''}}" [routerLink]=""
+                                    (click)="setRefreshInterval(10)">10 Minutes</a>
+                                <a class="dropdown-item {{isRefreshInterval(20)?'active':''}}" [routerLink]=""
+                                    (click)="setRefreshInterval(20)">20 Minutes</a>
+                                <a class="dropdown-item {{isRefreshInterval(30)?'active':''}}" [routerLink]=""
+                                    (click)="setRefreshInterval(30)">30 Minutes</a>
+                                <a class="dropdown-item {{isRefreshInterval(60)?'active':''}}" [routerLink]=""
+                                    (click)="setRefreshInterval(60)">1 Hour</a>
+                                <a class="dropdown-item {{isRefreshInterval('M')?'active':''}}" [routerLink]=""
+                                    (click)="setRefreshInterval('M')">Manually</a>
                             </div>
 
                         </div>
@@ -194,7 +193,7 @@
     </div>
 
     <!-- Consumption  chart-->
-    <div  id="consChartArea" class="card">
+    <div id="consChartArea" class="card">
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-5">

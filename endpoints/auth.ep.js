@@ -37,7 +37,8 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                         const hashedPassword = await hashPassword(password);
                         const newUser = {
                             email, password: hashedPassword,
-                            firstName: firstName, lastName: lastName, role: "BASIC"
+                            firstName: firstName, lastName: lastName, role: "BASIC",
+                            status: 'ACTIVE'
                         };
                         const accessToken = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, {
                             expiresIn: "1d"
@@ -107,47 +108,47 @@ module.exports = function (app, Mysql, urlPrefix, security) {
     }
 
     //reset (GUEST)
-   var reset = async (req, res, next) => {
-    try {
-        const { email, password, token } = req.body;
+    var reset = async (req, res, next) => {
+        try {
+            const { email, password, token } = req.body;
 
-        Mysql.record(models.user.name, { email: email, accessToken: token })
-            .then(async function (user) {
-                if (user == null) {
-                    res.json({
-                        status: "Error",
-                        message: "Invalid input"
-                    });
-                    res.end();
-                } else {
-                    const hashedPassword = await hashPassword(password);
-                    const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-                        expiresIn: "1d"
-                    });
-
-                    Mysql.update(models.user.name, { id: user.id },
-                         { accessToken: accessToken, password: hashedPassword })
-                        .then(function (info) {
-                            res.status(200).json({
-                                data: {
-                                    email: user.email, role: user.role, id: user.id,
-                                    firstName: user.firstName, lastName: user.lastName
-                                },
-                                accessToken
-                            })
-                        })
-                        .catch(function (err) {
-                            return next('Error while updating the info....');
+            Mysql.record(models.user.name, { email: email, accessToken: token })
+                .then(async function (user) {
+                    if (user == null) {
+                        res.json({
+                            status: "Error",
+                            message: "Invalid input"
+                        });
+                        res.end();
+                    } else {
+                        const hashedPassword = await hashPassword(password);
+                        const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+                            expiresIn: "1d"
                         });
 
-                }
-            });
+                        Mysql.update(models.user.name, { id: user.id },
+                            { accessToken: accessToken, password: hashedPassword })
+                            .then(function (info) {
+                                res.status(200).json({
+                                    data: {
+                                        email: user.email, role: user.role, id: user.id,
+                                        firstName: user.firstName, lastName: user.lastName
+                                    },
+                                    accessToken
+                                })
+                            })
+                            .catch(function (err) {
+                                return next('Error while updating the info....');
+                            });
+
+                    }
+                });
 
 
-    } catch (error) {
-        next(error)
+        } catch (error) {
+            next(error)
+        }
     }
-}
 
 
     //login (GUEST)
@@ -159,7 +160,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
             }
             Mysql.record(models.user.name, { email: email })
                 .then(async function (user) {
-                    if(user.status != 'ACTIVE'){
+                    if (user.status != 'ACTIVE') {
                         res.status(400).json({
                             status: 'Error',
                             message: 'User disabled'
@@ -167,7 +168,13 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                         return;
                     }
                     const validPassword = await validatePassword(password, user.password);
-                    if (!validPassword) return next('Password is not correct');
+                    if (!validPassword) {
+                        res.status(200).json({
+                            status: 'Error',
+                            message: 'Incorrect email or password'
+                        });
+                        return;
+                    }
                     const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
                         expiresIn: "1d"
                     });
@@ -183,7 +190,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                             })
                         })
                         .catch(function (err) {
-                            res.status(400).json({
+                            res.status(200).json({
                                 status: 'Error',
                                 message: 'Error while updating the token....'
                             })
@@ -191,11 +198,10 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                         });
                 })
                 .catch(function (err) {
-                    res.status(400).json({
+                    res.status(200).json({
                         status: 'Error',
-                        message: 'Email does not exist'
+                        message: 'Incorrect email or password'
                     })
-                    return next('Email does not exist');
                 });
 
         } catch (error) {

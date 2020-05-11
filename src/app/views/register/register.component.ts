@@ -1,5 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { NgForm, EmailValidator } from "@angular/forms";
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators
+} from '@angular/forms';
+import { ValidationHelper, MustMatch } from '../../_helper/validator_hp';
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { User } from "../../services/user";
@@ -8,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-register',
   templateUrl: 'register.component.html',
-  providers: [EmailValidator]
+  providers: []
 })
 
 export class RegisterComponent {
@@ -29,19 +35,22 @@ export class RegisterComponent {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private formBuilder: FormBuilder,
+    private vh: ValidationHelper
   ) {
     this.createUser = new User();
   }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    this.initLoginForm();
+  }
 
 
-  signup(userForm: NgForm) {
+  signup(userForm: FormGroup) {
     this.feedbackInUserCreate = false;
 
-    const isValid: boolean = this.vaidate(userForm);
-    if(!isValid){
+    if (this.registerForm.invalid) {
       return;
     }
     this.authService
@@ -69,23 +78,19 @@ export class RegisterComponent {
       );
   }
 
-  vaidate(userForm: NgForm){
-    this.feedbackType = "danger";
-    if(userForm.value["firstName"] == null || userForm.value["lastName"] == null 
-    || userForm.value["email"] == null
-    || userForm.value["password"] == null || userForm.value["rpassword"] == null){
-      this.feedbackInUserCreate= true;
-      this.feedbackMessage ="Cannot be empty!";
-      return false;
-    }
-
-    if(userForm.value["password"]!=userForm.value["rpassword"]){
-      this.feedbackInUserCreate= true;
-      this.feedbackMessage ="Passwords don't match";
-      return false;
-    }
-
-    return true;
+  registerForm: FormGroup;
+  initLoginForm() {
+    this.registerForm = this.formBuilder.group(
+      {
+        firstName: new FormControl('', [Validators.required]),
+        lastName: new FormControl('', [Validators.required]),
+        email: new FormControl('', [Validators.required, Validators.email]),
+        password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+        rpassword: new FormControl('', [Validators.required]),
+      },
+      {
+        validator: MustMatch('password', 'rpassword')
+    });
   }
 
 }

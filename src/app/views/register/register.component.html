@@ -5,41 +5,61 @@
         <div class="col-md-6 mx-auto my-5">
           <div class="card mx-4">
             <div class="card-body p-4">
-              <form #registerForm="ngForm" (ngSubmit)="signup(registerForm)">
+              <form [formGroup]="registerForm" (ngSubmit)="signup(registerForm)">
                 <h1>Register</h1>
                 <p class="text-muted">Create your account</p>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="icon-user"></i></span>
                   </div>
-                  <input type="text" class="form-control" name="firstName" [(ngModel)]="user.firstName"  placeholder="First Name" autocomplete="first name" required>
+                  <input type="text" class="form-control" name="firstName" [(ngModel)]="user.firstName"  placeholder="First Name" autocomplete="first name" required
+                  [ngClass]="{ 'is-invalid': !vh.isValid(registerForm, 'firstName') }" required formControlName="firstName">
+                  <div class="form-text invalid-feedback" *ngIf="!vh.isValid(registerForm, 'firstName')">
+                    {{ vh.getMsg(registerForm,'firstName') }}
+                  </div>
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="icon-user"></i></span>
                   </div>
-                  <input type="text" class="form-control" name="lastName" [(ngModel)]="user.lastName"  placeholder="Last Name" autocomplete="last name" required>
+                  <input type="text" class="form-control" name="lastName" [(ngModel)]="user.lastName"  placeholder="Last Name" autocomplete="last name" required
+                  [ngClass]="{ 'is-invalid': !vh.isValid(registerForm, 'lastName') }" required formControlName="lastName">
+                  <div class="form-text invalid-feedback" *ngIf="!vh.isValid(registerForm, 'lastName')">
+                    {{ vh.getMsg(registerForm,'lastName') }}
+                  </div>
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text">@</span>
                   </div>
                   <input type="text" class="form-control" name="email" [(ngModel)]="user.email"  placeholder="Email" autocomplete="email"  mdbInputValidate
-                  [email]="true" required>
+                  [email]="true" required
+                  [ngClass]="{ 'is-invalid': !vh.isValid(registerForm, 'email') }" required formControlName="email">
+                  <div class="form-text invalid-feedback" *ngIf="!vh.isValid(registerForm, 'email')">
+                    {{ vh.getMsg(registerForm,'email') }}
+                  </div>
                 </div>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="icon-lock"></i></span>
                   </div>
-                  <input type="password" class="form-control" name="password" [(ngModel)]="user.password"  placeholder="Password" autocomplete="new-password" required>
+                  <input type="password" class="form-control" name="password" [(ngModel)]="user.password"  placeholder="Password" autocomplete="new-password" required
+                  [ngClass]="{ 'is-invalid': !vh.isValid(registerForm, 'password') }" required formControlName="password">
+                  <div class="form-text invalid-feedback" *ngIf="!vh.isValid(registerForm, 'password')">
+                    {{ vh.getMsg(registerForm,'password') }}
+                  </div>
                 </div>
                 <div class="input-group mb-4">
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="icon-lock"></i></span>
                   </div>
-                  <input type="password" class="form-control" name="rpassword" [(ngModel)]="user.rpassword"  placeholder="Repeat password" autocomplete="new-password" required>
+                  <input type="password" class="form-control" name="rpassword" [(ngModel)]="user.rpassword"  placeholder="Repeat password" autocomplete="new-password" required
+                  [ngClass]="{ 'is-invalid': !vh.isValid(registerForm, 'rpassword') }" required formControlName="rpassword">
+                  <div class="form-text invalid-feedback" *ngIf="!vh.isValid(registerForm, 'rpassword')">
+                    {{ vh.getMsg(registerForm,'rpassword') }}
+                  </div>
                 </div>
-                <button type="submit" class="btn btn-block btn-success">Create Account</button>
+                <button type="submit" class="btn btn-block btn-success" [disabled]="!registerForm.valid">Create Account</button>
               </form>
             </div>
             <div class="card-footer p-4">

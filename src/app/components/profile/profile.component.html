@@ -24,37 +24,49 @@
                 </div>
             </div>
             <div class="card">
-                <div class="card-body" id="about">
-                    <small class="text-muted">First Name: </small>
-                    <p  *ngIf="mode!='edit'" >{{ user.firstName }}</p>
-                    <input *ngIf="mode=='edit'" class="form-control" id="firstName" placeholder="Enter first name"
-                        type="text" [(ngModel)]="user.firstName">
-                    <hr>
-                    <small class="text-muted">Last Name: </small>
-                    <p  *ngIf="mode!='edit'" >{{ user.lastName }}</p>
-                    <input *ngIf="mode=='edit'" class="form-control" id="lastName" placeholder="Enter last name"
-                        type="text" [(ngModel)]="user.lastName">
-                    <hr>
-                    <small class="text-muted">Email address: </small>
-                    <p>{{ user.email }}</p>
-                    <hr>
-                    <small class="text-muted">Role: </small>
-                    <p class="m-b-0">{{ user.role }}</p>
-                    <hr>
-                    <small class="text-muted">Id: </small>
-                    <p class="m-b-0">{{user.id }}</p>
-                </div>
-                <div class="card-footer">
-                    <button  *ngIf="mode!='edit'" class="btn btn-sm btn-primary" type="button" (click)="mode='edit'">
-                        <i class="fa fa-edit"></i> Edit
-                    </button>
-                    <button  *ngIf="mode=='edit'" class="btn btn-sm btn-primary" type="button" (click)="updateDetails()">
-                        <i class="fa fa-dot-circle-o"></i> Submit
-                    </button>
-                    <button  *ngIf="mode=='edit'"  class="btn btn-sm btn-danger ml-3" type="reset" (click)="resetDetails()">
-                        <i class="fa fa-ban"></i> Cancel
-                      </button>
-                </div>
+                <form [formGroup]="profileForm" (ngSubmit)="updateDetails()">
+                    <div class="card-body" id="about">
+                        <small class="text-muted">First Name: </small>
+                        <p *ngIf="mode!='edit'">{{ user.firstName }}</p>
+                        <input *ngIf="mode=='edit'" class="form-control" id="firstName" placeholder="Enter first name"
+                            type="text" [(ngModel)]="user.firstName"
+                            [ngClass]="{ 'is-invalid': !vh.isValid(profileForm, 'firstName') }" required formControlName="firstName">
+                            <div class="form-text invalid-feedback" *ngIf="!vh.isValid(profileForm, 'firstName')">
+                              {{ vh.getMsg(profileForm,'firstName') }}
+                            </div>
+                        <hr>
+                        <small class="text-muted">Last Name: </small>
+                        <p *ngIf="mode!='edit'">{{ user.lastName }}</p>
+                        <input *ngIf="mode=='edit'" class="form-control" id="lastName" placeholder="Enter last name"
+                            type="text" [(ngModel)]="user.lastName"
+                            [ngClass]="{ 'is-invalid': !vh.isValid(profileForm, 'lastName') }" required formControlName="lastName">
+                            <div class="form-text invalid-feedback" *ngIf="!vh.isValid(profileForm, 'lastName')">
+                                {{ vh.getMsg(profileForm,'lastName') }}
+                            </div>
+                        <hr>
+                        <small class="text-muted">Email address: </small>
+                        <p>{{ user.email }}</p>
+                        <hr>
+                        <small class="text-muted">Role: </small>
+                        <p class="m-b-0">{{ user.role }}</p>
+                        <hr>
+                        <small class="text-muted">Id: </small>
+                        <p class="m-b-0">{{user.id }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <button *ngIf="mode!='edit'" class="btn btn-sm btn-primary" type="button" (click)="mode='edit'">
+                            <i class="fa fa-edit"></i> Edit
+                        </button>
+                        <button *ngIf="mode=='edit'" class="btn btn-sm btn-primary" type="submit"
+                            [disabled]="!profileForm.valid">
+                            <i class="fa fa-dot-circle-o"></i> Submit
+                        </button>
+                        <button *ngIf="mode=='edit'" class="btn btn-sm btn-danger ml-3" type="reset"
+                            (click)="resetDetails()">
+                            <i class="fa fa-ban"></i> Cancel
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="col-xl-6 col-lg-5 col-md-12">

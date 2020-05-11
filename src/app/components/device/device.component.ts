@@ -2,6 +2,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '.././../services/auth.service';
 import { DeviceService } from '.././../services/device.service';
 import { ToastrService } from 'ngx-toastr';
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators
+} from '@angular/forms';
+import { ValidationHelper, NumbericValidator } from '../../_helper/validator_hp';
 
 @Component({
   selector: 'app-device',
@@ -31,8 +38,26 @@ export class DeviceComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private deviceService: DeviceService,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private formBuilder: FormBuilder,
+    private vh: ValidationHelper
   ) { }
+
+
+  ngOnInit() {
+    this.initDetialsForm();
+  }
+
+  detialsForm: FormGroup;
+  initDetialsForm() {
+    this.detialsForm = this.formBuilder.group(
+      {
+        name: new FormControl('', [Validators.required]),
+        tank_capacity: new FormControl(8, [Validators.required, NumbericValidator.numeric]),
+        tank_height: new FormControl(150, [Validators.required, NumbericValidator.numeric]),
+        email_to: new FormControl('', [])
+      });
+  }
 
   options = {
     name: 'device',
@@ -195,8 +220,6 @@ export class DeviceComponent implements OnInit {
     document.execCommand('copy');
     document.body.removeChild(selBox);
   }
-
-  ngOnInit() { }
 
 
 }

@@ -1,5 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { NgForm, EmailValidator } from "@angular/forms";
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators
+} from '@angular/forms';
+import { ValidationHelper } from '../../_helper/validator_hp';
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { User } from "../../services/user";
@@ -8,9 +14,10 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-login',
   templateUrl: 'login.component.html',
-  providers: [EmailValidator]
+  providers: []
 })
 export class LoginComponent {
+
   user = {
     email: null,
     password: null
@@ -25,21 +32,42 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private formBuilder: FormBuilder,
+    private vh: ValidationHelper
   ) {
     this.alreadyLoggedIn = this.authService.isAuthenticated();
     this.createUser = new User();
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.initLoginForm();
+  }
 
-  signInWithEmail(userForm: NgForm) {
+  loginForm: FormGroup;
+  initLoginForm() {
+    this.loginForm = this.formBuilder.group(
+      {
+        email: new FormControl('', [Validators.required, Validators.email]),
+        password: new FormControl('', [Validators.required])
+      });
+  }
+
+
+  signInWithEmail(userForm: FormGroup) {
+    if (this.loginForm.invalid) {
+      return;
+    }
     this.authService
       .login({
         email: userForm.value["email"],
         password: userForm.value["password"]
       }).subscribe(
         res => {
+          if(res['status'] == 'Error'){
+            this.toastService.error(res.status, res.message);
+            return;
+          }
           this.authService.setUser(res['data'], res['accessToken']);
 
           this.toastService.success("Authentication Success", "Logging in please wait");
@@ -53,7 +81,7 @@ export class LoginComponent {
           this.router.navigate(["/"]);
         },
         error => {
-          this.toastService.error(error.error.status, error.error.message);
+          console.log(error);
         }
       );
   }

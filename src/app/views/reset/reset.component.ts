@@ -1,5 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { NgForm, EmailValidator } from "@angular/forms";
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators
+} from '@angular/forms';
+import { ValidationHelper, MustMatch } from '../../_helper/validator_hp';
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { User } from "../../services/user";
@@ -8,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-reset',
   templateUrl: 'reset.component.html',
-  providers: [EmailValidator]
+  providers: []
 })
 
 export class ResetComponent {
@@ -29,12 +35,16 @@ export class ResetComponent {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private formBuilder: FormBuilder,
+    private vh: ValidationHelper
   ) {
     this.createUser = new User();
   }
 
   ngOnInit() {
+    this.initRequestForm()
+    this.initResetForm();
     this.route.queryParams.subscribe(params => {
       this.mode = params['mode'];
       this.token = params['token'];
@@ -44,11 +54,17 @@ export class ResetComponent {
     });
   }
 
-  request(userForm: NgForm) {
-    this.feedbackInReset = false;
+  requestForm: FormGroup;
+  initRequestForm() {
+    this.requestForm = this.formBuilder.group(
+      {
+        email: new FormControl('', [Validators.required, Validators.email])
+      });
+  }
 
-    const isValid: boolean = this.vaidateRequest(userForm);
-    if (!isValid) {
+  request(userForm: FormGroup) {
+    this.feedbackInReset = false;
+    if (this.requestForm.invalid) {
       return;
     }
     this.authService
@@ -58,7 +74,7 @@ export class ResetComponent {
         res => {
           this.feedbackInReset = true;
           this.feedbackType = (res.status == 'Error') ? 'danger' : 'success';
-          this.feedbackMessage = res.message;
+          this.feedbackMessage = res.message || "Link has been sent to your email";
           if (res.status != 'Error') {
             this.toastService.success("Email sent", "Link has been sent to your email");
           }
@@ -69,10 +85,22 @@ export class ResetComponent {
       );
   }
 
-  reset(userForm: NgForm) {
+  resetForm: FormGroup;
+  initResetForm() {
+    this.resetForm = this.formBuilder.group(
+      {
+        email: new FormControl('', [Validators.required, Validators.email]),
+        password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+        rpassword: new FormControl('', [Validators.required])
+      },
+      {
+        validator: MustMatch('password', 'rpassword')
+    });
+  }
+
+  reset(userForm: FormGroup) {
     this.feedbackInReset = false;
-    const isValid: boolean = this.vaidateReset(userForm);
-    if (!isValid) {
+    if (this.resetForm.invalid) {
       return;
     }
     this.authService
@@ -84,7 +112,7 @@ export class ResetComponent {
         res => {
           this.feedbackInReset = true;
           this.feedbackType = (res.status == 'Error') ? 'danger' : 'success';
-          this.feedbackMessage = res.message;
+          this.feedbackMessage = res.message || "Passwrd has reseted successfully";
           if (res.status != 'Error') {
             this.toastService.success("Reset Success", "Passwrd has reseted successfully");
             setTimeout(() => {
@@ -98,33 +126,5 @@ export class ResetComponent {
       );
   }
 
-
-  vaidateRequest(userForm: NgForm) {
-    this.feedbackType = "danger";
-    if (userForm.value["email"] == null) {
-      this.feedbackInReset = true;
-      this.feedbackMessage = "Cannot be empty!";
-      return false;
-    }
-    return true;
-  }
-
-  vaidateReset(userForm: NgForm) {
-    this.feedbackType = "danger";
-    if (userForm.value["email"] == null
-      || userForm.value["password"] == null || userForm.value["rpassword"] == null) {
-      this.feedbackInReset = true;
-      this.feedbackMessage = "Cannot be empty!";
-      return false;
-    }
-
-    if (userForm.value["password"] != userForm.value["rpassword"]) {
-      this.feedbackInReset = true;
-      this.feedbackMessage = "Passwords don't match";
-      return false;
-    }
-
-    return true;
-  }
 
 }

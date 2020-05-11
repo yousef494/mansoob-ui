@@ -12,7 +12,7 @@ import * as moment from 'moment';
 })
 export class DefaultLayoutComponent {
   public sidebarMinimized = false;
-  public navItems = navItems(this.auth.getRole());
+  public navItems;// = navItems(this.auth.getRole());
 
   public user: User;
   public notifications: any[] = [];
@@ -35,6 +35,7 @@ export class DefaultLayoutComponent {
     setInterval(() => {
       this.timeNow = moment().format("dddd Do MMMM, YYYY HH:mm");
     }, 60000);
+    this.navItems = navItems(this.auth.getRole());
   }
 
   ngOnInit() {
