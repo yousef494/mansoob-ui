@@ -37,7 +37,7 @@ export class RegisterComponent {
     private route: ActivatedRoute,
     private toastService: ToastrService,
     private formBuilder: FormBuilder,
-    private vh: ValidationHelper
+    vh: ValidationHelper
   ) {
     this.createUser = new User();
   }
