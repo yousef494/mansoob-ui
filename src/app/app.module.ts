@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA, APP_INITIALIZER } from '@angular/core';
 
 import { LocationStrategy, HashLocationStrategy, CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -74,6 +74,11 @@ import { ResetComponent } from './views/reset/reset.component';
 import { HomeComponent } from './components/home/home.component';
 import { ValidationHelper } from './_helper/validator_hp';
 
+import { TranslateService } from './services/translate.service';
+
+export function setupTranslateFactory(service: TranslateService): Function {
+	return () => service.use('en');
+}
 
 @NgModule({
   imports: [
@@ -132,7 +137,14 @@ import { ValidationHelper } from './_helper/validator_hp';
     NgwWowService,
     NgbButtonsModule,
     NgbModule,
-    ValidationHelper
+    ValidationHelper,
+    TranslateService,
+		{
+			provide: APP_INITIALIZER,
+			useFactory: setupTranslateFactory,
+			deps: [ TranslateService ],
+			multi: true
+		}
   ],
   bootstrap: [AppComponent],
   schemas: [NO_ERRORS_SCHEMA]

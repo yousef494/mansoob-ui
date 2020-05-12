@@ -2,8 +2,8 @@
     <!-- Outdated alert message -->
     <div *ngIf="isOutDated()" class="row">
         <div class="col-sm-6 col-lg-12">
-            <alert type="danger">
-                <div role="alert" class="alert alert-danger ng-star-inserted">
+            <alert type="isOutDated()">
+                <div role="alert" class="alert alert-{{isOutDated()}} ng-star-inserted">
                     <strong>Last Updated:</strong> {{ formatDate(time,'dddd Do MMMM, YYYY HH:mm') }}
                 </div>
             </alert>
@@ -28,17 +28,18 @@
                                 <i class="dropdown-trigger-icon-custom icon-settings p-0"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-                                <div class="dropdown-header text-center"><strong>Tools</strong></div>
-                                <a class="dropdown-item" href="#" shareButton="whatsapp" title="Mansoob Current Status"
+                                <div class="dropdown-header text-center"><strong> {{ this.translate.data["TOOLS"] }}</strong></div>
+                                <a class="dropdown-item" [routerLink]="" shareButton="whatsapp" title="Mansoob Current Status"
                                     description="The severity level of the tank reaches the {{severity}} state ({{currentLevel}})"><i
                                         class="dropdown-item-icon-custom fa fa-whatsapp text-success"></i>
-                                    Share on WhatsApp</a>
-                                <a class="dropdown-item" (click)="genPDF('dashboard')" href="#"><i
-                                        class="dropdown-item-icon-custom icon-cloud-download text-primary"></i>Downlaod
-                                    Dashboard as PDF</a>
-                                <a class="dropdown-item" (click)="infoModal.show()" data-toggle="modal" href="#"><i
-                                        class="dropdown-item-icon-custom icon-info text-info"></i>Quick Information</a>
-                                <div class="dropdown-header text-center"><strong>Refresh Interval</strong></div>
+                                        {{ this.translate.data["ShareonWhatsApp"] }}</a>
+                                <a class="dropdown-item" (click)="genPDF('dashboard')" [routerLink]=""><i
+                                        class="dropdown-item-icon-custom icon-cloud-download text-primary"></i>
+                                        {{ this.translate.data["DownlaodDashboardasPDF"] }}</a>
+                                <a class="dropdown-item" (click)="infoModal.show()" data-toggle="modal" [routerLink]=""><i
+                                        class="dropdown-item-icon-custom icon-info text-info"></i>
+                                        {{ this.translate.data["QuickInformation"] }}</a>
+                                <div class="dropdown-header text-center"><strong>{{ this.translate.data["RefreshInterval"] }}</strong></div>
                                 <a class="dropdown-item {{isRefreshInterval(5)?'active':''}}" [routerLink]=""
                                     (click)="setRefreshInterval(5)">5 minutes</a>
                                 <a class="dropdown-item {{isRefreshInterval(10)?'active':''}}" [routerLink]=""
@@ -59,11 +60,11 @@
                 <div class="brand-card-body">
                     <div>
                         <div class="text-value">{{currentLevel}}</div>
-                        <div class="text-uppercase text-muted small">{{ severity }} Status</div>
+                        <div class="text-uppercase text-muted small">{{ severity }} {{ this.translate.data["Status"] }}</div>
                     </div>
                     <div>
                         <div class="text-value">{{currentLevel_percentage}}</div>
-                        <div class="text-uppercase text-muted small">Current Status %</div>
+                        <div class="text-uppercase text-muted small">{{ this.translate.data["CurrentStatus%"] }}</div>
                     </div>
                     <div>
                         <div class="text-value">{{currentCapacity}}</div>
@@ -92,22 +93,22 @@
                 <div class="brand-card-header bg-primary">
                     <i class="card-header-custom fa fa-bullhorn float-left"></i>
                     <div class="ml-3">
-                        <div class="brand-card-header-item-custom">Time to Refill <strong>{{ timeToRefill }}</strong>
+                        <div class="brand-card-header-item-custom">{{ this.translate.data["TimetoRefill"] }} <strong>{{ timeToRefill }}</strong>
                             day(s)</div>
-                        <div class="brand-card-header-item-custom">On <strong>{{ dayToRefill }}</strong></div>
+                        <div class="brand-card-header-item-custom">{{ this.translate.data["On"] }} <strong>{{ dayToRefill }}</strong></div>
                     </div>
                 </div>
                 <!-- Consumption card -->
                 <div class="brand-card-body">
                     <div>
                         <div class="text-value">{{ fixIfNaN(getRoundedNumber(dConsLst[4],tankHeight)) }}%</div>
-                        <div class="text-uppercase text-muted small">Today Consumption</div>
+                        <div class="text-uppercase text-muted small">{{ this.translate.data["TodayConsumption"] }}</div>
                     </div>
                     <!-- Yesterday Consumption CARD -->
                     <div>
                         <div class="text-value"><i class="card-header-custom fa fa-alert"></i>{{ dConsLst[5]}} (
                             {{ fixIfNaN(getRoundedNumber(dConsLst[5],tankHeight)) }})%</div>
-                        <div class="text-uppercase text-muted small">Yesterday Consumption</div>
+                        <div class="text-uppercase text-muted small">{{ this.translate.data["YesterdayConsumption"] }}</div>
                     </div>
                 </div>
             </div>
@@ -120,7 +121,7 @@
         <div class="card-header">
             <div class="row text-center">
                 <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                    <div class="text-muted">Today First Quarter</div><strong>{{dConsLst[0]}}
+                    <div class="text-muted">{{ this.translate.data["TodayFirstQuarter"] }}</div><strong>{{dConsLst[0]}}
                         ({{dConsPercLst[0]}})%</strong>
                     <div class="progress progress-xs mt-2">
                         <div id="q1ProgressBar" aria-valuemax="100" aria-valuemin="0" aria-valuenow="40"
@@ -128,7 +129,7 @@
                     </div>
                 </div>
                 <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                    <div class="text-muted">Today Second Quarter</div><strong>{{dConsLst[1]}}
+                    <div class="text-muted">{{ this.translate.data["TodaySecondQuarter"] }}</div><strong>{{dConsLst[1]}}
                         ({{dConsPercLst[1]}})%</strong>
                     <div class="progress progress-xs mt-2">
                         <div id="q2ProgressBar" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20"
@@ -136,7 +137,7 @@
                     </div>
                 </div>
                 <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                    <div class="text-muted">Today Third Quarter</div><strong>{{dConsLst[2]}}
+                    <div class="text-muted">{{ this.translate.data["TodayThirdQuarter"] }}</div><strong>{{dConsLst[2]}}
                         ({{dConsPercLst[2]}})%</strong>
                     <div class="progress progress-xs mt-2">
                         <div id="q3ProgressBar" aria-valuemax="100" aria-valuemin="0" aria-valuenow="60"
@@ -144,7 +145,7 @@
                     </div>
                 </div>
                 <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                    <div class="text-muted">Today Fourth Quarter</div><strong>{{dConsLst[3]}}
+                    <div class="text-muted">{{ this.translate.data["TodayFourthQuarter"] }}</div><strong>{{dConsLst[3]}}
                         ({{dConsPercLst[3]}})%</strong>
                     <div class="progress progress-xs mt-2">
                         <div id="q4ProgressBar" aria-valuemax="100" aria-valuemin="0" aria-valuenow="80"
@@ -152,7 +153,7 @@
                     </div>
                 </div>
                 <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                    <div class="text-muted">Today Consumption</div><strong>{{dConsLst[4]}}
+                    <div class="text-muted">{{ this.translate.data["TodayConsumption"] }}</div><strong>{{dConsLst[4]}}
                         ({{ fixIfNaN(getRoundedNumber(dConsPercLst[4]/100,tankCapacity)) }})m3</strong>
                     <div class="progress progress-xs mt-2">
                         <div id="q5ProgressBar" aria-valuemax="100" aria-valuemin="0" aria-valuenow="40"
@@ -166,7 +167,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-5">
-                    <h4 class="card-title mb-0">Water Level</h4>
+                    <h4 class="card-title mb-0">{{ this.translate.data["WaterLevel"] }}</h4>
                     <div class="small text-muted">{{formatDate(time,'dddd Do MMMM, YYYY')}}</div>
                 </div>
                 <!--/.col-->
@@ -197,7 +198,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-5">
-                    <h4 class="card-title mb-0">Consumption</h4>
+                    <h4 class="card-title mb-0">{{ this.translate.data["Consumption"] }}</h4>
                     <div class="small text-muted">
                         {{formatDate(consChartLabels[0],'Do MMMM, YYYY')}} -
                         {{formatDate(consChartLabels[consChartLabels.length-1],'Do MMMM, YYYY')}}
@@ -233,7 +234,7 @@
             <div class="modal-header">
                 <h4 class="modal-title">
                     <i class="fa  fa-info-circle fa-1x"></i>
-                    Water Level Quick Information</h4>
+                    {{ this.translate.data["WaterLevelQuickInformation"] }}</h4>
                 <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -242,42 +243,42 @@
 
                 <div class="panel-heading text-left">
                     <ul>
-                        <li>Tank Full Level: 135, <strong>(Normal status)</strong></li>
-                        <li>Refill Level: 74.5, <strong>(Low status)</strong></li>
-                        <li>Tank Empty Level: 17, <strong>(Critical status)</strong></li>
+                        <li>{{ this.translate.data["TankFullLevel:135,"] }} <strong>({{ this.translate.data["Normalstatus"] }})</strong></li>
+                        <li>{{ this.translate.data["RefillLevel:74.5"] }} <strong>({{ this.translate.data["Lowstatus"] }})</strong></li>
+                        <li>{{ this.translate.data["TankEmptyLevel:17,"] }} <strong>({{ this.translate.data["Criticalstatus"] }})</strong></li>
                     </ul>
                 </div>
 
                 <br>
                 <div class="panel-heading text-left">
-                    Severity Levels:
+                    {{ this.translate.data["SeverityLevels"] }}:
                     <div class="progress mt-2">
                         <div class="progress-bar status-normal progress-bar-striped active" id="bar-normal"
                             role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"
-                            style="width: 100%">Normal</div>
+                            style="width: 100%">{{ this.translate.data["Normal"] }}:</div>
                     </div>
                     <div class="progress mt-2">
                         <div class="progress-bar status-low progress-bar-striped" id="bar-low" role="progressbar"
-                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 50%">Low</div>
+                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 50%">{{ this.translate.data["Low"] }}:</div>
                     </div>
                     <div class="progress mt-2">
                         <div class="progress-bar status-medium progress-bar-striped" id="bar-medium" role="progressbar"
-                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 33%">Medium</div>
+                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 33%">{{ this.translate.data["Medium"] }}:</div>
                     </div>
                     <div class="progress mt-2">
                         <div class="progress-bar status-high progress-bar-striped" id="bar-high" role="progressbar"
-                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 25%">High</div>
+                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 25%">{{ this.translate.data["High"] }}:</div>
                     </div>
                     <div class="progress mt-2">
                         <div class="progress-bar status-critical progress-bar-striped" id="bar-critical"
                             role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"
-                            style="width: 16%">Critical</div>
+                            style="width: 16%">{{ this.translate.data["Critical"] }}:</div>
                     </div>
                 </div>
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="infoModal.hide()">Dismiss</button>
+                <button type="button" class="btn btn-secondary" (click)="infoModal.hide()">{{ this.translate.data["Dismiss"] }}</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

@@ -14,6 +14,7 @@ import html2canvas from 'html2canvas';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ShareService } from '@ngx-share/core';
 import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from "../../services/translate.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -34,7 +35,8 @@ export class DashboardComponent {
     public share: ShareService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    public translate: TranslateService
   ) {
         //get device id
         this.route.queryParams.subscribe(params => {
@@ -75,7 +77,12 @@ export class DashboardComponent {
   }
 
   public isOutDated() {
-    let isOutDated = moment().isAfter(moment(this.time).add(11, 'minutes'));
+    let isOutDated = '';
+
+    let minutes = (this.refreshInterval / 60 / 1000);
+    let isOutDatedDanger = moment().isAfter(moment(this.time).add( (minutes + 10), 'minutes'));
+    isOutDated = isOutDatedDanger?'danger':
+    moment().isAfter(moment(this.time).add(10, 'minutes'))?'info':undefined;
     return isOutDated;
   }
 
@@ -256,7 +263,7 @@ export class DashboardComponent {
     this.lable = labeles[result];
     this.time = timestamp.substring(0, 19);
     this.severity_class = severity_class[result];
-    this.severity = severity_label[result];
+    this.severity =  this.translate.data[severity_label[result]];
     this.severity_simple = shape[result];
 
     this.gaugeNeedleValue = (this.currentLevel / this.tankHeight * 100);//normalize from e.g. 150 scale to 100

@@ -4,6 +4,7 @@ import { navItems } from '../../_nav';
 import { AuthService } from '.././../services/auth.service';
 import { User } from "../../services/user";
 import { NotificationService } from "../../services/notification.service";
+import { TranslateService } from "../../services/translate.service";
 import * as moment from 'moment';
 
 @Component({
@@ -26,6 +27,7 @@ export class DefaultLayoutComponent {
     private noti: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
+    public translate: TranslateService
     ) {
     this.isAdmin = this.auth.isAdmin();
     this.sidebarMinimized = this.isAdmin;
@@ -120,6 +122,13 @@ export class DefaultLayoutComponent {
       htmlTag.setAttribute('dir','rtl');
       localStorage.setItem('rtl', 'E');
     }
+    this.setLang(isEnglish?'en':'ar');
+  }
+
+
+  setLang(lang: string) {
+    // console.log("Language", lang);
+    this.translate.use(lang).then(() => { });
   }
 
 }
