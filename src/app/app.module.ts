@@ -28,7 +28,6 @@ import { RegisterComponent } from './views/register/register.component';
 import { AuthService } from './services/auth.service';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ToastrModule } from 'ngx-toastr';
-import { ToastrService } from './services/toastr.service';
 import { AvatarModule, AvatarSource } from 'ngx-avatar';
 
 import { ShareModule } from '@ngx-share/core';
@@ -133,7 +132,6 @@ import { ValidationHelper } from './_helper/validator_hp';
     NgwWowService,
     NgbButtonsModule,
     NgbModule,
-    ToastrService,
     ValidationHelper
   ],
   bootstrap: [AppComponent],

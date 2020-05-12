@@ -1,29 +1,11 @@
 // Here you can add other styles
 
-.theme-dark {
-    .app-header{
-        background-color: $gray-800;
-        border-bottom: 1px solid $black;
-        color: $white;
-    }
-    
-      .breadcrumb{
-        background-color: $gray-800;
-        border: 1px solid $black;
-        color: $white;
-    }
-    
-      .app-footer{
-        background-color: $gray-800;
-        border: 1px solid $black;
-        color: $white;
-    }
-    
-     .navbar-nav .nav-link:hover {
-        color: $white;
-    }
-    
-     .ngx-table {
-        color: $white;
-    }
-} 
+.header-ml-auto-custom {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+*[dir=rtl] .header-ml-auto-custom {
+  margin-right: auto;
+  margin-left: 0;
+}

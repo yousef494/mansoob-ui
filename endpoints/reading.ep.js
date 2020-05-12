@@ -58,10 +58,13 @@ module.exports = function (app, Mysql, urlPrefix, security) {
             COUNT(*) as count, Min(level) as min, Max(level) as max,\
            DATE_FORMAT(" + Mysql.escapeId('timestamp') + " , '%Y-%m-%d') AS day ,\
             CASE WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '00:00:00' AND '05:59:59' THEN 1\
-                    WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '06:00:00' AND '11:59:59' THEN 2\
-                    WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '12:00:00' AND '17:59:59' THEN 3\
-                    WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '18:00:00' AND '23:59:59' THEN 4\
-            END as quarter, MAX(level) - MIN(level) as consumption\
+                WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '06:00:00' AND '11:59:59' THEN 2\
+                 WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '12:00:00' AND '17:59:59' THEN 3\
+                 WHEN TIME(" + Mysql.escapeId('timestamp') + ") BETWEEN '18:00:00' AND '23:59:59' THEN 4\
+                 END as quarter, \
+            CASE WHEN (level - MIN(level)) < 0 THEN 0\
+                 WHEN (level - MIN(level)) >= 0 THEN (level - MIN(level))\
+                 END as consumption\
             FROM " + Mysql.escapeId(modelName) + "\
             WHERE device_id = ? \
             GROUP BY DATE(" + Mysql.escapeId('timestamp') + "),\

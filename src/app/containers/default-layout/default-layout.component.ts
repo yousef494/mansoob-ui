@@ -40,6 +40,7 @@ export class DefaultLayoutComponent {
 
   ngOnInit() {
     this.setTheme();
+    this.setRTL();
   }
 
   toggleMinimize(e) {
@@ -91,6 +92,33 @@ export class DefaultLayoutComponent {
     else {
       body.setAttribute('data-theme', 'light');
       localStorage.setItem('theme', 'light');
+    }
+  }
+
+  setRTL(){
+    //Check default
+    this.rtlSwitcherIsChecked = localStorage.getItem('rtl') || 'ع';
+    this.switchRTL(this.rtlSwitcherIsChecked);
+  }
+  
+  public rtlSwitcherIsChecked: string;
+  switchRTL(rtl){
+    if(rtl == ''){
+      rtl = 'ع'; //default is English (E)
+    }else if(rtl == 'S'){// switch the current
+      this.rtlSwitcherIsChecked = this.rtlSwitcherIsChecked=='ع'?'E':'ع';
+    }
+    const isEnglish = this.rtlSwitcherIsChecked == 'ع';  
+    let htmlTag = document.getElementsByTagName('html')[0];    
+    if (isEnglish) {//set html dir to English
+      this.rtlSwitcherIsChecked = 'ع';
+      htmlTag.setAttribute('dir', '');
+      localStorage.setItem('rtl', 'ع');
+    }
+    else {//set html dir to Arabic
+      this.rtlSwitcherIsChecked = 'E';
+      htmlTag.setAttribute('dir','rtl');
+      localStorage.setItem('rtl', 'E');
     }
   }
 

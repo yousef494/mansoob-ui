@@ -15,25 +15,31 @@
     <li class="nav-item px-3">
       <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="darkSwitch" [(ngModel)]="themeSwitcherIsChecked"
-          (change)="switchTheme()">
-        <label class="custom-control-label" for="darkSwitch">Dark mode</label>
+          (change)="switchTheme()" data-checked="Dark" data-unchecked="Light">
+        <label class="custom-control-label" for="darkSwitch" >Dark mode</label>
       </div>
     </li>
- 
   </ul>
-  <ul class="nav navbar-nav ml-auto">
+
+  <ul class="nav navbar-nav header-ml-auto-custom">
     <li class="nav-item d-md-down-none mr-2">{{user.firstName}}</li>
     <li class="nav-item dropdown" dropdown placement="bottom right">
       <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"
         dropdownToggle (click)="false">
-        <ngx-avatar size="35" src="http://yousefcave.com/uploads/avatars/{{user.id}}-avatar.png" name="{{user.name}}"></ngx-avatar>
+        <ngx-avatar size="35" src="http://yousefcave.com/uploads/avatars/{{user.id}}-avatar.png" name="{{user.name}}">
+        </ngx-avatar>
       </a>
       <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
         <div class="dropdown-header text-center"><strong>You are {{user.role}}</strong></div>
-       <a class="dropdown-item" href="#" [routerLink]="['/profile']"><i class="fa fa-user"></i> Profile</a>
+        <a class="dropdown-item" href="#" [routerLink]="['/profile']"><i class="fa fa-user"></i> Profile</a>
         <a class="dropdown-item" href="#" (click)="logout()"><i class="fa fa-lock"></i> Logout</a>
       </div>
-      
+    </li>
+    <li class="nav-item px-3">
+      <div class="ml-auto">
+        <button class="btn btn-secondary btn-sm" type="button" id="rtlSwitch"
+          (click)="switchRTL('S')">{{rtlSwitcherIsChecked}}</button>
+      </div>
     </li>
   </ul>
 </app-header>

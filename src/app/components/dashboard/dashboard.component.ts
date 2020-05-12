@@ -390,10 +390,10 @@ export class DashboardComponent {
 
           //calculate yesterday's consumption
           let yesterdayIndex = this.consChartLabels.indexOf(moment().add(-1, 'day').format("YYYY-MM-DD"));
-          for (let i = 0; i < 5; i++) {
-            let temp = this.consChartDataset[i]['data'][yesterdayIndex];
+         // for (let i = 0; i < 5; i++) {
+            let temp = this.consChartDataset[4]['data'][yesterdayIndex];
             this.dConsLst.push(this.fixIfNaN(temp));
-          }
+         // }
 
           //calculate time to refill
           this.timeToRefill = Math.ceil(this.currentLevel / this.averageConsumption) - 1;
