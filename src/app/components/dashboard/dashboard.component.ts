@@ -124,9 +124,9 @@ export class DashboardComponent {
     }
   ];
   public readingChartDatasetColors: Array<any> = [{
-    borderColor: getStyle('--info'),
-    borderWidth: 2,
-    backgroundColor: getStyle('--info'),
+    borderColor: getStyle('--primary'),
+    borderWidth: 1,
+    backgroundColor: hexToRgba(getStyle('--primary'), 50),
   }];
   public readingChartType = "line";
   public readingChartLegend = false;
@@ -179,7 +179,7 @@ export class DashboardComponent {
         radius: 1,
         borderColor: 'white',
         borderWidth: 1,
-        hitRadius: 10,
+        hitRadius: 2,
         hoverRadius: 4,
         hoverBorderWidth: 3,
         hoverBackgroundColor: 'white'
@@ -195,35 +195,55 @@ export class DashboardComponent {
         scaleID: 'y-axis-0',
         value: 135,
         borderColor: getStyle('--success'),
-        borderWidth: 1
+        borderWidth: 1,
+        label: {
+          enabled: false,
+          content: "Normal status"
+        }
       }, {
         type: 'line',
         mode: 'horizontal',
         scaleID: 'y-axis-0',
         value: 75,
         borderColor: '#f0ad4e',
-        borderWidth: 1
+        borderWidth: 1,
+        label: {
+          enabled: false,
+          content: "Low status"
+        }
       }, {
         type: 'line',
         mode: 'horizontal',
         scaleID: 'y-axis-0',
         value: 49,
         borderColor: '#ff8d00',
-        borderWidth: 1
+        borderWidth: 1,
+        label: {
+          enabled: false,
+          content: "Medium status"
+        }
       }, {
         type: 'line',
         mode: 'horizontal',
         scaleID: 'y-axis-0',
         value: 25.5,
         borderColor: '#d9534f',
-        borderWidth: 1
+        borderWidth: 1,
+        label: {
+          enabled: false,
+          content: "High status"
+        }
       }, {
         type: 'line',
         mode: 'horizontal',
         scaleID: 'y-axis-0',
         value: 15,
         borderColor: 'rgb(139, 2, 2)',
-        borderWidth: 1
+        borderWidth: 1,
+        label: {
+          enabled: false,
+          content: "Critical status"
+        }
       }]
     }
   };

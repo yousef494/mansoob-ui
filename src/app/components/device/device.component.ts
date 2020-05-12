@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { ValidationHelper, NumbericValidator } from '../../_helper/validator_hp';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
+import { TranslateService } from "../../services/translate.service";
 
 @Component({
   selector: 'app-device',
@@ -42,7 +43,8 @@ export class DeviceComponent implements OnInit {
     private deviceService: DeviceService,
     private toastService: ToastrService,
     private formBuilder: FormBuilder,
-    private validationHelper: ValidationHelper
+    private validationHelper: ValidationHelper,
+    public translate: TranslateService
   ) {
     this.vh = validationHelper;
   }

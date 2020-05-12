@@ -4,7 +4,7 @@
         <div class="input-group">
             <span class="input-group-prepend">
                 <button class="btn btn-primary" type="button" (click)="fileInput.click()">
-                    <i class="fa fa-upload"></i> Choose File
+                    <i class="fa fa-upload"></i> {{ this.translate.data["ChooseFile"] }}
                     <input type="file" style="display:none;" name="file" #fileInput
                         (change)="onChange(fileInput.files[0])" class="form-control">
                 </button>
@@ -18,13 +18,13 @@
 
     <alert type="success" class="mt-3 ml-3" *ngIf="infoMessage && !isError">
         <div role="alert" class="alert alert-success">
-            <strong>Success!</strong> {{ infoMessage }}
+            <strong>{{ this.translate.data["Success"] }}!</strong> {{ infoMessage }}
         </div>
     </alert>
 
     <alert type="danger" class="mt-3 ml-3" *ngIf="isError">
         <div role="alert" class="alert alert-danger">
-            <strong>Error!</strong> {{ infoMessage }}
+            <strong>{{ this.translate.data["Error"] }}!</strong> {{ infoMessage }}
         </div>
     </alert>
     <!-- progress bar-->
@@ -37,7 +37,7 @@
     <div class="col-12 mt-2">
         <div class="input-group">
             <button class="btn btn-primary" (click)="onUpload()" [attr.disabled]="isUploading ? '' : null">
-                Upload
+                {{ this.translate.data["Upload"] }}
             </button>
         </div>
     </div>

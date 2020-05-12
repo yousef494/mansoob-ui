@@ -12,6 +12,7 @@ import {
   Validators
 } from '@angular/forms';
 import { ValidationHelper } from '../../_helper/validator_hp';
+import { TranslateService } from "../../services/translate.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -38,7 +39,8 @@ export class ProfileComponent {
     private router: Router,
     private toastService: ToastrService,
     private formBuilder: FormBuilder,
-    private validationHelper: ValidationHelper
+    private validationHelper: ValidationHelper,
+    public translate: TranslateService
   ) {
     this.vh = validationHelper;
       this.isAdmin = this.auth.isAdmin();

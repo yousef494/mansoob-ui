@@ -2,10 +2,13 @@
   "TITLE": "Mansoob",
 
   "HOME": "Home",
+  "User": "User",
+  "Dashboard": "Dashboard",
+  "Devices": "Devices",
+  "Settings": "Settings",
+  "Adminstration": "Adminstration",
+
   "LOGOUT": "Logout",
-  "DASHBOARD": "Dashboard",
-  "DEVICES": "Devices",
-  "SETTINGS": "Settings",
   "DARKMODE": "Dark mode",
   "PROFILE": "Profile",
   "YOUARE": "You are",
@@ -13,6 +16,21 @@
   "SIGNIN": "SignIn/SignUp",
   "MYACCOUNT": "My Account",
 
+  "AlreadyloggedIn": "Already loggedIn",
+  "AlreadyloggedInMsg":"You are already loggedIn... click logout to switch user or home to go back to the site",
+  "Logout":"Logout",
+  "Login":"Login",
+  "LoginMsg":"Sign In to your account",
+  "Forgotpassword?":"Forgot password?",
+  "Signup":"Sign up",
+  "SignupMsg":"Hi there! 👋 Welcome to Mansoob.",
+  "RegisterNow!":"Register Now!",
+
+  "Register": "Register",
+  "Createyouraccount": "Create your account",
+  "CreateAccount": "Create Account",
+
+  "LastUpdate": "Last Update",
   "TOOLS": "Tools",
   "ShareonWhatsApp": "Share on Whats App",
   "DownlaodDashboardasPDF": "Downlaod Dashboard as PDF",
@@ -44,5 +62,35 @@
   "Medium": "Medium",
   "High": "High",
   "Critical": "Critical",
-  "Dismiss": "Dismiss"
+  "Dismiss": "Dismiss",
+
+  "Name": "Name",
+  "Selectdevicefordetails":"Select device for details",
+  "Details":"Details",
+  "TankCapacity(m3)":"Tank Capacity (m3)",
+  "TankHieght(cm)":"Tank Hieght (cm)",
+  "Notify(EmailTo)":"Notify (Email To)",
+  "Generate":"Generate",
+  "Submit":"Submit",
+  "Reset":"Reset",
+  "ShareDeviceDashboard":"Share Device Dashboard",
+
+  "LoginId": "Login Id",
+  "FirstName":"First Name",
+  "LastName":"Last Name",
+  "Email":"Email",
+  "Role":"Role",
+  "Edit":"Edit",
+  "Cancel":"Cancel",
+  "NoSUCHNotifications":"No Such Notifications",
+
+  "ChooseFile": "Choose File",
+  "Upload":"Upload",
+
+  "Success":"Success",
+  "Error":"Error",
+  "Onlyjpgpng":"Only jpg/png files are allowed",
+  "Nofileselected":"No file selected"
+
+  
 }

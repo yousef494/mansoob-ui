@@ -4,7 +4,7 @@
         <div class="col-sm-6 col-lg-12">
             <alert type="isOutDated()">
                 <div role="alert" class="alert alert-{{isOutDated()}} ng-star-inserted">
-                    <strong>Last Updated:</strong> {{ formatDate(time,'dddd Do MMMM, YYYY HH:mm') }}
+                    <strong>{{ this.translate.data["LastUpdate"] }}:</strong> {{ formatDate(time,'dddd Do MMMM, YYYY HH:mm') }}
                 </div>
             </alert>
         </div>
@@ -106,8 +106,8 @@
                     </div>
                     <!-- Yesterday Consumption CARD -->
                     <div>
-                        <div class="text-value"><i class="card-header-custom fa fa-alert"></i>{{ dConsLst[5]}} (
-                            {{ fixIfNaN(getRoundedNumber(dConsLst[5],tankHeight)) }})%</div>
+                        <div class="text-value"><i class="card-header-custom fa fa-alert"></i>{{ dConsLst[5]}} 
+                            ({{ fixIfNaN(getRoundedNumber(dConsLst[5],tankHeight)) }})%</div>
                         <div class="text-uppercase text-muted small">{{ this.translate.data["YesterdayConsumption"] }}</div>
                     </div>
                 </div>

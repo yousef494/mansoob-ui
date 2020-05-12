@@ -1,5 +1,5 @@
+import { Injectable } from "@angular/core";
 import { INavData } from '@coreui/angular';
-
 
 let navItems_list = [
   {
@@ -34,13 +34,42 @@ let navItems_list = [
 
 
 
-export function navItems(role){
+
+
+/*
+@Injectable({
+  providedIn: "root"
+})
+export class NavItems {
+  data: any = {};
+  constructor() {}
+
+   public navItems(role, translate){
+    let navItems_array: INavData[] = [];
+    navItems_list.forEach(item =>{
+      if((item.roles && item.roles.indexOf(role)>-1) || item.title){
+        delete item.roles;
+        item['name'] = translate.data[item['name']];
+        navItems_array.push(item);
+      }
+    });
+    return navItems_array;
+  }
+}
+*/
+
+
+
+export function navItems(role, translate){
   let navItems_array: INavData[] = [];
   navItems_list.forEach(item =>{
     if((item.roles && item.roles.indexOf(role)>-1) || item.title){
       delete item.roles;
+      item['name'] = translate.data[item['name']];
       navItems_array.push(item);
     }
   });
   return navItems_array;
 }
+
+

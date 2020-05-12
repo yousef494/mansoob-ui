@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AvatarUpdateService } from "../../../services/avatar-update.service";
+import { TranslateService } from "../../../services/translate.service";
 
 @Component({
   selector: 'app-avatar-update',
@@ -15,14 +16,20 @@ export class AvatarUpdateComponent implements OnInit {
 
   imageUrl: string | ArrayBuffer =
     "https://bulma.io/images/placeholders/480x480.png";
-  fileName: string = "No file selected";
+  fileName: string = 'No file selected';
 
-  constructor(private uploader: AvatarUpdateService) {}
+  constructor(
+    private uploader: AvatarUpdateService,
+    public translate: TranslateService
+    ) {
+    }
 
   ngOnInit() {
     this.uploader.progressSource.subscribe(progress => {
       this.progress = progress;
     });
+    this.fileName = this.translate.data["Nofileselected"];
+
   }
 
   onChange(file: File) {
@@ -31,7 +38,7 @@ export class AvatarUpdateComponent implements OnInit {
     if (file ) {
       let type = file['type'].toLowerCase() ;
       if(!(type == 'image/jpg' || type == 'image/png' || type == 'image/jpeg' )){
-        this.infoMessage = "Only jpg/png files are allowed";
+        this.infoMessage = this.translate.data["Onlyjpgpng"];
         this.isError = true;
         return;
       }

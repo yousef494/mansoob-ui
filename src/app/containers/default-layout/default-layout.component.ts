@@ -28,6 +28,7 @@ export class DefaultLayoutComponent {
     private router: Router,
     private route: ActivatedRoute,
     public translate: TranslateService
+   // private navItem: NavItems
     ) {
     this.isAdmin = this.auth.isAdmin();
     this.sidebarMinimized = this.isAdmin;
@@ -37,12 +38,20 @@ export class DefaultLayoutComponent {
     setInterval(() => {
       this.timeNow = moment().format("dddd Do MMMM, YYYY HH:mm");
     }, 60000);
-    this.navItems = navItems(this.auth.getRole());
+    this.getNavItems();
   }
 
   ngOnInit() {
     this.setTheme();
-    this.setRTL();
+    this.setRTL();  
+  }
+
+  getNavItems(){
+    let rtlSwitcherIsChecked = localStorage.getItem('rtl') || 'ع';
+    let lang = rtlSwitcherIsChecked == 'ع'?'en':'ar';
+    this.translate.use(lang).then(() => { 
+      this.navItems = navItems(this.auth.getRole(), this.translate);
+    });
   }
 
   toggleMinimize(e) {
@@ -127,7 +136,7 @@ export class DefaultLayoutComponent {
 
 
   setLang(lang: string) {
-    // console.log("Language", lang);
+    //console.log("Language", lang);
     this.translate.use(lang).then(() => { });
   }
 

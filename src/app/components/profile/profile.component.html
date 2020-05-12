@@ -17,7 +17,7 @@
                     <div class="col-lg-10 col-md-10 col-sm-6">
                         <div class="float-left m-3">
                             <h4 class="m-t-0 m-b-0">{{ user.name }}</h4>
-                            <p>Login Id: <strong>{{ user.email }}</strong></p>
+                            <p>{{ this.translate.data["LoginId"] }}: <strong>{{ user.email }}</strong></p>
                         </div>
                     </div>
 
@@ -26,7 +26,7 @@
             <div class="card">
                 <form [formGroup]="profileForm" (ngSubmit)="updateDetails()">
                     <div class="card-body" id="about">
-                        <small class="text-muted">First Name: </small>
+                        <small class="text-muted">{{ this.translate.data["FirstName"] }}: </small>
                         <p *ngIf="mode!='edit'">{{ user.firstName }}</p>
                         <input *ngIf="mode=='edit'" class="form-control" id="firstName" placeholder="Enter first name"
                             type="text" [(ngModel)]="user.firstName"
@@ -35,7 +35,7 @@
                               {{ vh.getMsg(profileForm,'firstName') }}
                             </div>
                         <hr>
-                        <small class="text-muted">Last Name: </small>
+                        <small class="text-muted">{{ this.translate.data["LastName"] }}: </small>
                         <p *ngIf="mode!='edit'">{{ user.lastName }}</p>
                         <input *ngIf="mode=='edit'" class="form-control" id="lastName" placeholder="Enter last name"
                             type="text" [(ngModel)]="user.lastName"
@@ -44,10 +44,10 @@
                                 {{ vh.getMsg(profileForm,'lastName') }}
                             </div>
                         <hr>
-                        <small class="text-muted">Email address: </small>
+                        <small class="text-muted">{{ this.translate.data["Email"] }}: </small>
                         <p>{{ user.email }}</p>
                         <hr>
-                        <small class="text-muted">Role: </small>
+                        <small class="text-muted">{{ this.translate.data["Role"] }}: </small>
                         <p class="m-b-0">{{ user.role }}</p>
                         <hr>
                         <small class="text-muted">Id: </small>
@@ -55,15 +55,15 @@
                     </div>
                     <div class="card-footer">
                         <button *ngIf="mode!='edit'" class="btn btn-sm btn-primary" type="button" (click)="mode='edit'">
-                            <i class="fa fa-edit"></i> Edit
+                            <i class="fa fa-edit"></i> {{ this.translate.data["Edit"] }}
                         </button>
                         <button *ngIf="mode=='edit'" class="btn btn-sm btn-primary" type="submit"
                             [disabled]="!profileForm.valid">
-                            <i class="fa fa-dot-circle-o"></i> Submit
+                            <i class="fa fa-dot-circle-o"></i> {{ this.translate.data["Submit"] }}
                         </button>
                         <button *ngIf="mode=='edit'" class="btn btn-sm btn-danger ml-3" type="reset"
                             (click)="resetDetails()">
-                            <i class="fa fa-ban"></i> Cancel
+                            <i class="fa fa-ban"></i> {{ this.translate.data["Cancel"] }}
                         </button>
                     </div>
                 </form>
@@ -86,8 +86,8 @@
                 </div>
             </div>
             <div *ngIf="notifications.length == 0">
-                <div class="list-group-item text-center font-weight-bold text-muted text-uppercase small">No SUCH
-                    Notifications</div>
+                <div class="list-group-item text-center font-weight-bold text-muted text-uppercase small">
+                    {{ this.translate.data["NoSUCHNotifications"] }}</div>
             </div>
 
         </div>
@@ -105,7 +105,7 @@
                 <app-avatar-update></app-avatar-update>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="updateAvatarModal.hide()">Cancel</button>
+                <button type="button" class="btn btn-secondary" (click)="updateAvatarModal.hide()">{{ this.translate.data["Cancel"] }}</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

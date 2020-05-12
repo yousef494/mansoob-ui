@@ -9,3 +9,21 @@
   margin-right: auto;
   margin-left: 0;
 }
+
+*[dir=rtl] .custom-singup-card{
+  border-right: 0 !important;
+  border-left: 1px !important;
+  border-top-left-radius: 0.25rem !important;
+  border-bottom-left-radius: 0.25rem !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+*[dir=rtl] .custom-login-card{
+  border-left: 0 !important;
+  border-right: 1px !important;
+  border-top-right-radius: 0.25rem !important;
+  border-bottom-right-radius: 0.25rem !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}

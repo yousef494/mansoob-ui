@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { User } from "../../services/user";
 import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from "../../services/translate.service";
 
 @Component({
   selector: 'app-login',
@@ -35,7 +36,8 @@ export class LoginComponent {
     private route: ActivatedRoute,
     private toastService: ToastrService,
     private formBuilder: FormBuilder,
-    private validationHelper: ValidationHelper
+    private validationHelper: ValidationHelper,
+    public translate: TranslateService
   ) {
     this.vh = validationHelper;
     this.alreadyLoggedIn = this.authService.isAuthenticated();
@@ -44,6 +46,7 @@ export class LoginComponent {
 
   ngOnInit() {
     this.initLoginForm();
+    this.setLang();
   }
 
   loginForm: FormGroup;
@@ -91,5 +94,11 @@ export class LoginComponent {
   logout() {
     this.authService.logout();
     this.alreadyLoggedIn = this.authService.isAuthenticated();
+  }
+
+  setLang() {
+    let rtlSwitcherIsChecked = localStorage.getItem('rtl') || 'ع';
+    let lang = rtlSwitcherIsChecked == 'ع'?'en':'ar';
+    this.translate.use(lang).then(() => { });
   }
 }

@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 import { User } from "../../services/user";
 import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from "../../services/translate.service";
 
 @Component({
   selector: 'app-register',
@@ -39,7 +40,8 @@ export class RegisterComponent {
     private route: ActivatedRoute,
     private toastService: ToastrService,
     private formBuilder: FormBuilder,
-    private validationHelper: ValidationHelper
+    private validationHelper: ValidationHelper,
+    public translate: TranslateService
   ) {
     this.vh = validationHelper;
     this.createUser = new User();
@@ -47,6 +49,7 @@ export class RegisterComponent {
 
   ngOnInit() { 
     this.initLoginForm();
+    this.setLang();
   }
 
 
@@ -94,6 +97,12 @@ export class RegisterComponent {
       {
         validator: MustMatch('password', 'rpassword')
     });
+  }
+
+  setLang() {
+    let rtlSwitcherIsChecked = localStorage.getItem('rtl') || 'ع';
+    let lang = rtlSwitcherIsChecked == 'ع'?'en':'ar';
+    this.translate.use(lang).then(() => { });
   }
 
 }
