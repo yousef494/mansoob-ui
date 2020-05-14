@@ -16,13 +16,6 @@ export class AuthService {
 
   private user: User = null;
 
-  public httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'x-access-token': localStorage.getItem('token')
-    })
-  };
-
   constructor(private router: Router, private http: HttpClient) {
     this.urlPrefix = this.endpoint;
   }

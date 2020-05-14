@@ -32,7 +32,6 @@ Mysql.connect(config[env].mysqlOptions);
 util.scheduler.scheduleReports(Mysql);
 
 app.use(async (req, res, next) => {
-
     if (req.headers["x-access-token"] || req.headers["x-access-token-api"] ) {
         let accessToken = req.headers["x-access-token"];
         let device_id = '';
@@ -44,9 +43,10 @@ app.use(async (req, res, next) => {
             let { userId, exp } = await jwt.verify(accessToken, process.env.JWT_SECRET);
             // Check expiration in case of x-access-token (from web not IOT)
             if (req.headers["x-access-token"] && exp < Date.now().valueOf() / 1000) {
-                return res.status(401).json({ error: "JWT token has expired, please login to obtain a new one" });
+                return res.status(401).json({ status: 'Error', type: 'Token', message: "Token has expired, please login to obtain a new one" });
             }
             let user_id = userId;
+
             Mysql.record('user', { id: user_id })
                 .then(function (user) {
                     if (!user) { return next('User does not exist'); }
@@ -62,7 +62,7 @@ app.use(async (req, res, next) => {
                             next();
                         })
                         .catch(function (err) {
-                            return res.status(401).json({ error: "Invalid token" });
+                            return res.status(401).json({ status: 'Error', message: "Invalid token" });
                         });
                     }else{
                         res.locals.loggedInUser = user;
@@ -71,10 +71,10 @@ app.use(async (req, res, next) => {
                     }
                 })
                 .catch(function (err) {
-                    return res.status(401).json({ error: "User does not exist" });
+                    return res.status(401).json({ status: 'Error', message: "User does not exist" });
                 });
         } catch (error) {
-            return res.status(401).json({ error: error.message });
+            return res.status(401).json({ status: 'Error', message: error.message });
           //  return res.status(401).json({ error: "Invalid token" });
         }
     } else {

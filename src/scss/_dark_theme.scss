@@ -126,7 +126,7 @@ $cssscript-form-addon-bg: $cssscript-default-header-bg;
 	.list-group-item {
 		color: $cssscript-card-color;
 		background-color: $cssscript-card-bg;
-		border-color: $cssscript-card-border;
+		//border-color: $cssscript-card-border;
 		&.list-group-item-action:focus,
 		&.list-group-item-action:hover {
 			background-color: $cssscript-card-hover-bg;

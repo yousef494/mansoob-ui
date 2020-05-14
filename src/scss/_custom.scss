@@ -1,4 +1,15 @@
 // Here you can add other styles
+.list-group-item {
+  margin-bottom: -1px !important;
+  border-bottom-right-radius: 0rem !important;
+  border-bottom-left-radius: 0rem !important;
+}
+
+.list-group-item:first-child{
+  border-top-left-radius: 0rem !important;
+  border-top-right-radius: 0rem !important;
+}
+
 
 .header-ml-auto-custom {
   margin-left: auto;

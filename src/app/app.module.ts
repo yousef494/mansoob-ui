@@ -76,6 +76,9 @@ import { ValidationHelper } from './_helper/validator_hp';
 
 import { TranslateService } from './services/translate.service';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AppHttpInterceptor } from './services/auth-interceptor.service';
+
 export function setupTranslateFactory(service: TranslateService): Function {
 	return () => service.use('en');
 }
@@ -140,9 +143,14 @@ export function setupTranslateFactory(service: TranslateService): Function {
     ValidationHelper,
     TranslateService,
 		{
-			provide: APP_INITIALIZER,
+      provide: APP_INITIALIZER,
 			useFactory: setupTranslateFactory,
 			deps: [ TranslateService ],
+			multi: true
+    },
+		{
+      provide:  HTTP_INTERCEPTORS,
+      useClass: AppHttpInterceptor,
 			multi: true
 		}
   ],

@@ -1,25 +1,18 @@
-<div class="app flex-row align-items-center"   style="background-color: white;" >
+<div class="app flex-row align-items-center"   style="background-color: #2f353a;" >
   <div class="container">
     <div class="row justify-content-center" >
-      <div class="col-md-4">
-        <img class="thumb-image loaded"
-        data-image-dimensions="1500x2025" data-image-focal-point="0.5,0.5" alt="" data-load="false"
-        style="height: 130%; position: absolute;" 
-        src="https://images.squarespace-cdn.com/content/v1/51cdafc4e4b09eb676a64e68/1470175715831-NUJOMI6VW13ZNT1MI0VB/ke17ZwdGBToddI8pDm48kEj8h6tFfEHTeCG-xJISxCF7gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z5QPOohDIaIeljMHgDF5CVlOqpeNLcJ80NK65_fV7S1UQNtHfWuxJOqPNnonx2vPn19YmYaYuKXkbKFz0xx0uTakvjJh3JJWsjdMZ66YIxKAg/image-asset.jpeg?format=750w">
-      </div>
-
-
-      <code class="col-md-7">
-        <h2>Awww... It's just a </h2>
-        <div><strong style="font-size: 5rem;" class="display-2">404 Error!</strong>
-          <br>What you’re looking for may have been misplaced in Long Term Memory.
+      <code class="col-md-12">
+        <h2>{{ this.translate.data["Awww404"] }}</h2>
+        <div><strong style="font-size: 5rem;" class="display-2">{{ this.translate.data["404Error"] }}</strong>
+          <br>
+          {{ this.translate.data["404Msg"] }}
         </div>
       </code>
     </div>
       <div class="row justify-content-center">
       <div class="col-sm-4 col-md-2 pt-4 mt-4">
-        <button class="btn btn-block btn-outline-dark" type="button" [routerLink]="['/']">
-          Home
+        <button class="btn btn-block btn-outline-light" type="button" [routerLink]="['/']">
+          {{ this.translate.data["Home"] }}
         </button>
       </div>
     </div>

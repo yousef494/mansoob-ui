@@ -13,10 +13,11 @@ async function validatePassword(plainPassword, hashedPassword) {
 exports.hasAccess = function(action, resource) {
   return async (req, res, next) => {
     try {
+    //  console.log(req.user.role);
       const permission = roles.can(req.user.role)[action](resource);
       if (!permission.granted) {
-        return res.status(401).json({
-          error: "You don't have enough permission to perform this action"
+        return res.status(401).json({ status: 'Error', type: 'Access',
+          message: "You don't have enough permission to perform this action"
         });
       }
       next()
@@ -30,8 +31,8 @@ exports.allowIfLoggedin = async (req, res, next) => {
   try {
     const user = res.locals.loggedInUser;
     if (!user)
-      return res.status(401).json({
-        error: "You need to be logged in to access this route"
+      return res.status(401).json({ status: 'Error', type: 'Access',
+      message: "You need to be logged in to access this route"
       });
     req.user = user;
     next();

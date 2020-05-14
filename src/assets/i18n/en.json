@@ -1,6 +1,7 @@
 {
   "TITLE": "Mansoob",
 
+  "Home": "Home",
   "HOME": "Home",
   "User": "User",
   "Dashboard": "Dashboard",
@@ -90,7 +91,9 @@
   "Success":"Success",
   "Error":"Error",
   "Onlyjpgpng":"Only jpg/png files are allowed",
-  "Nofileselected":"No file selected"
+  "Nofileselected":"No file selected",
 
-  
+  "Awww404":"Awww... It's just a",
+  "404Error":"404 Error!",
+  "404Msg":"What you’re looking for may have been misplaced in Long Term Memory."
 }

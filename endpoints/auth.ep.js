@@ -153,6 +153,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
 
     //login (GUEST)
     var login = async (req, res, next) => {
+        console.log(req.body['email']);
         try {
             const { email, password } = req.body;
             if (!email || !password) {
