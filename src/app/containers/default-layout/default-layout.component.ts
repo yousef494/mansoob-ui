@@ -46,6 +46,7 @@ export class DefaultLayoutComponent {
     this.setRTL();  
   }
 
+
   getNavItems(){
     let rtlSwitcherIsChecked = localStorage.getItem('rtl') || 'ع';
     let lang = rtlSwitcherIsChecked == 'ع'?'en':'ar';

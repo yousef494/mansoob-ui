@@ -123,7 +123,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                     } else {
                         const hashedPassword = await hashPassword(password);
                         const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-                            expiresIn: "1d"
+                            expiresIn: "10d"
                         });
 
                         Mysql.update(models.user.name, { id: user.id },
@@ -177,7 +177,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                         return;
                     }
                     const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-                        expiresIn: "1d"
+                        expiresIn: "10d"
                     });
                     Mysql.update(models.user.name, { id: user.id }, { accessToken: accessToken })
                         .then(function (info) {

@@ -5,17 +5,27 @@ import { tap, catchError } from "rxjs/operators";
 import { ToastrService } from 'ngx-toastr';
 import { helpers } from 'chart.js';
 import { environment } from '../../environments/environment';
+import { Router, ActivatedRoute } from "@angular/router";
 
 @Injectable()
 export class AppHttpInterceptor implements HttpInterceptor {
-  constructor(public toasterService: ToastrService) { }
+  
+  execluded: string[] = ['login','upload','signup', 'forget', 'reset'];
+  constructor(
+    public toasterService: ToastrService,
+    private router: Router
+    ) { }
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-  
-    if (req.url.startsWith(environment.baseUrl) && req.url.indexOf('login')==-1
-    && req.url.indexOf('upload')==-1) {
+
+    if (
+        req.url.startsWith(environment.baseUrl) && 
+       // req.url.indexOf('login') == -1 &&
+      //  req.url.indexOf('upload') == -1 &&
+        this.execluded.find(e=> req.url.indexOf(e)).length == 0
+        ) {
       console.log(req.url);
       const token = localStorage.getItem('token');
       let headersOptions = new HttpHeaders({
@@ -36,6 +46,9 @@ export class AppHttpInterceptor implements HttpInterceptor {
         if (err instanceof HttpErrorResponse) {
           try {
             console.log(err.error);
+            if (err.error.type == 'Token') {//if token expired, redirect to login page
+              this.router.navigate(["/"]);
+            }
             this.toasterService.error(err.error.message, err.error.status);
           } catch (e) {
             this.toasterService.error('An error occurred', '');

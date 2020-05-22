@@ -16,7 +16,7 @@
       <div class="custom-control custom-switch">
         <input type="checkbox" class="custom-control-input" id="darkSwitch" [(ngModel)]="themeSwitcherIsChecked"
           (change)="switchTheme()" data-checked="Dark" data-unchecked="Light">
-        <label class="custom-control-label" for="darkSwitch" >{{ this.translate.data["DARKMODE"] }}</label>
+        <label class="custom-control-label" for="darkSwitch">{{ this.translate.data["DARKMODE"] }}</label>
       </div>
     </li>
   </ul>
@@ -30,9 +30,12 @@
         </ngx-avatar>
       </a>
       <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
-        <div class="dropdown-header text-center"><strong> {{ this.translate.data["YOUARE"] }} {{user.role}}</strong></div>
-        <a class="dropdown-item" href="#" [routerLink]="['/profile']"><i class="fa fa-user"></i> {{ this.translate.data["PROFILE"] }}</a>
-        <a class="dropdown-item" href="#" (click)="logout()"><i class="fa fa-lock"></i> {{ this.translate.data["LOGOUT"] }}</a>
+        <div class="dropdown-header text-center"><strong> {{ this.translate.data["YOUARE"] }} {{user.role}}</strong>
+        </div>
+        <a class="dropdown-item" href="#" [routerLink]="['/profile']"><i class="fa fa-user"></i>
+          {{ this.translate.data["PROFILE"] }}</a>
+        <a class="dropdown-item" href="#" (click)="logout()"><i class="fa fa-lock"></i>
+          {{ this.translate.data["LOGOUT"] }}</a>
       </div>
     </li>
     <li class="nav-item px-3  d-md-down-none">
@@ -68,25 +71,55 @@
   </main>
 
   <app-aside [fixed]="false" [display]="false" [ngClass]="'test'">
-    <div *ngFor="let group of notifications">
-      <div class="list-group-item list-group-item-accent-secondary bg-light 
+    <tabset>
+      <tab>
+        <ng-template tabHeading><i class="icon-list"></i></ng-template>
+        <div *ngFor="let group of notifications">
+          <div class="list-group-item list-group-item-accent-secondary bg-light 
       text-center font-weight-bold text-muted text-uppercase small">{{group.title}}</div>
-      <div *ngFor="let noti of group.data" class="list-group-item list-group-item-accent-{{ noti.urgency}}">
-        <div class="avatar float-right"></div>
-        <div>{{ noti.subject }} <strong>{{ noti.message }}</strong></div>
-        <small class="text-muted mr-3">
-          <i class="icon-calendar"></i>&nbsp; {{ noti.day }}
-        </small>
-        <small class="text-muted">
-          <i class="icon-info">
-          </i>&nbsp; {{ noti.device }}
-        </small>
-      </div>
-    </div>
-    <div *ngIf="notifications.length == 0">
-      <div class="list-group-item text-center font-weight-bold text-muted text-uppercase small">No SUCH Notifications
-      </div>
-    </div>
+          <div *ngFor="let noti of group.data" class="list-group-item list-group-item-accent-{{ noti.urgency}}">
+            <div class="avatar float-right"></div>
+            <div>{{ noti.subject }} <strong>{{ noti.message }}</strong></div>
+            <small class="text-muted mr-3">
+              <i class="icon-calendar"></i>&nbsp; {{ noti.day }}
+            </small>
+            <small class="text-muted">
+              <i class="icon-info">
+              </i>&nbsp; {{ noti.device }}
+            </small>
+          </div>
+        </div>
+        <div *ngIf="notifications.length == 0">
+          <div class="list-group-item text-center font-weight-bold text-muted text-uppercase small">No SUCH
+            Notifications
+          </div>
+        </div>
+      </tab>
+      <tab>
+        <ng-template tabHeading><i class="icon-settings"></i></ng-template>
+        <div class="p-3">
+          <h6>{{ this.translate.data["Settings"] }}</h6>
+          <div class="aside-options">
+            <div class="clearfix mt-4">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="darkSwitch" [(ngModel)]="themeSwitcherIsChecked"
+                  (change)="switchTheme()" data-checked="Dark" data-unchecked="Light">
+                <label class="custom-control-label" for="darkSwitch">{{ this.translate.data["DARKMODE"] }}</label>
+              </div>
+            </div>
+          </div>
+          <div class="aside-options">
+            <div class="clearfix mt-4">
+              <hr/>
+              <label class="switch switch-label switch-pill switch-success switch-sm float-right">
+                <button class="btn btn-secondary btn-sm" type="button" id="rtlSwitch"
+                (click)="switchRTL('S')">{{rtlSwitcherIsChecked}}</button>
+              </label>
+            </div>
+          </div>
+        </div>
+      </tab>
+    </tabset>
   </app-aside>
 
 </div>
