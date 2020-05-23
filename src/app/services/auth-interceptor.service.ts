@@ -47,7 +47,7 @@ export class AppHttpInterceptor implements HttpInterceptor {
           try {
             console.log(err.error);
             if (err.error.type == 'Token') {//if token expired, redirect to login page
-              this.router.navigate(["/"]);
+              this.router.navigate(["/login"]);
             }
             this.toasterService.error(err.error.message, err.error.status);
           } catch (e) {
