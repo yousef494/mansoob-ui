@@ -78,6 +78,7 @@ import { TranslateService } from './services/translate.service';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppHttpInterceptor } from './services/auth-interceptor.service';
+import { AnalysisComponent } from './components/analysis/analysis.component';
 
 export function setupTranslateFactory(service: TranslateService): Function {
 	return () => service.use('en');
@@ -129,7 +130,8 @@ export function setupTranslateFactory(service: TranslateService): Function {
     SettingsComponent,
     ProfileComponent,
     AvatarUpdateComponent,
-    HomeComponent
+    HomeComponent,
+    AnalysisComponent
   ],
   providers: [
     AuthService,

@@ -33,6 +33,7 @@
 
   "LastUpdate": "Last Update",
   "TOOLS": "Tools",
+  "RefreshNow" : "Refresh Now",
   "ShareonWhatsApp": "Share on Whats App",
   "DownlaodDashboardasPDF": "Downlaod Dashboard as PDF",
   "QuickInformation": "Quick Information",
@@ -49,6 +50,7 @@
   "TodayFourthQuarter": "Today Fourth Quarter",
   "WaterLevel": "Water Level",
   "Consumption": "Consumption",
+  "AvgConsumption": "Avgerage Consumption",
 
   "WaterLevelQuickInformation": "Water Level Quick Information",
   "TankFullLevel:135,": "Tank Full Level: 135,",

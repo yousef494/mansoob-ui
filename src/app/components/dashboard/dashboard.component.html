@@ -29,6 +29,9 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
                                 <div class="dropdown-header text-center"><strong> {{ this.translate.data["TOOLS"] }}</strong></div>
+                                <a class="dropdown-item" (click)="refreshContent()" [routerLink]=""><i
+                                    class="dropdown-item-icon-custom fa fa-refresh text-primary"></i>
+                                    {{ this.translate.data["RefreshNow"] }}</a>
                                 <a class="dropdown-item" [routerLink]="" shareButton="whatsapp" title="Mansoob Current Status"
                                     description="The severity level of the tank reaches the {{severity}} state ({{currentLevel}})"><i
                                         class="dropdown-item-icon-custom fa fa-whatsapp text-success"></i>
@@ -159,6 +162,11 @@
                         <div id="q5ProgressBar" aria-valuemax="100" aria-valuemin="0" aria-valuenow="40"
                             class="progress-bar" role="progressbar" style="width: 40%"></div>
                     </div>
+                </div>
+                <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                    <div class="text-muted">{{ this.translate.data["AvgConsumption"] }}</div><strong>
+                        ({{ fixIfNaN(getRoundedNumber(averageConsumption/100,100)) }})cm</strong>
+
                 </div>
             </div>
         </div>
