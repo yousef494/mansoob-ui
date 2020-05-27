@@ -21,7 +21,7 @@ const restify = function (app, Mysql, model, options, security) {
 
     //get individual item
     app.get(uriItem + '/:id',
-    security.allowIfLoggedin, security.hasAccess('readOwn', options.name), 
+  //  security.allowIfLoggedin, security.hasAccess('readOwn', options.name), 
     function (req, res) {
         Mysql.record(options.name, req.params)
             .then(function (record) {
@@ -37,7 +37,7 @@ const restify = function (app, Mysql, model, options, security) {
 
     //get full list
     app.get(uriItem + '/user/:user_id',
-    security.allowIfLoggedin, security.hasAccess('readOwn', options.name), 
+  //  security.allowIfLoggedin, security.hasAccess('readOwn', options.name), 
      function (req, res) {
         //res.send([{ id:1, name: 'Mansoob', tank_capacity: 8, tank_height: 150, severity: 'Normal',
        // level: 10 ,email_to: 'yousef-494@hotmail.com' }]);
@@ -59,7 +59,7 @@ const restify = function (app, Mysql, model, options, security) {
 
     //get full list
     app.get(uriItem,
-        security.allowIfLoggedin, security.hasAccess('readAny', options.name), 
+    //    security.allowIfLoggedin, security.hasAccess('readAny', options.name), 
          function (req, res) {
         //res.send([{ id:1, name: 'Mansoob', tank_capacity: 8, tank_height: 150, severity: 'Normal',
        // level: 10 ,email_to: 'yousef-494@hotmail.com' }]);
@@ -81,7 +81,7 @@ const restify = function (app, Mysql, model, options, security) {
 
     //add item
     app.post(uriItem,
-        security.allowIfLoggedin, security.hasAccess('createAny', options.name), 
+   //     security.allowIfLoggedin, security.hasAccess('createAny', options.name), 
          function (req, res) {
         Mysql.insert(options.name, req.body)
             .then(function (info) {
@@ -107,7 +107,7 @@ const restify = function (app, Mysql, model, options, security) {
 
     //update item
     app.put(uriItem + '/:id',
-    security.allowIfLoggedin, security.hasAccess('createOwn', options.name), 
+ //   security.allowIfLoggedin, security.hasAccess('createOwn', options.name), 
      function (req, res) {
         Mysql.update(options.name, req.params, req.body)
             .then(function (info) {
@@ -120,7 +120,7 @@ const restify = function (app, Mysql, model, options, security) {
 
     //same as put: it needs more implementation (actuall put needs more implementation to extend params)
     app.patch(uriItem + '/:id',
-    security.allowIfLoggedin, security.hasAccess('updateOwn', options.name), 
+ //   security.allowIfLoggedin, security.hasAccess('updateOwn', options.name), 
      function (req, res) {
         Mysql.update(options.name, req.params, req.body)
             .then(function (info) {
@@ -133,7 +133,7 @@ const restify = function (app, Mysql, model, options, security) {
 
     //delete item
     app.delete(uriItem + '/:id',
-    security.allowIfLoggedin, security.hasAccess('deleteOwn', options.name), 
+ //   security.allowIfLoggedin, security.hasAccess('deleteOwn', options.name), 
      function (req, res) {
         Mysql.delete(options.name, req.params)
             .then(function (info) {
@@ -147,7 +147,7 @@ const restify = function (app, Mysql, model, options, security) {
 
     //delete items
     app.delete(uriItem,
-        security.allowIfLoggedin, security.hasAccess('updateAny', options.name), 
+  //      security.allowIfLoggedin, security.hasAccess('updateAny', options.name), 
          function (req, res) {
         Mysql.delete(options.name, [])
             .then(function (info) {
