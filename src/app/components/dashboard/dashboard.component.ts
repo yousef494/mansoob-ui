@@ -226,7 +226,7 @@ export class DashboardComponent {
         type: 'line',
         mode: 'horizontal',
         scaleID: 'y-axis-0',
-        value: 25.5,
+        value: 25,
         borderColor: '#d9534f',
         borderWidth: 1,
         label: {
@@ -404,8 +404,9 @@ export class DashboardComponent {
           self.consChart.datasets = self.consChartDataset;
           self.consChart.update();
 
+          let roundedNumber = Math.round(this.averageConsumption / this.consChartLabels.length);
+          this.averageConsumption = this.fixIfNaN(roundedNumber);
 
-          this.averageConsumption = this.fixIfNaN(this.getRoundedNumber(this.averageConsumption, this.consChartLabels.length));
           //calculate today's consumption
           let todayIndex = this.consChartLabels.indexOf(this.today);
           for (let i = 0; i < 5; i++) {
@@ -424,6 +425,7 @@ export class DashboardComponent {
 
           //calculate time to refill
           this.timeToRefill = Math.ceil(this.currentLevel / this.averageConsumption) - 1;
+          
           if (isNaN(this.timeToRefill)) {
             this.timeToRefill = 0;
           }

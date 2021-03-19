@@ -151,7 +151,7 @@ const restify = function (app, Mysql, model, options, security) {
          function (req, res) {
         Mysql.delete(options.name, [])
             .then(function (info) {
-                res.status(200).send(info);
+                res.status(200).send(            info);
             })
             .catch(function (err) {
                 res.status(500).send(err.message);
