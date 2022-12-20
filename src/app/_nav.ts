@@ -1,4 +1,3 @@
-import { Injectable } from "@angular/core";
 import { INavData } from '@coreui/angular';
 
 let navItems_list = [

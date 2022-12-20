@@ -8,7 +8,6 @@ import {
 import { map } from 'rxjs/operators';
 import { AuthService } from '../app/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
-import { throwError, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {

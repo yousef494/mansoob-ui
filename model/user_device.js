@@ -1,5 +1,5 @@
 let util = require('../util');
-let models = require('./');
+//let models = require('./');
 
 
 const modelName = 'user_device';

@@ -99,6 +99,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                         });
                 })
                 .catch(function (err) {
+                    console.error(err);
                     return next('Email does not exist');
                 });
 
@@ -172,7 +173,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                     if (!validPassword) {
                         res.status(200).json({
                             status: 'Error',
-                            message: 'Incorrect email or password'
+                            message: 'Incorrect email or password 1'
                         });
                         return;
                     }
@@ -201,7 +202,7 @@ module.exports = function (app, Mysql, urlPrefix, security) {
                 .catch(function (err) {
                     res.status(200).json({
                         status: 'Error',
-                        message: 'Incorrect email or password'
+                        message: 'Incorrect email or password 2'
                     })
                 });
 
@@ -297,6 +298,26 @@ module.exports = function (app, Mysql, urlPrefix, security) {
     }
 
 
+        //login (GUEST)
+        var alogin = async (req, res, next) => {
+            console.log(req.body['email']);
+            try {
+
+                res.status(200).json({
+                    status: 'OK',
+                    data: {
+                        email: 'yousef.494@gmail.com', role: 'ADMIN', id: '1',
+                        firstName: 'Yusef', lastName: 'AlSuwaidan'
+                    },
+                    accessToken
+                })
+    
+            } catch (error) {
+                next(error);
+            }
+        }
+    
+    
 
     // define auth endpoints
     router.post(urlPrefix + '/signup', signup);

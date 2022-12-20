@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import {
-  FormBuilder,
-  FormGroup,
-  FormControl,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  UntypedFormControl,
   Validators
 } from '@angular/forms';
 import { ValidationHelper, MustMatch } from '../../_helper/validator_hp';
@@ -39,7 +39,7 @@ export class RegisterComponent {
     private router: Router,
     private route: ActivatedRoute,
     private toastService: ToastrService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private validationHelper: ValidationHelper,
     public translate: TranslateService
   ) {
@@ -53,7 +53,7 @@ export class RegisterComponent {
   }
 
 
-  signup(userForm: FormGroup) {
+  signup(userForm: UntypedFormGroup) {
     this.feedbackInUserCreate = false;
 
     if (this.registerForm.invalid) {
@@ -84,15 +84,15 @@ export class RegisterComponent {
       );
   }
 
-  registerForm: FormGroup;
+  registerForm: UntypedFormGroup;
   initLoginForm() {
     this.registerForm = this.formBuilder.group(
       {
-        firstName: new FormControl('', [Validators.required]),
-        lastName: new FormControl('', [Validators.required]),
-        email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-        rpassword: new FormControl('', [Validators.required]),
+        firstName: new UntypedFormControl('', [Validators.required]),
+        lastName: new UntypedFormControl('', [Validators.required]),
+        email: new UntypedFormControl('', [Validators.required, Validators.email]),
+        password: new UntypedFormControl('', [Validators.required, Validators.minLength(6)]),
+        rpassword: new UntypedFormControl('', [Validators.required]),
       },
       {
         validator: MustMatch('password', 'rpassword')

@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import {
-  FormBuilder,
-  FormGroup,
-  FormControl,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  UntypedFormControl,
   Validators
 } from '@angular/forms';
 import { ValidationHelper, MustMatch } from '../../_helper/validator_hp';
@@ -36,7 +36,7 @@ export class ResetComponent {
     private router: Router,
     private route: ActivatedRoute,
     private toastService: ToastrService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private validationHelper: ValidationHelper
   ) {
     this.vh = validationHelper;
@@ -56,15 +56,15 @@ export class ResetComponent {
     });
   }
 
-  requestForm: FormGroup;
+  requestForm: UntypedFormGroup;
   initRequestForm() {
     this.requestForm = this.formBuilder.group(
       {
-        email: new FormControl('', [Validators.required, Validators.email])
+        email: new UntypedFormControl('', [Validators.required, Validators.email])
       });
   }
 
-  request(userForm: FormGroup) {
+  request(userForm: UntypedFormGroup) {
     this.feedbackInReset = false;
     if (this.requestForm.invalid) {
       return;
@@ -87,20 +87,20 @@ export class ResetComponent {
       );
   }
 
-  resetForm: FormGroup;
+  resetForm: UntypedFormGroup;
   initResetForm() {
     this.resetForm = this.formBuilder.group(
       {
-        email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-        rpassword: new FormControl('', [Validators.required])
+        email: new UntypedFormControl('', [Validators.required, Validators.email]),
+        password: new UntypedFormControl('', [Validators.required, Validators.minLength(6)]),
+        rpassword: new UntypedFormControl('', [Validators.required])
       },
       {
         validator: MustMatch('password', 'rpassword')
     });
   }
 
-  reset(userForm: FormGroup) {
+  reset(userForm: UntypedFormGroup) {
     this.feedbackInReset = false;
     if (this.resetForm.invalid) {
       return;

@@ -6,9 +6,9 @@ import { NotificationService} from "../../services/notification.service";
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import {
-  FormBuilder,
-  FormGroup,
-  FormControl,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  UntypedFormControl,
   Validators
 } from '@angular/forms';
 import { ValidationHelper } from '../../_helper/validator_hp';
@@ -38,7 +38,7 @@ export class ProfileComponent {
     private userService: UserService,
     private router: Router,
     private toastService: ToastrService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private validationHelper: ValidationHelper,
     public translate: TranslateService
   ) {
@@ -54,12 +54,12 @@ export class ProfileComponent {
     this.initLoginForm();
   }
 
-  profileForm: FormGroup;
+  profileForm: UntypedFormGroup;
   initLoginForm() {
     this.profileForm = this.formBuilder.group(
       {
-        firstName: new FormControl('', [Validators.required]),
-        lastName: new FormControl('', [Validators.required])
+        firstName: new UntypedFormControl('', [Validators.required]),
+        lastName: new UntypedFormControl('', [Validators.required])
       });
   }
 

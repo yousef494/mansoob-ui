@@ -66,7 +66,7 @@ export class DefaultLayoutComponent {
 
   getNotifications() {
     let self = this;
-    this.noti.getItemsByUser(this.user.id).subscribe(
+    this.noti.getItemsByUser("this.user.id").subscribe(
       res => {
         let groupsTmp = [];
         self.notifications = [];

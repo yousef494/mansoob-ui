@@ -5,7 +5,7 @@
  * can be found in the LICENSE file at http://angular.io/license
  */
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators, AbstractControl } from '@angular/forms';
 
 
 @Injectable()
@@ -66,10 +66,10 @@ export class InputControlService {
         }
       }
       //add the validators and create a form control
-      group[attr['key']] = new FormControl(record[attr['key']] || '', validators);
+      group[attr['key']] = new UntypedFormControl(record[attr['key']] || '', validators);
 
     });
-    return new FormGroup(group);
+    return new UntypedFormGroup(group);
   }
 
   initMessages() {

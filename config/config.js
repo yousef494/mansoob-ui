@@ -8,7 +8,7 @@ module.exports = {
         urlPrefix: '/api/v1',
         testingPrefix: '/testing',
         mysqlOptions: {
-            host: 'yousefcave.com',
+            host: '192.168.100.10',
             user: 'manssobdb',
             password: '1stChicken*db',
             database: 'mansoob',
@@ -25,14 +25,15 @@ module.exports = {
         },
         urlPrefix: '/api/v1',
         mysqlOptions: {
-            host: 'localhost',
+            host: '192.168.100.10',
             user: 'manssobdb',
-            password: '1stChicken*db',
+            password: '',
             database: 'mansoob',
+            port: 3306,
             socketPath: false,
             connectionLimit: 5
         },
-        uploadDir: '/home/fz12klftt4ot/www/uploads/avatars'
+        uploadDir: ''//'/home/fz12klftt4ot/www/uploads/avatars'
     },
     mailserver: {
         host: 'n3plcpnl0274.prod.ams3.secureserver.net',

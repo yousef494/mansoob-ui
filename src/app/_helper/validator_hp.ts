@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { UntypedFormGroup, AbstractControl } from '@angular/forms';
 
 @Injectable({
     providedIn: 'root'
@@ -8,7 +8,7 @@ import { FormControl, FormGroup, Validators, AbstractControl } from '@angular/fo
 export class ValidationHelper {
 
 
-     isValid(formGroup: FormGroup, key) {
+     isValid(formGroup: UntypedFormGroup, key) {
         let control = formGroup.controls[key];
         if (
             control == undefined ||
@@ -60,7 +60,7 @@ export class ValidationHelper {
 
 
 export function MustMatch(controlName: string, matchingControlName: string) {
-    return (formGroup: FormGroup) => {
+    return (formGroup: UntypedFormGroup) => {
         const control = formGroup.controls[controlName];
         const matchingControl = formGroup.controls[matchingControlName];
 

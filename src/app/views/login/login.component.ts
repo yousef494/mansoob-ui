@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import {
-  FormBuilder,
-  FormGroup,
-  FormControl,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  UntypedFormControl,
   Validators
 } from '@angular/forms';
 import { ValidationHelper } from '../../_helper/validator_hp';
@@ -35,7 +35,7 @@ export class LoginComponent {
     private router: Router,
     private route: ActivatedRoute,
     private toastService: ToastrService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private validationHelper: ValidationHelper,
     public translate: TranslateService
   ) {
@@ -49,17 +49,17 @@ export class LoginComponent {
     this.setLang();
   }
 
-  loginForm: FormGroup;
+  loginForm: UntypedFormGroup;
   initLoginForm() {
     this.loginForm = this.formBuilder.group(
       {
-        email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required])
+        email: new UntypedFormControl('', [Validators.required, Validators.email]),
+        password: new UntypedFormControl('', [Validators.required])
       });
   }
 
 
-  signInWithEmail(userForm: FormGroup) {
+  signInWithEmail(userForm: UntypedFormGroup) {
     if (this.loginForm.invalid) {
       return;
     }

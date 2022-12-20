@@ -31,7 +31,7 @@ import { ConfigService, Schema, DataHTTPService } from './config.service';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { InputControlService } from './input-control.service';
 
 @Component({
@@ -72,7 +72,7 @@ export class RDTableComponent implements OnInit {
   public configuration: Config;
   public dataHTTPService: DataHTTPService;
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   private ics: InputControlService;
 
   constructor(private modalService: NgbModal, httpClient: HttpClient, ics: InputControlService) {
@@ -182,7 +182,7 @@ export class RDTableComponent implements OnInit {
     if (operation == 'Create' || operation == 'Update') {
       this.form = this.ics.createFormGroup(content.record, this.schema);
     } else {
-      this.form = new FormGroup({});
+      this.form = new UntypedFormGroup({});
     }
     //setup/open content
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', centered: true });

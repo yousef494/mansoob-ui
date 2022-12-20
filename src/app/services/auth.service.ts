@@ -3,7 +3,6 @@ import { User } from "./user";
 import { Router } from "@angular/router";
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { forkJoin } from 'rxjs'; // change to new RxJS 6 import syntax
 import { environment } from '../../environments/environment';
 
 

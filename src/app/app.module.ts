@@ -1,15 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA, APP_INITIALIZER } from '@angular/core';
-
 import { LocationStrategy, HashLocationStrategy, CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from  '@angular/common/http/';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms/';
 
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
-import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar/';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar/';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -26,24 +24,18 @@ import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 
 import { AuthService } from './services/auth.service';
-import { ModalModule } from 'ngx-bootstrap/modal';
+import { ModalModule } from 'ngx-bootstrap/modal/';
 import { ToastrModule } from 'ngx-toastr';
-import { AvatarModule, AvatarSource } from 'ngx-avatar';
+import { AvatarModule, AvatarSource } from 'ngx-avatar/';
 
-import { ShareModule } from '@ngx-share/core';
+import { ShareModule } from '@ngx-share/core/';
 
 
 const APP_CONTAINERS = [
   DefaultLayoutComponent
 ];
 
-import {
-  AppAsideModule,
-  AppBreadcrumbModule,
-  AppHeaderModule,
-  AppFooterModule,
-  AppSidebarModule,
-} from '@coreui/angular';
+
 
 // Import routing module
 import { AppRoutingModule } from './app.routing';
@@ -53,9 +45,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
 
-import { NgbButtonsModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgwWowService } from 'ngx-wow';
-import { FormGroup } from '@angular/forms';
 import { RDTableComponent } from './components/rd-table/rd-table.component';
 
 import { TableModule } from 'ngx-easy-table';
@@ -93,11 +84,6 @@ export function setupTranslateFactory(service: TranslateService): Function {
     ReactiveFormsModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    AppAsideModule,
-    AppBreadcrumbModule.forRoot(),
-    AppFooterModule,
-    AppHeaderModule,
-    AppSidebarModule,
     PerfectScrollbarModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
@@ -140,7 +126,6 @@ export function setupTranslateFactory(service: TranslateService): Function {
       useClass: HashLocationStrategy
     },
     NgwWowService,
-    NgbButtonsModule,
     NgbModule,
     ValidationHelper,
     TranslateService,

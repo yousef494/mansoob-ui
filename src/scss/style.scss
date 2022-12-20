@@ -8,13 +8,13 @@
 @import 'splash';
 
 // Import styles
-@import "~@coreui/coreui/scss/coreui";
+@import "../../node_modules/@coreui/coreui/scss/coreui.scss";
 
 
 // If you want to add something do it here
 @import "custom";
 
 
-@import "~ngx-easy-table/style.scss";
+@import "../../node_modules/ngx-easy-table/style.scss";
 
-@import '~@ngx-share/button/themes/default/default-theme';
+@import '../../node_modules/@ngx-share/button/themes/default/default-theme';

@@ -97,6 +97,8 @@ endpoints.user_device(app, Mysql, config[env].urlPrefix, security);
 
 app.listen(config[env].server.port, function () {
     console.log(config[env].server.name, 'server is listening on port', config[env].server.port);
+    console.log(config[env].mysqlOptions);
+
 });
 
 var distDir = __dirname + "/dist/";

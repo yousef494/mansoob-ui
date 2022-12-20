@@ -3,9 +3,8 @@ import { Injectable } from "@angular/core"
 import { Observable, of } from "rxjs";
 import { tap, catchError } from "rxjs/operators";
 import { ToastrService } from 'ngx-toastr';
-import { helpers } from 'chart.js';
 import { environment } from '../../environments/environment';
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
 
 @Injectable()
 export class AppHttpInterceptor implements HttpInterceptor {

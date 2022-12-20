@@ -5,10 +5,8 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot
 } from '@angular/router';
-import { map } from 'rxjs/operators';
 import { AuthService } from '../app/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
-import { ConstantPool } from '@angular/compiler';
 
 @Injectable({ providedIn: 'root' })
 export class AdminGuard implements CanActivate {

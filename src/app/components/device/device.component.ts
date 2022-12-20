@@ -3,13 +3,12 @@ import { AuthService } from '.././../services/auth.service';
 import { DeviceService } from '.././../services/device.service';
 import { ToastrService } from 'ngx-toastr';
 import {
-  FormBuilder,
-  FormGroup,
-  FormControl,
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  UntypedFormControl,
   Validators
 } from '@angular/forms';
 import { ValidationHelper, NumbericValidator } from '../../_helper/validator_hp';
-import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { TranslateService } from "../../services/translate.service";
 
 @Component({
@@ -42,7 +41,7 @@ export class DeviceComponent implements OnInit {
     private auth: AuthService,
     private deviceService: DeviceService,
     private toastService: ToastrService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private validationHelper: ValidationHelper,
     public translate: TranslateService
   ) {
@@ -54,15 +53,15 @@ export class DeviceComponent implements OnInit {
     this.initDetialsForm();
   }
 
-  detialsForm: FormGroup;
+  detialsForm: UntypedFormGroup;
   initDetialsForm() {
     this.detialsForm = this.formBuilder.group(
       {
-        name: new FormControl('', [Validators.required]),
-        tank_capacity: new FormControl(8, [Validators.required, NumbericValidator.numeric]),
-        tank_height: new FormControl(150, [Validators.required, NumbericValidator.numeric]),
-        email_to: new FormControl('', []),
-        email_to_input: new FormControl('', [])
+        name: new UntypedFormControl('', [Validators.required]),
+        tank_capacity: new UntypedFormControl(8, [Validators.required, NumbericValidator.numeric]),
+        tank_height: new UntypedFormControl(150, [Validators.required, NumbericValidator.numeric]),
+        email_to: new UntypedFormControl('', []),
+        email_to_input: new UntypedFormControl('', [])
       });
   }
 

@@ -1,15 +1,14 @@
-import { Component, OnInit, ViewChild, ElementRef, NgModule } from '@angular/core';
-import { Observable, interval, Subscription } from 'rxjs';
+import { Component, ViewChild } from '@angular/core';
+import { interval, Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from "@angular/router";
 
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
+import { getStyle, hexToRgba } from '@coreui/utils'
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { ReadingService } from "../../services/reading.service";
-import { Color, BaseChartDirective, Label, ThemeService } from 'ng2-charts';
-import { Chart } from 'chart.js'
+import { BaseChartDirective } from 'ng2-charts';
 import * as ChartAnnotation from 'chartjs-plugin-annotation';
 import * as moment from 'moment';
-import * as jsPDF from 'jspdf';
+import jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ShareService } from '@ngx-share/core';
@@ -327,18 +326,18 @@ export class DashboardComponent {
               }
             ];
 
-            res[0].reverse().forEach(function (value) {
+            (<any>res[0]).reverse().forEach(function (value) {
               self.readingChartLabels.push(value['timestamp']);
               self.readingChartData.push(+(value['level']));
             });
 
             // The hidden line might cause an error of mixing up readingChartDataset and consChartDataset
             //this.readingChart.datasets[0].data = this.readingChartData;
-            console.log("g1.1 "+this.consChartDataset[0]['data'].length);
+            //console.log("g1.1 "+this.consChartDataset[0]['data'].length);
             
             this.readingChart.update();
 
-            let lastRecord = res[0][res[0].length - 1];
+            let lastRecord = res[0][(<any>res[0]).length - 1];
             this.reading_controller(lastRecord['timestamp'], lastRecord['level']);
           } catch (err) {
             this.toastService.error("Error!", "Error while parsing the data (Reading controller)");
@@ -372,7 +371,7 @@ export class DashboardComponent {
           let self = this;
           let revInx = 6;
           this.averageConsumption = 0;
-          res[0].forEach(function (record) {
+          (<any>res[0]).forEach(function (record) {
             let diff = record['consumption'];
             let day = record['day'];
             let q = record['quarter'];
@@ -508,7 +507,7 @@ export class DashboardComponent {
       //}
       var heightLeft = imgHeight;
       const contentDataURL = canvas.toDataURL('image/png');
-      var pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
+      var pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
       var top_position = 5;
       var left_position = 5;
       // pdf.addImage(agency_logo.src, 'PNG', logo_sizes.centered_x, _y, logo_sizes.w, logo_sizes.h);
